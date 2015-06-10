@@ -1,10 +1,12 @@
 
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -23,16 +25,15 @@ public class AddTeam {
     private static javafx.scene.control.TextField loss;
     private static javafx.scene.control.TextField sponsor;
 
-    public static void display(String title, String message) {
+    public static void display(String title) {
         Stage window = new Stage();
 
 
         //Block other windows' input events until this window is closed
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
-        window.setMinWidth(250);
+        window.setMinWidth(100);
 
-        Label label = new Label(message);
         Button button = new Button("Enter");
         button.setOnAction(e -> {
             //returnTeam();
@@ -41,56 +42,49 @@ public class AddTeam {
 
         Label nameLabel = new Label("Name:");
         name = new javafx.scene.control.TextField();
-        HBox hName = new HBox(10);
-
         Label acronymLabel = new Label("Acronym:");
         acronym = new javafx.scene.control.TextField();
-        HBox hAcronym = new HBox(10);
-
         Label averageBaronsLabel = new Label("Average Barons:");
         averageBarons = new javafx.scene.control.TextField();
-        HBox hAverageBarons = new HBox(10);
-
         Label averageDragonsLabel = new Label ("Average Dragons:");
         averageDragons = new javafx.scene.control.TextField();
-        HBox hAverageDragons = new HBox(10);
-
         Label winLabel = new Label ("Wins:");
         win = new javafx.scene.control.TextField();
-        HBox hWin = new HBox(10);
-
         Label lossLabel = new Label ("Losses:");
         loss = new javafx.scene.control.TextField();
-        HBox hLoss = new HBox(10);
-
         Label sponsorLabel = new Label ("Sponsor:");
         sponsor = new javafx.scene.control.TextField();
-        HBox hSponsor = new HBox(10);
 
-        VBox layout = new VBox(10);
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10));
+        grid.setVgap(5);
+        grid.setHgap(5);
+        GridPane.setConstraints(nameLabel, 0, 0);
+        GridPane.setConstraints(name, 1, 0);
+        GridPane.setConstraints(acronymLabel, 0, 1);
+        GridPane.setConstraints(acronym, 1, 1);
+        GridPane.setConstraints(averageBaronsLabel, 0, 2);
+        GridPane.setConstraints(averageBarons, 1, 2);
+        GridPane.setConstraints(averageDragonsLabel, 0, 3);
+        GridPane.setConstraints(averageDragons, 1, 3);
+        GridPane.setConstraints(winLabel, 0, 4);
+        GridPane.setConstraints(win, 1, 4);
+        GridPane.setConstraints(lossLabel, 0, 5);
+        GridPane.setConstraints(loss, 1, 5);
+        GridPane.setConstraints(sponsorLabel, 0, 6);
+        GridPane.setConstraints(sponsor, 1, 6);
+        GridPane.setConstraints(button, 1, 7);
+        GridPane.setHalignment(button, HPos.RIGHT);
+        grid.getChildren().addAll(nameLabel,name,acronymLabel,acronym,averageBaronsLabel,averageBarons,averageDragonsLabel,averageDragons,winLabel,win,lossLabel,loss,sponsorLabel,sponsor,button);
 
-
-        hName.getChildren().addAll(nameLabel, name);
-        hAcronym.getChildren().addAll(acronymLabel, acronym);
-        hAverageBarons.getChildren().addAll(averageBaronsLabel, averageBarons);
-        hAverageDragons.getChildren().addAll(averageDragonsLabel, averageDragons);
-        hWin.getChildren().addAll(winLabel, win);
-        hLoss.getChildren().addAll(lossLabel, loss);
-        hSponsor.getChildren().addAll(sponsorLabel, sponsor);
-
-
-        layout.getChildren().addAll(label, hName, hAcronym, hAverageBarons, hAverageDragons, hWin, hLoss, hSponsor, button);
-        layout.setAlignment(Pos.CENTER);
-        layout.setPadding(new Insets(5));
-
-        Scene scene = new Scene(layout);
+        Scene scene = new Scene(grid);
         window.setScene(scene);
 
         //Shows this stage and waits for it to be hidden (closed) before returning to the caller.
         window.showAndWait();
         //return returnTeam();
     }
-     
+
        /* private static String returnTeam() {
             //team = tf.getText();
             return team;

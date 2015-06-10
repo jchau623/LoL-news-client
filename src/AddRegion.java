@@ -1,12 +1,14 @@
 
 
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -18,16 +20,16 @@ import javafx.stage.Stage;
 public class AddRegion {
     static String region ;
     private static javafx.scene.control.TextField acronym;
-    public static String display(String title, String message) {
+    public static String display(String title) {
         Stage window = new Stage();
 
 
         //Block other windows' input events until this window is closed
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
-        window.setMinWidth(350);
+        window.setMinWidth(100);
+        window.setResizable(false);
 
-        Label label = new Label(message);
         Button button = new Button("Enter");
         button.setOnAction(e -> {
             returnRegion();
@@ -35,25 +37,25 @@ public class AddRegion {
         });
 
         //Attribute text fields
-        Label acronymLabel = new Label("acronym:");
+        Label acronymLabel = new Label("Acronym:");
         acronym = new javafx.scene.control.TextField();
-        HBox acronymHBox = new HBox(5);
-        acronymHBox.getChildren().addAll(acronymLabel, acronym);
+        Label nameLabel = new Label("Name:");
+        TextField name = new TextField();
 
+        //layout
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 0, 0, 10));
+        grid.setVgap(5);
+        grid.setHgap(5);
+        GridPane.setConstraints(acronymLabel, 0, 0);
+        GridPane.setConstraints(acronym, 1, 0);
+        GridPane.setConstraints(nameLabel, 0, 1);
+        GridPane.setConstraints(name, 1, 1);
+        GridPane.setConstraints(button, 1, 2);
+        GridPane.setHalignment(button, HPos.RIGHT);
+        grid.getChildren().addAll(acronymLabel,acronym,nameLabel,name,button);
 
-
-        Label KADLabel = new Label("Name:");
-        TextField KAD = new TextField();
-        HBox KADHBox = new HBox(5);
-        KADHBox.getChildren().addAll(KADLabel, KAD);
-
-
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(label, acronymHBox,  KADHBox, button);
-        layout.setAlignment(Pos.CENTER);
-        layout.setPadding(new Insets(5));
-
-        Scene scene = new Scene(layout);
+        Scene scene = new Scene(grid);
         window.setScene(scene);
 
         //Shows this stage and waits for it to be hidden (closed) before returning to the caller.

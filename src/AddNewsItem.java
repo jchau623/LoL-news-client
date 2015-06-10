@@ -1,11 +1,13 @@
 
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -17,16 +19,15 @@ import javafx.stage.Stage;
 public class AddNewsItem {
     static String newsItem = new String();
     private static javafx.scene.control.TextField url;
-    public static String display(String title, String message) {
+    public static String display(String title) {
         Stage window = new Stage();
 
 
         //Block other windows' input events until this window is closed
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
-        window.setMinWidth(350);
+        window.setMinWidth(100);
 
-        Label label = new Label(message);
         Button button = new Button("Enter");
         button.setOnAction(e -> {
             returnNewsItem();
@@ -34,30 +35,28 @@ public class AddNewsItem {
         });
 
         //Attribute text fields
-        Label summonerLabel = new Label("url:");
+        Label urlLabel = new Label("URL:");
         url = new javafx.scene.control.TextField();
-        HBox summonerHBox = new HBox(5);
-        summonerHBox.getChildren().addAll(summonerLabel, url);
 
-        Label ageLabel = new Label("Date:");
+        Label dateLabel = new Label("Date:");
         TextField date = new TextField();
-        HBox ageHBox = new HBox(5);
-        ageHBox.getChildren().addAll(ageLabel,date);
 
-        Label nameLabel = new Label("Headline");
-        TextField name = new TextField();
-        HBox nameHBox = new HBox(5);
-        nameHBox.getChildren().addAll(nameLabel,name);
+        Label headlineLabel = new Label("Headline");
+        TextField headline = new TextField();
 
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(5);
+        grid.setHgap(5);
+        GridPane.setConstraints(urlLabel, 0, 0);
+        GridPane.setConstraints(url, 1, 0);
+        GridPane.setConstraints(headlineLabel, 0, 1);
+        GridPane.setConstraints(headline, 1, 1);
+        GridPane.setConstraints(button, 1, 2);
+        GridPane.setHalignment(button, HPos.RIGHT);
+        grid.getChildren().addAll(urlLabel,url,headlineLabel,headline,button);
 
-
-
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(label, summonerHBox, ageHBox, nameHBox,  button);
-        layout.setAlignment(Pos.CENTER);
-        layout.setPadding(new Insets(5));
-
-        Scene scene = new Scene(layout);
+        Scene scene = new Scene(grid);
         window.setScene(scene);
 
         //Shows this stage and waits for it to be hidden (closed) before returning to the caller.
