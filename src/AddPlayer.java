@@ -1,4 +1,5 @@
-import javafx.geometry.Pos;
+import javafx.geometry.*;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,6 +8,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.awt.*;
 
 /**
  * Created by Justin on 5/31/2015.
@@ -22,6 +25,7 @@ public class AddPlayer {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(350);
+        window.setResizable(false);
 
         Label label = new Label(message);
         Button button = new Button("Enter");
@@ -70,6 +74,7 @@ public class AddPlayer {
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label, summonerHBox, ageHBox, nameHBox, nationalityHBox, csHBox, gpmHBox, KADHBox, button);
         layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(5));
 
         Scene scene = new Scene(layout);
         window.setScene(scene);

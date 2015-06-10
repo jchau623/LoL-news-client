@@ -39,6 +39,10 @@ public class AddBox {
 
         Button addRegion = new Button ("Add Region");
         Button addChampion = new Button("Add Champion");
+        addChampion.setOnAction(e -> {
+            AddChampion.display("Add Champion", "Enter Info");
+        });
+
         Button addNewsItem = new Button("Add News");
         Button addMatch = new Button("Add Match");
 
