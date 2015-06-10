@@ -67,7 +67,7 @@ public class AddPlayer {
         TextField KAD = new TextField();
 
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 0, 0, 10));
+        grid.setPadding(new Insets(10));
         grid.setVgap(5);
         grid.setHgap(5);
         GridPane.setConstraints(summonerLabel, 0, 0);

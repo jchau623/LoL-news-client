@@ -44,7 +44,7 @@ public class AddRegion {
 
         //layout
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 0, 0, 10));
+        grid.setPadding(new Insets(10));
         grid.setVgap(5);
         grid.setHgap(5);
         GridPane.setConstraints(acronymLabel, 0, 0);
