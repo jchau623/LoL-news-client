@@ -115,14 +115,15 @@ public class Main extends Application{
         button1.setOnAction(e -> AlertBox.display("News feed", "Click button to close"));
         Button button2 = new Button("Add Something");
         button2.setOnAction(e -> AddBox.display("Add an Entity", "What do you want to add?"));
-        //System.out.println(addedPlayer);
         Button button3 = new Button("Return to desktop");
         button3.setOnAction(e -> closeProgram(window));
         Button button4 = new Button("Search");
         button4.setOnAction(e -> SearchFor.display());
+        Button button5 = new Button("Drop Player(TEMP)");
+        button5.setOnAction(e-> DropPlayer.display("Drop Player", "Enter info"));
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(button1, button2, button4, button3);
+        layout.getChildren().addAll(button1, button2, button4, button3, button5);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
