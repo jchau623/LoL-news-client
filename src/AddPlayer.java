@@ -22,6 +22,7 @@ public class AddPlayer {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(350);
+        window.setResizable(false);
 
         Label label = new Label(message);
         Button button = new Button("Enter");
