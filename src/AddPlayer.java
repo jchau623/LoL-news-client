@@ -2,15 +2,14 @@ import javafx.geometry.*;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.*;
+import java.util.*;
 
 /**
  * Created by Justin on 5/31/2015.
@@ -43,7 +42,24 @@ public class AddPlayer {
         Label nameLabel = new Label("Name:");
         TextField name = new TextField();
         Label natLabel = new Label("Nationality:");
-        TextField nationality = new TextField(); //TODO: Change to a dropdown box with all countries possible
+        //TextField nationality = new TextField(); //TODO: Change to a dropdown box with all countries possible
+        ChoiceBox<String> nationality = new ChoiceBox<>();
+
+        //get all countries
+        List<String> countryList = new ArrayList<>();
+        Locale[] locales = Locale.getAvailableLocales();
+        for (Locale locale : locales){
+            String country = locale.getDisplayCountry();
+            if (!country.equals("")) {
+                countryList.add(country);
+            }
+        }
+        Collections.sort(countryList);
+        Set<String> countryList2 = new TreeSet<>(); //move everything over to treeset to remove duplicates, Collections.sort wont work on sets
+        countryList2.addAll(countryList); // there's probably a better way of doing this...
+        nationality.getItems().addAll(countryList2);
+        nationality.getItems().add("Other");
+
         Label csPerGameLabel = new Label("csPerGame:");
         TextField csPerGame = new TextField();
         Label goldPerMinLabel = new Label("goldPerMin:");
@@ -61,14 +77,14 @@ public class AddPlayer {
         GridPane.setConstraints(age, 1, 1);
         GridPane.setConstraints(nameLabel, 0, 2);
         GridPane.setConstraints(name, 1, 2);
-        GridPane.setConstraints(natLabel, 0, 3);
-        GridPane.setConstraints(nationality, 1, 3);
+        GridPane.setConstraints(natLabel, 0, 6);
+        GridPane.setConstraints(nationality, 1, 6);
         GridPane.setConstraints(csPerGameLabel, 0 ,4);
         GridPane.setConstraints(csPerGame, 1, 4);
         GridPane.setConstraints(goldPerMinLabel, 0, 5);
         GridPane.setConstraints(goldPerMin, 1, 5);
-        GridPane.setConstraints(KADLabel, 0, 6);
-        GridPane.setConstraints(KAD, 1, 6);
+        GridPane.setConstraints(KADLabel, 0, 3);
+        GridPane.setConstraints(KAD, 1, 3);
         GridPane.setConstraints(button, 1, 7);
         GridPane.setHalignment(button, HPos.RIGHT);
         grid.getChildren().addAll(summonerLabel,summonerID,ageLabel,age,nameLabel,name,natLabel,nationality,csPerGameLabel,csPerGame,goldPerMinLabel,goldPerMin,KADLabel,KAD,button);
