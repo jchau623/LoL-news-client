@@ -9,10 +9,12 @@ import java.sql.SQLException;
  * On Eclipse: http://www.ugrad.cs.ubc.ca/~cs304/2015S1/tutorials/JDBC/OracleFromEclipse.htm
  */
 public class LoginConnection {
-    public void logIn(String user, String password) throws SQLException {
+    public Connection logIn(String user, String password) throws SQLException {
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
         Connection con = DriverManager.getConnection("jdbc:oracle:thin:@dbhost.ugrad.cs.ubc.ca:1522:ug",
                 "ora_"+user, "a"+password);
+
+        return con;
 
     }
 

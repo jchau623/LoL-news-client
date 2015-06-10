@@ -13,12 +13,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public class Main extends Application{
 
     Stage window, login;
     Scene scene1;
+    Connection con;
 
     public static void main(String[] args) {
         launch(args);
@@ -118,7 +120,7 @@ public class Main extends Application{
         Button button3 = new Button("Return to desktop");
         button3.setOnAction(e -> closeProgram(window));
         Button button4 = new Button("Search");
-        button4.setOnAction(e -> SearchFor.display());
+        button4.setOnAction(e -> SearchFor.display(con));
         Button button5 = new Button("Drop Player(TEMP)");
         button5.setOnAction(e-> DropPlayer.display("Drop Player", "Enter info"));
 
@@ -140,7 +142,7 @@ public class Main extends Application{
     private void loginPress (String user, String password) {
         LoginConnection loginConnection = new LoginConnection();
         try {
-            loginConnection.logIn(user,password);
+            con = loginConnection.logIn(user,password);
             login.close();
             mainMenu();
         } catch (SQLException e) {

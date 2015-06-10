@@ -9,18 +9,33 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Created by Justin on 6/1/2015.
  */
 public class SearchFor {
 
-    public static void display() {
+    public static String summonerID ;
+    public static int age ;
+    public static String name ;
+    public static String nationality ;
+    public static float csPerGame ;
+    public static float goldPerMin ;
+    public static float kDA;
+    private static TextField tf = new TextField();
+    private static Connection connection;
+
+    public static void display(Connection con) {
+        connection = con;
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Search");
         //window.setMinWidth(300);
 
-        TextField tf = new TextField();
         tf.setPromptText("Enter name");
         tf.setMinWidth(234);
 
@@ -70,7 +85,7 @@ public class SearchFor {
         Text in = new Text("in");
         GridPane.setConstraints(in, 0, 5);
         ChoiceBox<String> order = new ChoiceBox<>();
-        order.getItems().addAll("", "Ascending order", "Descending order");
+        order.getItems().addAll("Default", "Ascending order", "Descending order");
         GridPane.setConstraints(order, 0, 6);
 
         layout.getChildren().addAll(askReturn, attributes, in, order);
@@ -79,8 +94,41 @@ public class SearchFor {
             borderPane.setTop(searchBar);
             borderPane.setPadding(new Insets(10));
             Scene scene = new Scene(borderPane);
+
+        searchButton.setOnAction(e->{
+            try {
+                findPlayer(connection);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            window.close();
+        });
+
         window.setScene(scene);
         window.show();
 
+
     }
+    // going to execute the SQL query to find the player
+    public static void findPlayer(Connection con) throws SQLException {
+
+
+
+        Statement stmt = con.createStatement() ;
+        // find player is the result
+
+        // needs the box with the text field
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Player" + "WHERE summonerID =" + tf.getText() ) ;
+
+        while (rs.next())  {
+            summonerID = rs.getString("summonerID") ;
+            age = rs.getInt(2);
+            name = rs.getString(3) ;
+            nationality = rs.getString(4);
+            csPerGame = rs.getFloat(5) ;
+            goldPerMin = rs.getFloat(6) ;
+            kDA = rs.getFloat(7) ;
+        }
+    }
+
 }
