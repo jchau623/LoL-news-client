@@ -42,7 +42,6 @@ public class AddPlayer {
         Label nameLabel = new Label("Name:");
         TextField name = new TextField();
         Label natLabel = new Label("Nationality:");
-        //TextField nationality = new TextField(); //TODO: Change to a dropdown box with all countries possible
         ChoiceBox<String> nationality = new ChoiceBox<>();
 
         //get all countries
