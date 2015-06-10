@@ -1,16 +1,15 @@
-
-
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by Vivian on 2015-06-09.
@@ -83,6 +82,13 @@ public class AddTeam {
         //Shows this stage and waits for it to be hidden (closed) before returning to the caller.
         window.showAndWait();
         //return returnTeam();
+    }
+
+    public void insertPlayer(Connection con) throws SQLException{
+        Statement stmt = con.createStatement();
+        stmt.executeUpdate("INSERT INTO player VALUES (" + name.getText() + "," + acronym.getText() + ", " +
+               averageBarons.getText() + ", " + averageDragons.getText() + ", " + win.getText() + ", " + loss.getText()
+               + ", " + sponsor.getText());
     }
 
        /* private static String returnTeam() {
