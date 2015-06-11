@@ -125,7 +125,7 @@ public class SearchFor {
         List<Player> listOfPlayers = new ArrayList<>();
         Statement stmt = con.createStatement() ;
         //ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + realAttributeName + " = \'" + tf.getText() + "\'");
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() +"OR WHERE summonerID = \'"+ tf.getText() +  "\' ORDER BY " + realAttributeName + " " + order);
         while (rs.next())  {
             Player player = new Player();
             player.setID(rs.getString("summonerID"));
