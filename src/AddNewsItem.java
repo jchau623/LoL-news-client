@@ -41,7 +41,7 @@ public class AddNewsItem {
         Label dateLabel = new Label("Date:");
         TextField date = new TextField();
 
-        Label headlineLabel = new Label("Headline");
+        Label headlineLabel = new Label("Headline:");
         TextField headline = new TextField();
 
         GridPane grid = new GridPane();
