@@ -137,6 +137,8 @@ public class SearchFor {
             player.setKDA(rs.getFloat(7));
             listOfPlayers.add(player);
             System.out.println(player.returnGPM());
+
+            //okay updated
         }
     }
 
