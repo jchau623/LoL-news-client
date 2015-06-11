@@ -13,6 +13,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Justin on 6/1/2015.
@@ -79,7 +81,6 @@ public class SearchFor {
             attributes.getItems().clear();
             attributes.getItems().addAll("Acronym", "Name");
         });
-
         GridPane.setConstraints(askReturn, 0, 3);
         GridPane.setConstraints(attributes, 0, 4);
         Text in = new Text("in");
@@ -97,7 +98,9 @@ public class SearchFor {
 
         searchButton.setOnAction(e->{
             try {
-                findPlayer(connection);
+                if (choices.getSelectedToggle() == player) {
+                    findPlayer(connection, attributes.getValue());
+                }
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
@@ -110,25 +113,30 @@ public class SearchFor {
 
     }
     // going to execute the SQL query to find the player
-    public static void findPlayer(Connection con) throws SQLException {
+    public static void findPlayer(Connection con, String attribute) throws SQLException {
 
 
-
+        List<Player> listOfPlayers = new ArrayList<>();
         Statement stmt = con.createStatement() ;
         // find player is the result
 
         // needs the box with the text field
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Player" + "WHERE summonerID =" + tf.getText() ) ;
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + attribute + " = \'" + tf.getText() + "\'");
 
         while (rs.next())  {
-            summonerID = rs.getString("summonerID") ;
-            age = rs.getInt(2);
-            name = rs.getString(3) ;
-            nationality = rs.getString(4);
-            csPerGame = rs.getFloat(5) ;
-            goldPerMin = rs.getFloat(6) ;
-            kDA = rs.getFloat(7) ;
+            Player player = new Player();
+            player.setID(rs.getString("summonerID"));
+            player.setAge(rs.getInt(2));
+            player.setName(rs.getString(3));
+            player.setNationality(rs.getString(4));
+            player.setCsPerMin(rs.getFloat(5));
+            player.setGPM(rs.getFloat(6));
+            player.setKDA(rs.getFloat(7));
+            listOfPlayers.add(player);
+            System.out.println(player.returnAge());
+            System.out.println(player.returnName());
         }
+
     }
 
 }
