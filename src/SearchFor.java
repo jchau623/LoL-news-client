@@ -68,14 +68,14 @@ public class SearchFor {
 
         Label askReturn = new Label("Return data sorted by:");
         ChoiceBox<String> attributes = new ChoiceBox<>();
-        attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerGame", "goldPerMin", "Nationality");
+        attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
         player.setOnAction(e -> {
             attributes.getItems().clear();
-            attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerGame", "goldPerMin", "Nationality");})
+            attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");})
             ;
         team.setOnAction(e-> {
             attributes.getItems().clear();
-            attributes.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor");
+            attributes.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
         });
         region.setOnAction(e->{
             attributes.getItems().clear();
@@ -99,7 +99,11 @@ public class SearchFor {
         searchButton.setOnAction(e->{
             try {
                 if (choices.getSelectedToggle() == player) {
-                    findPlayer(connection, attributes.getValue());
+                    findPlayer(connection, attributes.getValue(), order.getValue());
+                } else if (choices.getSelectedToggle() == team) {
+                    findTeam(connection, attributes.getValue(), order.getValue());
+                } else if (choices.getSelectedToggle() == region) {
+                    findRegion(connection, attributes.getValue(), order.getValue());
                 }
             } catch (SQLException e1) {
                 e1.printStackTrace();
@@ -113,16 +117,15 @@ public class SearchFor {
 
     }
     // going to execute the SQL query to find the player
-    public static void findPlayer(Connection con, String attribute) throws SQLException {
-
-
+    public static void findPlayer(Connection con, String attribute, String value) throws SQLException {
+        String realAttributeName = (attribute=="Age") ? "age" : (attribute=="Name") ? "name" :
+                (attribute=="KA/D Ratio") ? "KDA" : (attribute=="Nationality") ? "nationality" : attribute;
+        String order = (value=="Ascending order")?"ASC":"DESC";
+    //KA/D Ratio is either KAD or KDA
         List<Player> listOfPlayers = new ArrayList<>();
         Statement stmt = con.createStatement() ;
-        // find player is the result
-
-        // needs the box with the text field
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + attribute + " = \'" + tf.getText() + "\'");
-
+        //ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + realAttributeName + " = \'" + tf.getText() + "\'");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
         while (rs.next())  {
             Player player = new Player();
             player.setID(rs.getString("summonerID"));
@@ -133,10 +136,46 @@ public class SearchFor {
             player.setGPM(rs.getFloat(6));
             player.setKDA(rs.getFloat(7));
             listOfPlayers.add(player);
-            System.out.println(player.returnAge());
-            System.out.println(player.returnName());
+            System.out.println(player.returnGPM());
         }
-
     }
+
+    public static void findTeam(Connection con, String attribute, String value) throws SQLException {
+        List<Team> listOfTeams = new ArrayList<>();
+        String realAttributeName = (attribute=="Name")?"name":(attribute=="Acronym")?"acronym":
+                (attribute=="Average Barons")?"averageBarons":(attribute=="Average Dragons")?
+                        "averageDragons":(attribute=="Wins")?"wins":(attribute=="Losses")?
+                        "losses":(attribute=="Sponsor")?"sponsor":(attribute=="Region")?"region":attribute;
+        String order = (value=="Ascending order")?"ASC":"DESC";
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM TeamThatPlaysIn WHERE name = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
+        while(rs.next()) {
+            Team team = new Team();
+            team.setTeamName(rs.getString(1));
+            team.setWins(rs.getInt(2));
+            team.setLosses(rs.getInt(3));
+            team.setSponsor(rs.getString(4));
+            team.setAcronym(rs.getString(5));
+            team.setAverageDragons(rs.getFloat(6));
+            team.setAverageBarons(rs.getFloat(7));
+            team.setRegion(rs.getString(8));
+            listOfTeams.add(team);
+        }
+    }
+
+    public static void findRegion(Connection con, String attribute, String value) throws SQLException {
+        List<Region> listofRegions = new ArrayList<>();
+        String realAttributeName = (attribute=="Acronym")?"acronym":(attribute=="Name")?"name":attribute;
+        String order = (value=="Ascending order")?"ASC":"DESC";
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Region WHERE name = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
+        while(rs.next()) {
+            Region region = new Region();
+            region.setRegionName(rs.getString(1));
+            region.setAcronym(rs.getString(2));
+        }
+    }
+
+
 
 }

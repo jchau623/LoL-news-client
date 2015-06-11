@@ -151,8 +151,12 @@ public class Main extends Application{
     private void closeProgram(Stage stage) throws SQLException {
         Boolean answer = ConfirmBox.display("Closing", "Are you sure you wish to exit?");
         if (answer) {
-            con.close();
-            stage.close();
+            try {
+                con.close();
+                stage.close();
+            } catch (NullPointerException e) {
+                stage.close();
+            }
         }
     }
 
@@ -164,6 +168,7 @@ public class Main extends Application{
             mainMenu();
         } catch (SQLException e) {
             AlertBox.display("Error", "Wrong user/password!");
+            e.printStackTrace();
         }
     }
 }

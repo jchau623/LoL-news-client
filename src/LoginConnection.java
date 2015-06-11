@@ -15,7 +15,7 @@ public class LoginConnection {
         Connection con = DriverManager.getConnection("jdbc:oracle:thin:@dbhost.ugrad.cs.ubc.ca:1522:ug",
                 "ora_"+user, "a"+password);
         Statement stmt = con.createStatement();
-       // stmt.execute("@lolProjectData.sql"); //TODO: check if we're right
+        //stmt.execute("@lolProjectData.sql"); //TODO: check if we're right
         return con;
 
     }
