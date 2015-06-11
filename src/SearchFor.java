@@ -173,7 +173,10 @@ public class SearchFor {
             Region region = new Region();
             region.setRegionName(rs.getString(1));
             region.setAcronym(rs.getString(2));
+        // lets see if this works
+
         }
+
     }
 
 
