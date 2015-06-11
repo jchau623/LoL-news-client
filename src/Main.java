@@ -100,7 +100,11 @@ public class Main extends Application{
         //Start window
         login.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
-            closeProgram(login);
+            try {
+                closeProgram(login);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         });
         login.setScene(loginScene);
         login.show();
@@ -110,7 +114,11 @@ public class Main extends Application{
         window = new Stage();
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
-            closeProgram(window);
+            try {
+                closeProgram(window);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         });
         //Post-login: Main menu
         Button button1 = new Button("Check your feed");
@@ -118,7 +126,13 @@ public class Main extends Application{
         Button button2 = new Button("Add Something");
         button2.setOnAction(e -> AddBox.display("Add an Entity", "What do you want to add?"));
         Button button3 = new Button("Return to desktop");
-        button3.setOnAction(e -> closeProgram(window));
+        button3.setOnAction(e -> {
+            try {
+                closeProgram(window);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
         Button button4 = new Button("Search");
         button4.setOnAction(e -> SearchFor.display(con));
         Button button5 = new Button("Drop Player(TEMP)");
@@ -134,9 +148,16 @@ public class Main extends Application{
         window.show();
     }
 
-    private void closeProgram(Stage stage) {
+    private void closeProgram(Stage stage) throws SQLException {
         Boolean answer = ConfirmBox.display("Closing", "Are you sure you wish to exit?");
-        if (answer) stage.close();
+        if (answer) {
+            try {
+                con.close();
+                stage.close();
+            } catch (NullPointerException e) {
+                stage.close();
+            }
+        }
     }
 
     private void loginPress (String user, String password) {
@@ -147,6 +168,7 @@ public class Main extends Application{
             mainMenu();
         } catch (SQLException e) {
             AlertBox.display("Error", "Wrong user/password!");
+            e.printStackTrace();
         }
     }
 }
