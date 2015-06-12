@@ -125,7 +125,11 @@ public class SearchFor {
         List<Player> listOfPlayers = new ArrayList<>();
         Statement stmt = con.createStatement() ;
         //ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + realAttributeName + " = \'" + tf.getText() + "\'");
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'%" + tf.getText()+ "%\'" +"OR WHERE name = \'%"+ tf.getText() +  "% \' ORDER BY " + realAttributeName + " " + order);
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
+        System.out.println("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
+        if (!rs.next()) {
+            System.out.println("No results returned");
+        }
         while (rs.next())  {
             Player player = new Player();
             player.setID(rs.getString("summonerID"));
@@ -136,9 +140,8 @@ public class SearchFor {
             player.setGPM(rs.getFloat(6));
             player.setKDA(rs.getFloat(7));
             listOfPlayers.add(player);
-            System.out.println(player.returnGPM());
-
-            //okay updated
+            System.out.println(player.returnAge());
+            System.out.println(player.returnName());
         }
     }
 
@@ -170,15 +173,12 @@ public class SearchFor {
         String realAttributeName = (attribute=="Acronym")?"acronym":(attribute=="Name")?"name":attribute;
         String order = (value=="Ascending order")?"ASC":"DESC";
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Region WHERE name = \'" + tf.getText() + "\'  +   +  ORDER BY " + realAttributeName + " " + order);
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Region WHERE name = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
         while(rs.next()) {
             Region region = new Region();
             region.setRegionName(rs.getString(1));
             region.setAcronym(rs.getString(2));
-        // lets see if this works
-
         }
-
     }
 
 

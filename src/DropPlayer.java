@@ -10,11 +10,7 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.awt.TextField;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DropPlayer {
     public static String summonerID ;
@@ -24,6 +20,7 @@ public class DropPlayer {
     public static float csPerGame ;
     public static float goldPerMin ;
     public static float kDA;
+    Connection con;
 
 
 
@@ -31,7 +28,7 @@ public class DropPlayer {
     static String player = new String();
     private static javafx.scene.control.TextField tf;
 
-    public static String display(String title, String message) {
+    public static String display(String title, String message, Connection con) {
         Stage window = new Stage();
 
 
@@ -43,7 +40,11 @@ public class DropPlayer {
         Label label = new Label(message);
         Button button = new Button("Enter");
         button.setOnAction(e -> {
-            returnPlayer();
+            try {
+                deletePlayer(con);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             window.close();
         });
         tf = new javafx.scene.control.TextField();
@@ -68,23 +69,7 @@ public class DropPlayer {
 
 
 
-    // going to execute the SQL query to find the player
-    public static void findPlayer(Connection con) throws SQLException {
-                /*public static String summonerID ;
-                public static int age ;
-                public static String name ;
-                public static String nationality ;
-                public static float csPerGame ;
-                public static float goldPerMin ;
-                public static float kDA; */
-
-
+    public static void deletePlayer(Connection con) throws SQLException {
         Statement stmt = con.createStatement() ;
         // find player is the result
-        int rs = stmt.executeUpdate("DELETE FROM Player WHERE summonerID = " + player)  ;
-
-        System.out.println(rs);
-    }
-
-
-}
+        stmt.execute("DELETE  FROM Player WHERE summonerID = \'" + returnPlayer() + "\'");}}

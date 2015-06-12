@@ -136,7 +136,7 @@ public class Main extends Application{
         Button button4 = new Button("Search");
         button4.setOnAction(e -> SearchFor.display(con));
         Button button5 = new Button("Drop Player(TEMP)");
-        button5.setOnAction(e-> DropPlayer.display("Drop Player", "Enter info"));
+        button5.setOnAction(e-> DropPlayer.display("Drop Player", "Enter info", con));
 
         VBox layout = new VBox(20);
         layout.getChildren().addAll(button1, button2, button4, button3, button5);
