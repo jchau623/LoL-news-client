@@ -58,7 +58,7 @@ public class Team {
         Team.region = region;
     }
 
-    public String returnSponser(){
+    public String returnSponsor(){
         return sponsor;
     }
 
