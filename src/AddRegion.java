@@ -14,13 +14,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 /**
  * Created by Jason on 5/31/2015.
  */
 public class AddRegion {
     static String region ;
-    private static javafx.scene.control.TextField acronym;
-    public static String display(String title) {
+
+    public static void  display(Connection con , String title) {
         Stage window = new Stage();
 
 
@@ -30,17 +34,26 @@ public class AddRegion {
         window.setMinWidth(100);
         window.setResizable(false);
 
-        Button button = new Button("Enter");
-        button.setOnAction(e -> {
-            returnRegion();
-            window.close();
-        });
+
+
+
+
 
         //Attribute text fields
         Label acronymLabel = new Label("Acronym:");
-        acronym = new javafx.scene.control.TextField();
+        TextField acronym = new TextField();
         Label nameLabel = new Label("Name:");
         TextField name = new TextField();
+
+        Button button = new Button("Enter");
+        button.setOnAction(e -> {
+            try{
+                addRegion(con, name.getText(), acronym.getText());}
+            catch (SQLException e1){
+                e1.printStackTrace();
+            }
+            window.close();
+        });
 
         //layout
         GridPane grid = new GridPane();
@@ -59,14 +72,22 @@ public class AddRegion {
         window.setScene(scene);
 
         //Shows this stage and waits for it to be hidden (closed) before returning to the caller.
-        window.showAndWait();
-        return returnRegion();
+        window.showAndWait();}
+
+
+
+
+
+     public static void addRegion (Connection con, String name, String acronym) throws SQLException {
+System.out.println("testin");
+        String addR = "INSERT INTO Region VALUES (?,?)";
+        PreparedStatement update = con.prepareStatement(addR);
+        update.setString(1, name);
+        update.setString(2, acronym);
+         update.executeUpdate();
     }
 
-    private static String returnRegion() {
-        region = acronym.getText();
-        return region;
-    }
+
 
 }
 

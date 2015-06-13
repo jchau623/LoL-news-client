@@ -13,13 +13,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+
 /**
  * Created by Jason on 5/31/2015.
  */
 public class AddNewsItem {
     static String newsItem = new String();
     private static javafx.scene.control.TextField url;
-    public static String display(String title) {
+    public static String display(Connection con, String title) {
         Stage window = new Stage();
 
 
