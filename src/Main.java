@@ -7,6 +7,9 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
@@ -43,7 +46,7 @@ public class Main extends Application{
         username.setOnKeyPressed(event -> {
                     if (event.getCode().equals(KeyCode.ENTER)) {
                         if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
-                            loginPress(username.getText(), password.getText());
+                            loginPress(username.getText(), password.getText(), adminUser.getValue());
                         }
                         if (username.getText().isEmpty()) {
                             username.setStyle("-fx-background-color: #ff9ca0");
@@ -78,7 +81,7 @@ public class Main extends Application{
         password.setOnKeyPressed(event -> {
                     if (event.getCode().equals(KeyCode.ENTER)) {
                         if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
-                            loginPress(username.getText(), password.getText());
+                            loginPress(username.getText(), password.getText(), adminUser.getValue());
                         }
                         if (username.getText().isEmpty()) {
                             username.setStyle("-fx-background-color: #ff9ca0");
@@ -123,7 +126,7 @@ public class Main extends Application{
         loginHBox.getChildren().addAll(fields, logInButton);
         logInButton.setOnAction(event -> {
                     if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
-                        loginPress(username.getText(), password.getText());
+                        loginPress(username.getText(), password.getText(), adminUser.getValue());
                     }
                     if (username.getText().isEmpty()) {
                         username.setStyle("-fx-background-color: #ff9ca0");
@@ -169,7 +172,7 @@ public class Main extends Application{
         login.show();
     }
 
-    private void mainMenu() {
+    private void adminMenu(String userID, String userState) {
         window = new Stage();
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
@@ -180,6 +183,29 @@ public class Main extends Application{
             }
         });
         //Post-login: Main menu
+        Text message = new Text("Logged in as:");
+        Text loggedInAs = new Text(userID);
+        loggedInAs.setFont(Font.font(40));
+
+        Button button0 = new Button("Log out");
+        button0.setOnAction(e -> {
+            try {
+                start(login);
+                try {
+                    con.close();
+                    window.close();
+                } catch (NullPointerException c) {
+                    window.close();
+                }
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        HBox userAndButton = new HBox(15);
+        userAndButton.setAlignment(Pos.CENTER);
+        userAndButton.getChildren().addAll(loggedInAs,button0);
+
         Button button1 = new Button("Check your feed");
         button1.setOnAction(e -> AlertBox.display("News feed", "Click button to close"));
         Button button2 = new Button("Add Something");
@@ -198,11 +224,11 @@ public class Main extends Application{
         button5.setOnAction(e-> DeleteBox.display(con,"Delete Something", "Choose Something To Delete"));
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(button1, button2, button3, button4 ,button5);
+        layout.getChildren().addAll(message,userAndButton,button1, button2, button4, button5, button3);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
-        window.setTitle("LOLNews");
+        window.setTitle("LOLNews ("+userState+")");
         window.setScene(scene1);
         window.show();
     }
@@ -219,15 +245,73 @@ public class Main extends Application{
         }
     }
 
-    private void loginPress (String user, String password) {
+    private void loginPress (String user, String password, String state) {
         LoginConnection loginConnection = new LoginConnection();
         try {
             con = loginConnection.logIn(user,password);
             login.close();
-            mainMenu();
+            if (state == "Admin") adminMenu(user, state);
+            else if (state == "User") userMenu(user, state);
         } catch (SQLException e) {
-            AlertBox.display("Error", "Wrong user/password!");
-            e.printStackTrace();
+            if (e.getErrorCode() == 17002) {
+                AlertBox.display("Error", "Could not establish connection to the database");
+            } else {
+                AlertBox.display("Error", "Wrong user/password!");
+                e.printStackTrace();
+            }
         }
+    }
+
+    private void userMenu(String userID, String userState) {
+        window = new Stage();
+        window.setOnCloseRequest(e -> {
+            e.consume(); //consumed event, it won't close the program automatically
+            try {
+                closeProgram(window);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
+        //Post-login: Main menu
+        Text message = new Text("Logged in as:");
+        Text loggedInAs = new Text(userID);
+        loggedInAs.setFont(Font.font(30));
+        Button button0 = new Button("Log out");
+        button0.setOnAction(e->{
+            try {
+                start(login);
+                try {
+                    con.close();
+                    window.close();
+                } catch (NullPointerException c) {
+                    window.close();
+                }
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        });
+        Button button1 = new Button("Check your feed");
+        button1.setOnAction(e -> AlertBox.display("News feed", "Click button to close"));
+        Button button3 = new Button("Return to desktop");
+        button3.setOnAction(e -> {
+            try {
+                closeProgram(window);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
+        Button button4 = new Button("Search");
+        button4.setOnAction(e -> SearchFor.display(con));
+        Button button5 = new Button("Delete Something");
+        button5.setOnAction(e-> DeleteBox.display(con,"Delete Something", "Choose Something To Delete"));
+
+        VBox layout = new VBox(20);
+        layout.getChildren().addAll(message,loggedInAs,button0, button1, button4, button5, button3);
+        layout.setAlignment(Pos.CENTER);
+        scene1 = new Scene(layout, 300, 500);
+
+        window.setTitle("LOLNews ("+userState+")");
+        window.setScene(scene1);
+        window.show();
     }
 }
