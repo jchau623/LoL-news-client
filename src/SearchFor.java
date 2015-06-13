@@ -124,7 +124,6 @@ public class SearchFor {
     //KA/D Ratio is either KAD or KDA
         List<Player> listOfPlayers = new ArrayList<>();
         Statement stmt = con.createStatement() ;
-        System.out.println("testing");
         //ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + realAttributeName + " = \'" + tf.getText() + "\'");
         ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
         if (!rs.next()) {

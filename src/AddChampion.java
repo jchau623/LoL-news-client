@@ -11,17 +11,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.sql.Statement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by jch on 09/06/15.
  */
 public class AddChampion {
 
-
-    public static void display(String title, Connection con) {
+    public static void display(Connection con, String title, String other) {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
@@ -29,32 +29,30 @@ public class AddChampion {
         window.setResizable(false);
 
 
+
         //attributes
         Label nameLabel = new Label("Name:");
         TextField name = new TextField();
-        Label costLabel = new Label("Cost:");
-        TextField cost = new TextField();
+
         Label winRateLabel = new Label("Win rate:");
         TextField winRate = new TextField();
-        Label resourceTypeLabel = new Label("Resource type:");
-        TextField resourceType = new TextField();
+
         Label typeLabel = new Label("Type:");
         TextField type = new TextField();
 
 
         Button button = new Button("Enter");
+
+
+        window.close();
         button.setOnAction(e -> {
-           // returnPlayer();
-            try {
-                addChamp(con, name.getText(), cost.getText(), winRate.getText(), resourceType.getText(), type.getText());
-                window.close();
+            try{
+            addChamp(con, name.getText(), Float.parseFloat(winRate.getText()) , type.getText());}
+            catch (SQLException e1){
+                e1.printStackTrace();
             }
-            catch (SQLException f ) {
-                f.printStackTrace();
-
-            }
+            window.close();
         });
-
 
         //layout
         GridPane grid = new GridPane();
@@ -63,17 +61,15 @@ public class AddChampion {
         grid.setHgap(5);
         GridPane.setConstraints(nameLabel, 0, 0);
         GridPane.setConstraints(name, 1, 0);
-        GridPane.setConstraints(costLabel, 0, 1);
-        GridPane.setConstraints(cost, 1, 1);
+
         GridPane.setConstraints(winRateLabel, 0, 2);
         GridPane.setConstraints(winRate, 1, 2);
-        GridPane.setConstraints(resourceTypeLabel, 0, 3);
-        GridPane.setConstraints(resourceType, 1, 3);
+
         GridPane.setConstraints(typeLabel, 0, 4);
         GridPane.setConstraints(type, 1, 4);
         GridPane.setConstraints(button, 1, 5);
         GridPane.setHalignment(button, HPos.RIGHT);
-        grid.getChildren().addAll(nameLabel,name,costLabel,cost,winRateLabel,winRate,resourceTypeLabel, resourceType, typeLabel, type, button);
+        grid.getChildren().addAll(nameLabel,name,winRateLabel,winRate, typeLabel, type, button);
 
 
         Scene scene = new Scene(grid);
@@ -83,17 +79,21 @@ public class AddChampion {
         window.showAndWait();
     }
 
-    public static void addChamp (Connection con , String name , String cost , String winRate, String resourceType , String type ) throws SQLException {
-        new Champion(name, cost, winRate, resourceType, type);
-        Statement stmt = con.createStatement() ;
-        int rowCount = stmt.executeUpdate
-                ("INSERT INTO Champion " +
-                "VALUES ("  + name.toLowerCase().trim() +","
-                + cost.toLowerCase().trim() + ","
-                        + winRate.toLowerCase().trim() +
-                        "," + resourceType.toLowerCase().trim()
-                        + "," + type.toLowerCase().trim() +   ")") ;
-        System.out.println("Added");
+    public static void addChamp (Connection con , String name ,   Float winRate, String type ) throws SQLException {
+       Champion Champ = new Champion(name,winRate, type);
+System.out.println("testing");
+        String addC = "INSERT INTO Champion VALUES ( ?, ?, ?)";
+        PreparedStatement update = con.prepareStatement(addC);
+        update.setString(1, Champ.getName());
+        update.setFloat(2, Champ.getWinRate());
+        update.setString(3, Champ.getType());
+
+
+        // find player is the result
+        /*stmt.execute("INSERT INTO Champion  VALUES ( \'"+  Champ.getName() + "\'", + Champ.getWinRate(), Champ.getType())
+
+        ("SELECT * FROM Region WHERE name = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);*/
+
     }
 
 

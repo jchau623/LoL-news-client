@@ -26,37 +26,37 @@ public class DeleteBox {
         window.setMinWidth(250);
 
         Label label = new Label(message);
-        Button deletePlayer = new Button("delete Player");
+        Button deletePlayer = new Button("Delete Player");
 
         deletePlayer.setOnAction(e -> {
-            String deletedPlayer = DropPlayer.display(con, "delete Player", "Enter Info");
+            String deletedPlayer = DropPlayer.display(con, "Delete Player", "Enter Info");
             System.out.println(deletedPlayer);
         });
 
 
 
-        Button deleteTeam = new Button("delete Team");
+        Button deleteTeam = new Button("Delete Team");
 
 
 
 
  deleteTeam.setOnAction(e -> {
-            String deletedTeam = DropTeam.display(con,"delete Team", "Enter team name: ");
+            String deletedTeam = DropTeam.display(con,"Delete Team", "Enter team name: ");
             System.out.println(deletedTeam);
         });
 
 
-        Button deleteRegion = new Button ("delete Region");
+        Button deleteRegion = new Button ("Delete Region");
         deleteRegion.setOnAction(e-> {
-            DropRegion.display(con, "Delete Region", "delete region");
+            DropRegion.display(con, "Delete Region", "Delete region");
         });
 
-        Button deleteNewsItem = new Button("delete News");
+        Button deleteNewsItem = new Button("Delete News");
         deleteNewsItem.setOnAction(e-> {
-            DropNews.display(con,"delete News Item", "What News do you want to delete?");
+            DropNews.display(con,"Delete News Item", "What News do you want to delete?");
         });
       Button deleteUser = new Button("delete User");
-        deleteUser.setOnAction(e->DropUser.display(con,"delete User", "delete user"));
+        deleteUser.setOnAction(e->DropUser.display(con,"Delete User", "Delete user"));
 
 
 
