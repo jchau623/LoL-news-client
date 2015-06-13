@@ -11,7 +11,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.Statement;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Created by jch on 09/06/15.
@@ -70,11 +72,16 @@ public class AddChampion {
         window.showAndWait();
     }
 
-    public static void addChamp (Connection con , String name , String cost , Float winRate, String resourceType , String type )  {
+    public static void addChamp (Connection con , String name , String cost , Float winRate, String resourceType , String type ) throws SQLException {
         new Champion(name, cost, winRate, resourceType, type);
-
-
-
+        Statement stmt = con.createStatement() ;
+        int rowCount = stmt.executeUpdate
+                ("INSERT INTO Champion " +
+                "VALUES ("  + name.toLowerCase().trim() +","
+                + cost.toLowerCase().trim() + ","
+                        + winRate.toString().trim() +
+                        "," + resourceType.toLowerCase().trim()
+                        + "," + type.toLowerCase().trim() +   ")") ;
     }
 
 
