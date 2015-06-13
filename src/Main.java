@@ -1,15 +1,11 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -32,53 +28,101 @@ public class Main extends Application{
         login = primaryStage;
         //START: login screen
         login.setTitle("Log In");
-        login.setMaxHeight(100);
+        login.setMaxHeight(132);
         login.setResizable(false);
         TextField username = new TextField();
         username.setPromptText("CS ID (e.g. a2x9)");
         PasswordField password = new PasswordField();
         password.setPromptText("UBC ID");
+
+        //Admin or User?
+        ChoiceBox<String> adminUser = new ChoiceBox<>();
+        adminUser.getItems().addAll("Log in as: (Select one)", "Admin", "User");
+        adminUser.setMinWidth(150);
+        adminUser.setValue("Log in as: (Select one)");
         username.setOnKeyPressed(event -> {
                     if (event.getCode().equals(KeyCode.ENTER)) {
-                        if (!username.getText().isEmpty() && !password.getText().isEmpty()) {
+                        if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
                             loginPress(username.getText(), password.getText());
                         }
                         if (username.getText().isEmpty()) {
                             username.setStyle("-fx-background-color: #ff9ca0");
+                            if (!password.getText().isEmpty()) {
+                                password.setStyle("-fx-background-color: white");
+                            }
+                            if (adminUser.getValue()!="Log in as: (Select one)") {
+                                adminUser.setStyle("-fx-background-color: white");
+                            }
                         }
                         if (password.getText().isEmpty()) {
                             password.setStyle("-fx-background-color: #ff9ca0");
+                            if (!username.getText().isEmpty()) {
+                                username.setStyle("-fx-background-color: white");
+                            }
+                            if (adminUser.getValue()!="Log in as: (Select one)") {
+                                adminUser.setStyle("-fx-background-color: white");
+                            }
+                        }
+                        if (adminUser.getValue()=="Log in as: (Select one)") {
+                            adminUser.setStyle("-fx-background-color: #ff9ca0");
+                            if (!password.getText().isEmpty()) {
+                                password.setStyle("-fx-background-color: white");
+                            }
+                            if (!username.getText().isEmpty()) {
+                                username.setStyle("-fx-background-color: white");
+                            }
                         }
                     }
                 }
         );
         password.setOnKeyPressed(event -> {
                     if (event.getCode().equals(KeyCode.ENTER)) {
-                        if (!username.getText().isEmpty() && !password.getText().isEmpty()) {
+                        if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
                             loginPress(username.getText(), password.getText());
                         }
                         if (username.getText().isEmpty()) {
                             username.setStyle("-fx-background-color: #ff9ca0");
+                            if (!password.getText().isEmpty()) {
+                                password.setStyle("-fx-background-color: white");
+                            }
+                            if (adminUser.getValue()!="Log in as: (Select one)") {
+                                adminUser.setStyle("-fx-background-color: white");
+                            }
                         }
                         if (password.getText().isEmpty()) {
                             password.setStyle("-fx-background-color: #ff9ca0");
+                            if (!username.getText().isEmpty()) {
+                                username.setStyle("-fx-background-color: white");
+                            }
+                            if (adminUser.getValue()!="Log in as: (Select one)") {
+                                adminUser.setStyle("-fx-background-color: white");
+                            }
+                        }
+                        if (adminUser.getValue()=="Log in as: (Select one)") {
+                            adminUser.setStyle("-fx-background-color: #ff9ca0");
+                            if (!password.getText().isEmpty()) {
+                                password.setStyle("-fx-background-color: white");
+                            }
+                            if (!username.getText().isEmpty()) {
+                                username.setStyle("-fx-background-color: white");
+                            }
                         }
                     }
                 }
         );
         //Label logIn = new Label("Log in:");
         Button logInButton = new Button("Login");
-        logInButton.setMinHeight(60);
+        logInButton.setMinHeight(90);
 
         //Login screen layout
         HBox loginHBox = new HBox(5);
         loginHBox.setPadding(new Insets(5));
         VBox fields = new VBox (5);
         fields.setPadding(new Insets(5));
-        fields.getChildren().addAll(username, password);
+        fields.getChildren().addAll(username, password, adminUser);
         loginHBox.getChildren().addAll(fields, logInButton);
         logInButton.setOnAction(event -> {
-                    if (!username.getText().isEmpty() && !password.getText().isEmpty()) {
+                    if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
                         loginPress(username.getText(), password.getText());
                     }
                     if (username.getText().isEmpty()) {
@@ -86,9 +130,24 @@ public class Main extends Application{
                         if (!password.getText().isEmpty()) {
                             password.setStyle("-fx-background-color: white");
                         }
+                        if (adminUser.getValue()!="Log in as: (Select one)") {
+                            adminUser.setStyle("-fx-background-color: white");
+                        }
                     }
                     if (password.getText().isEmpty()) {
                         password.setStyle("-fx-background-color: #ff9ca0");
+                        if (!username.getText().isEmpty()) {
+                            username.setStyle("-fx-background-color: white");
+                        }
+                        if (adminUser.getValue()!="Log in as: (Select one)") {
+                            adminUser.setStyle("-fx-background-color: white");
+                        }
+                    }
+                    if (adminUser.getValue()=="Log in as: (Select one)") {
+                        adminUser.setStyle("-fx-background-color: #ff9ca0");
+                        if (!password.getText().isEmpty()) {
+                            password.setStyle("-fx-background-color: white");
+                        }
                         if (!username.getText().isEmpty()) {
                             username.setStyle("-fx-background-color: white");
                         }
@@ -133,13 +192,13 @@ public class Main extends Application{
                 e1.printStackTrace();
             }
         });
-        Button button4 = new Button("Search");
+      Button button4 = new Button("Search");
         button4.setOnAction(e -> SearchFor.display(con));
-        Button button5 = new Button("Drop Player(TEMP)");
-        button5.setOnAction(e-> DropPlayer.display("Drop Player", "Enter info", con));
+      Button button5 = new Button("Delete Something");
+        button5.setOnAction(e-> DeleteBox.display(con,"Delete Something", "Choose Something To Delete"));
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(button1, button2, button4, button3, button5);
+        layout.getChildren().addAll(button1, button2, button3, button4 ,button5);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
