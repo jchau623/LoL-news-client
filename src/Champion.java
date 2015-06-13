@@ -9,6 +9,13 @@ public class Champion {
     public static String resourceType;
     public static String type;
 
+    public Champion(String name , String cost , Float winRate , String resourceType, String type) {
+        this.name = name;
+        this.cost = cost;
+        this.winRate = winRate;
+        this.resourceType = resourceType;
+        this.type = type;
+    }
 
     public static void setName(String name) {
         Champion.name = name;

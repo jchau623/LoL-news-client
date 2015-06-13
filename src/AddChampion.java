@@ -70,7 +70,9 @@ public class AddChampion {
         window.showAndWait();
     }
 
-    public static void addChamp (Connection con , String name , String cost , Float winRate, String resourceType , String Type )  {
+    public static void addChamp (Connection con , String name , String cost , Float winRate, String resourceType , String type )  {
+        new Champion(name, cost, winRate, resourceType, type);
+
 
 
     }
