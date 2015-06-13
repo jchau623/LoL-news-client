@@ -1,3 +1,4 @@
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -182,6 +183,9 @@ public class Main extends Application{
                 e1.printStackTrace();
             }
         });
+
+        Stage s = new Stage() ;
+
         //Post-login: Main menu
         Text message = new Text("Logged in as:");
         Text loggedInAs = new Text(userID);
@@ -207,7 +211,9 @@ public class Main extends Application{
         userAndButton.getChildren().addAll(loggedInAs,button0);
 
         Button button1 = new Button("Check your feed");
-        button1.setOnAction(e -> AlertBox.display("News feed", "Click button to close"));
+        //button1.setOnAction(e -> NewFeed.display(s) ) ;
+
+
         Button button2 = new Button("Add Something");
         button2.setOnAction(e -> AddBox.display(con, "Add an Entity", "What do you want to add?"));
         Button button3 = new Button("Return to desktop");
