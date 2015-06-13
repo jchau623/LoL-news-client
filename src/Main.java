@@ -183,7 +183,7 @@ public class Main extends Application{
         Button button1 = new Button("Check your feed");
         button1.setOnAction(e -> AlertBox.display("News feed", "Click button to close"));
         Button button2 = new Button("Add Something");
-        button2.setOnAction(e -> AddBox.display("Add an Entity", "What do you want to add?"));
+        button2.setOnAction(e -> AddBox.display(con, "Add an Entity", "What do you want to add?"));
         Button button3 = new Button("Return to desktop");
         button3.setOnAction(e -> {
             try {

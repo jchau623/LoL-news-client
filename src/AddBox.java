@@ -9,12 +9,14 @@ import javafx.geometry.Insets;
         import javafx.stage.Modality;
         import javafx.stage.Stage;
 
+import java.sql.Connection;
+
 /**
  * Created by Justin on 5/31/2015.
  */
 public class AddBox {
 
-    public static void display(String title, String message) {
+    public static void display(Connection con , String title, String message) {
         Stage window = new Stage();
 
         //Block other windows' input events until this window is closed
@@ -40,14 +42,20 @@ public class AddBox {
             System.out.println(addedTeam);
         });*/
 
-        //test 
+        //test
         Button addRegion = new Button ("Add Region");
         addRegion.setOnAction(e-> {
             AddRegion.display("Add Region");
         });
+
+        Button deleteRegion = new Button ("delete Region");
+        deleteRegion.setOnAction(e-> {
+            DropRegion.display(con, "Delete Region", "delete region");
+        });
+
         Button addChampion = new Button("Add Champion");
         addChampion.setOnAction(e -> {
-            AddChampion.display("Add Champion");
+            AddChampion.display(con, "Add Champion", "add champion");
         });
 
         Button addNewsItem = new Button("Add News");
