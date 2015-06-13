@@ -40,6 +40,7 @@ public class AddBox {
             System.out.println(addedTeam);
         });*/
 
+        //test 
         Button addRegion = new Button ("Add Region");
         addRegion.setOnAction(e-> {
             AddRegion.display("Add Region");
