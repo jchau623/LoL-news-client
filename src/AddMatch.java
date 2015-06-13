@@ -11,11 +11,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+
 /**
  * Created by Justin on 6/10/2015.
  */
 public class AddMatch {
-    public static void display(String title) {
+    public static void display(Connection con , String title) {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);

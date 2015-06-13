@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
 import java.util.*;
 
 /**
@@ -17,7 +18,7 @@ import java.util.*;
 public class AddPlayer {
     static String player = new String();
     private static javafx.scene.control.TextField summonerID;
-    public static String display(String title, String message) {
+    public static String display(Connection con, String title, String message) {
         Stage window = new Stage();
 
 
