@@ -34,7 +34,7 @@ public class AddBox {
 
         Button addTeam = new Button("Add Team");
         addTeam.setOnAction(e-> {
-            AddTeam.display("Add Team");
+            AddTeam.display(con, "Add Team");
         });
 
        /* addTeam.setOnAction(e -> {
@@ -45,7 +45,7 @@ public class AddBox {
         //test
         Button addRegion = new Button ("Add Region");
         addRegion.setOnAction(e-> {
-            AddRegion.display("Add Region");
+            AddRegion.display(con, "Add Region");
         });
 
         Button deleteRegion = new Button ("delete Region");
@@ -55,15 +55,15 @@ public class AddBox {
 
         Button addChampion = new Button("Add Champion");
         addChampion.setOnAction(e -> {
-            AddChampion.display(con, "Add Champion", "add champion");
+            AddChampion.display(con, "Add Champion");
         });
 
         Button addNewsItem = new Button("Add News");
         addNewsItem.setOnAction(e-> {
-            AddNewsItem.display("Add News Item");
+            AddNewsItem.display(con, "Add News Item");
         });
         Button addMatch = new Button("Add Match");
-        addMatch.setOnAction(e->AddMatch.display("Add Match"));
+        addMatch.setOnAction(e->AddMatch.display(con, "Add Match"));
 
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label,addRegion,addChampion,addMatch,addNewsItem,addPlayer, addTeam);
