@@ -128,7 +128,7 @@ public class SearchFor {
         ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
         System.out.println("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
         if (!rs.next()) {
-            System.out.println("No results returned");
+            AlertBox.display("Error", "No results found");
         }
         while (rs.next())  {
             Player player = new Player();
@@ -138,7 +138,7 @@ public class SearchFor {
             player.setNationality(rs.getString(4));
             player.setCsPerMin(rs.getFloat(5));
             player.setGPM(rs.getFloat(6));
-            player.setKDA(rs.getFloat(7));
+                player.setKDA(rs.getFloat(7));
             listOfPlayers.add(player);
             System.out.println(player.returnAge());
             System.out.println(player.returnName());
