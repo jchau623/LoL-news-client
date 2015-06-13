@@ -11,16 +11,15 @@ import javafx.stage.Stage;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Vivian on 2015-06-09.
  */
 public class AddTeam {
-    static String team = new String();
 
 
-    public static void display(Connection con , String title) throws SQLException {
+
+    public static void display(Connection con , String title)  {
         Stage window = new Stage();
 
 
@@ -48,7 +47,12 @@ public class AddTeam {
         Label sponsorLabel = new Label ("Sponsor:");
      TextField   sponsor = new TextField();
 
-        ArrayList<String> teamList = getAllTeams(con);
+        ArrayList<String> teamList = null;
+        try {
+            teamList = getAllTeams(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         Label regionLabel = new Label("Region:");
         ChoiceBox<String> region= new ChoiceBox<>();
@@ -59,7 +63,7 @@ public class AddTeam {
         Button button = new Button("Enter");
         button.setOnAction(e -> {
             try {
-                addTeam(con, name.getText(), acronym.getText(), Float.parseFloat(averageBarons.getText()), Float.parseFloat(averageDragons.getText()), Integer.parseInt(win.getText()),Integer.parseInt(loss.getText()),sponsor.getText());
+                addTeam(con, name.getText(), acronym.getText(), Float.parseFloat(averageBarons.getText()), Float.parseFloat(averageDragons.getText()), Integer.parseInt(win.getText()),Integer.parseInt(loss.getText()),sponsor.getText(), region.getValue());
             }
             catch (SQLException e1){
                 e1.printStackTrace();
@@ -85,9 +89,11 @@ public class AddTeam {
         GridPane.setConstraints(loss, 1, 5);
         GridPane.setConstraints(sponsorLabel, 0, 6);
         GridPane.setConstraints(sponsor, 1, 6);
-        GridPane.setConstraints(button, 1, 7);
+        GridPane.setConstraints(button, 1, 8);
+        GridPane.setConstraints(regionLabel, 0, 7);
+        GridPane.setConstraints(region, 1, 7);
         GridPane.setHalignment(button, HPos.RIGHT);
-        grid.getChildren().addAll(nameLabel,name,acronymLabel,acronym,averageBaronsLabel,averageBarons,averageDragonsLabel,averageDragons,winLabel,win,lossLabel,loss,sponsorLabel,sponsor,button);
+        grid.getChildren().addAll(nameLabel,name,acronymLabel,acronym,averageBaronsLabel,averageBarons,averageDragonsLabel,averageDragons,winLabel,win,lossLabel,loss,sponsorLabel,sponsor,region, regionLabel,button);
 
         Scene scene = new Scene(grid);
         window.setScene(scene);
@@ -97,11 +103,17 @@ public class AddTeam {
         //return returnTeam();
     }
 
-    public static void addTeam(Connection con, String name, String acronym, Float averageB, Float avgerageD, Integer wins, Integer losses, String sponsor) throws SQLException{
-        String addR = "INSERT INTO Region VALUES (?,?)";
+    public static void addTeam(Connection con, String name, String acronym, Float averageB, Float averageD, Integer wins, Integer losses, String sponsor, String region) throws SQLException{
+        String addR = "INSERT INTO TeamThatPlaysIn VALUES (?,?,?,?,?,?,?,?)";
         PreparedStatement update = con.prepareStatement(addR);
         update.setString(1, name);
-        update.setString(2, acronym);
+        update.setString(5, acronym);
+        update.setFloat(7, averageB);
+        update.setFloat(6,averageD);
+        update.setInt(2,wins);
+        update.setInt(3,losses);
+        update.setString(4,sponsor);
+        update.setString(8, region);
         update.executeUpdate();
     }
 
@@ -114,15 +126,16 @@ public class AddTeam {
 
 
 
-            ArrayList<String> temp = null;
+        ArrayList<String> temp = new ArrayList<String>();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT name FROM TeamThatPlaysIn");
-            String arr = null;
+            ResultSet rs = st.executeQuery("SELECT name FROM Region");
 
             while (rs.next()) {
+
+                String arr ;
                 String n = rs.getString("name");
                 arr = n.replace("\n", ",");
-
+System.out.println("added to teamlist");
                     System.out.println(arr);
                     temp.add(arr);
 

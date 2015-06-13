@@ -1,16 +1,15 @@
 
 
 import javafx.geometry.Insets;
-        import javafx.geometry.Pos;
-        import javafx.scene.Scene;
-        import javafx.scene.control.Button;
-        import javafx.scene.control.Label;
-        import javafx.scene.layout.VBox;
-        import javafx.stage.Modality;
-        import javafx.stage.Stage;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Created by Justin on 5/31/2015.
@@ -35,11 +34,10 @@ public class AddBox {
 
         Button addTeam = new Button("Add Team");
         addTeam.setOnAction(e-> {
-            try {
+
                 AddTeam.display(con, "Add Team");
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
+
+
         });
 
        /* addTeam.setOnAction(e -> {
