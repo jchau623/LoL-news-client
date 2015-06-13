@@ -183,6 +183,8 @@ public class SearchFor {
             Region region = new Region();
             region.setRegionName(rs.getString(1));
             region.setAcronym(rs.getString(2));
+            System.out.println(region.getAcronym());
+            System.out.println(region.getRegionName());
         }
     }
 
