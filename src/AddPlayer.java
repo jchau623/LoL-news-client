@@ -10,6 +10,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -22,6 +24,19 @@ public class AddPlayer {
         Stage window = new Stage();
 
 
+        //Attribute text fields
+        Label summonerLabel = new Label("summonerID:");
+        summonerID = new javafx.scene.control.TextField();
+
+        Label ageLabel = new Label("Age:");
+        TextField age = new TextField();
+
+        Label nameLabel = new Label("Name:");
+        TextField name = new TextField();
+
+        Label natLabel = new Label("Nationality:");
+        ChoiceBox<String> nationality = new ChoiceBox<>();
+
         //Block other windows' input events until this window is closed
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
@@ -30,20 +45,9 @@ public class AddPlayer {
 
         Label label = new Label(message);
         Button button = new Button("Enter");
-        button.setOnAction(e -> {
-            returnPlayer();
-            window.close();
-        });
 
-        //Attribute text fields
-        Label summonerLabel = new Label("summonerID:");
-        summonerID = new javafx.scene.control.TextField();
-        Label ageLabel = new Label("Age:");
-        TextField age = new TextField();
-        Label nameLabel = new Label("Name:");
-        TextField name = new TextField();
-        Label natLabel = new Label("Nationality:");
-        ChoiceBox<String> nationality = new ChoiceBox<>();
+
+
 
         //get all countries
         List<String> countryList = new ArrayList<>();
@@ -67,6 +71,20 @@ public class AddPlayer {
         Label KADLabel = new Label("KA/D Ratio:");
         TextField KAD = new TextField();
 
+        Label rollForGameLabel = new Label("Role");
+        ChoiceBox<String> role = new ChoiceBox<>();
+        role.getItems().addAll("Top", "Mid" , "Junle", "Support" , "Marksman") ;
+
+        button.setOnAction(e -> {
+            returnPlayer();
+            window.close();
+            try {
+                addPlayer( con, summonerID.getText(), age.getText(), name.getText(),KAD.getText(), csPerGame.getText(), goldPerMin.getText() ,nationality.getValue(), role.getValue()  );
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
+
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));
         grid.setVgap(5);
@@ -85,9 +103,12 @@ public class AddPlayer {
         GridPane.setConstraints(goldPerMin, 1, 5);
         GridPane.setConstraints(KADLabel, 0, 3);
         GridPane.setConstraints(KAD, 1, 3);
-        GridPane.setConstraints(button, 1, 7);
+        GridPane.setConstraints(rollForGameLabel, 0,7);
+        GridPane.setConstraints(role, 1,7);
+        GridPane.setConstraints(button, 1, 8);
         GridPane.setHalignment(button, HPos.RIGHT);
-        grid.getChildren().addAll(summonerLabel,summonerID,ageLabel,age,nameLabel,name,natLabel,nationality,csPerGameLabel,csPerGame,goldPerMinLabel,goldPerMin,KADLabel,KAD,button);
+
+        grid.getChildren().addAll(summonerLabel,summonerID,ageLabel,age,nameLabel,name,natLabel,nationality,csPerGameLabel,csPerGame,goldPerMinLabel,goldPerMin,KADLabel,KAD,button , role , rollForGameLabel);
 
         Scene scene = new Scene(grid);
         window.setScene(scene);
@@ -100,6 +121,24 @@ public class AddPlayer {
     private static String returnPlayer() {
         player = summonerID.getText();
         return player;
+    }
+
+    private static void addPlayer(Connection con, String summonerID , String age, String name, String kda, String cs, String gold, String nationality , String role) throws SQLException {
+
+        String result = "INSERT INTO Player VALUES (?, ?, ?, ?, ?,?,? , ?) " ;
+        PreparedStatement update = con.prepareStatement(result) ;
+        update.setString(1,summonerID );
+        update.setString(2, age );
+        update.setString(3, name);
+        update.setString(4, nationality);
+        update.setString(5,cs);
+        update.setString(6, gold);
+        update.setString(7, kda);
+        update.setString(8, role);
+
+        update.executeUpdate() ;
+        System.out.println("testing");
+
     }
 
 }
