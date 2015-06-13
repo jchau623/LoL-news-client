@@ -73,13 +73,16 @@ public class AddPlayer {
 
         Label rollForGameLabel = new Label("Role");
         ChoiceBox<String> role = new ChoiceBox<>();
-        role.getItems().addAll("Top", "Mid" , "Junle", "Support" , "Marksman") ;
+        role.getItems().addAll("Top", "Mid" , "Jungle", "Support" , "Marksman") ;
 
         button.setOnAction(e -> {
             returnPlayer();
             window.close();
             try {
                 addPlayer( con, summonerID.getText(), age.getText(), name.getText(),KAD.getText(), csPerGame.getText(), goldPerMin.getText() ,nationality.getValue(), role.getValue()  );
+
+                AlertBox.display("Success", "Player is successfully added to the database.");
+
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }

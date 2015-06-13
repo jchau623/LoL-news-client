@@ -48,7 +48,9 @@ public class AddRegion {
         Button button = new Button("Enter");
         button.setOnAction(e -> {
             try{
-                addRegion(con, name.getText(), acronym.getText());}
+                addRegion(con, name.getText(), acronym.getText());
+                AlertBox.display("Success", "Region is successfully added to the database.");
+            }
             catch (SQLException e1){
                 e1.printStackTrace();
             }
@@ -66,7 +68,7 @@ public class AddRegion {
         GridPane.setConstraints(name, 1, 1);
         GridPane.setConstraints(button, 1, 2);
         GridPane.setHalignment(button, HPos.RIGHT);
-        grid.getChildren().addAll(acronymLabel,acronym,nameLabel,name,button);
+        grid.getChildren().addAll(acronymLabel, acronym, nameLabel, name, button);
 
         Scene scene = new Scene(grid);
         window.setScene(scene);
