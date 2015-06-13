@@ -9,11 +9,11 @@ public class Champion {
     public static String resourceType;
     public static String type;
 
-    public Champion(String name , String cost , Float winRate , String resourceType, String type) {
+    public Champion(String name ,  Float winRate ,  String type) {
         this.name = name;
-        this.cost = cost;
+      //  this.cost = cost;
         this.winRate = winRate;
-        this.resourceType = resourceType;
+    //    this.resourceType = resourceType;
         this.type = type;
     }
 
@@ -21,17 +21,17 @@ public class Champion {
         Champion.name = name;
     }
 
-    public static void setCost(String cost) {
+   /* public static void setCost(String cost) {
         Champion.cost = cost;
-    }
+    }*/
 
     public static void setWinRate(Float winRate) {
         Champion.winRate = winRate;
     }
 
-    public static void setResourceType(String resourceType) {
+  /*  public static void setResourceType(String resourceType) {
         Champion.resourceType = resourceType;
-    }
+    }*/
 
     public static void setType(String type) {
         Champion.type = type;
@@ -42,17 +42,17 @@ public class Champion {
         return name;
     }
 
-    public static String getCost() {
+  /*  public static String getCost() {
         return cost;
-    }
+    }*/
 
     public static Float getWinRate() {
         return winRate;
     }
 
-    public static String getResourceType() {
+    /*public static String getResourceType() {
         return resourceType;
-    }
+    }*/
 
     public static String getType() {
         return type;
