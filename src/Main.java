@@ -43,7 +43,7 @@ public class Main extends Application{
         username.setOnKeyPressed(event -> {
                     if (event.getCode().equals(KeyCode.ENTER)) {
                         if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
-                            loginPress(username.getText(), password.getText());
+                            loginPress(username.getText(), password.getText(), adminUser.getValue());
                         }
                         if (username.getText().isEmpty()) {
                             username.setStyle("-fx-background-color: #ff9ca0");
@@ -78,7 +78,7 @@ public class Main extends Application{
         password.setOnKeyPressed(event -> {
                     if (event.getCode().equals(KeyCode.ENTER)) {
                         if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
-                            loginPress(username.getText(), password.getText());
+                            loginPress(username.getText(), password.getText(), adminUser.getValue());
                         }
                         if (username.getText().isEmpty()) {
                             username.setStyle("-fx-background-color: #ff9ca0");
@@ -123,7 +123,7 @@ public class Main extends Application{
         loginHBox.getChildren().addAll(fields, logInButton);
         logInButton.setOnAction(event -> {
                     if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
-                        loginPress(username.getText(), password.getText());
+                        loginPress(username.getText(), password.getText(), adminUser.getValue());
                     }
                     if (username.getText().isEmpty()) {
                         username.setStyle("-fx-background-color: #ff9ca0");
@@ -169,7 +169,7 @@ public class Main extends Application{
         login.show();
     }
 
-    private void mainMenu() {
+    private void adminMenu() {
         window = new Stage();
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
@@ -219,15 +219,25 @@ public class Main extends Application{
         }
     }
 
-    private void loginPress (String user, String password) {
+    private void loginPress (String user, String password, String state) {
         LoginConnection loginConnection = new LoginConnection();
         try {
             con = loginConnection.logIn(user,password);
             login.close();
-            mainMenu();
+            if (state == "Admin") adminMenu();
+            else if (state == "User") userMenu();
         } catch (SQLException e) {
-            AlertBox.display("Error", "Wrong user/password!");
-            e.printStackTrace();
+            if (e.getErrorCode() == 17002) {
+                AlertBox.display("Error", "Could not establish connection to the database");
+                adminMenu(); //
+            } else {
+                AlertBox.display("Error", "Wrong user/password!");
+                e.printStackTrace();
+            }
         }
+    }
+
+    private void userMenu() {
+
     }
 }
