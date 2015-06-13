@@ -1,19 +1,17 @@
-
-
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  * Created by Jason on 5/31/2015.
@@ -21,6 +19,7 @@ import java.sql.Connection;
 public class AddNewsItem {
     static String newsItem = new String();
     private static javafx.scene.control.TextField url;
+    private static javafx.scene.control.TextField headline;
     public static String display(Connection con, String title) {
         Stage window = new Stage();
 
@@ -30,9 +29,15 @@ public class AddNewsItem {
         window.setTitle(title);
         window.setMinWidth(100);
 
+        java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
+
         Button button = new Button("Enter");
         button.setOnAction(e -> {
-            returnNewsItem();
+            try {
+                addNews(con, url.getText(), sqlDate,headline.getText());
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             window.close();
         });
 
@@ -44,7 +49,7 @@ public class AddNewsItem {
         TextField date = new TextField();
 
         Label headlineLabel = new Label("Headline:");
-        TextField headline = new TextField();
+      headline = new javafx.scene.control.TextField();
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -70,6 +75,16 @@ public class AddNewsItem {
         newsItem = url.getText();
         return newsItem;
     }
+    public static void addNews (Connection con , String URL ,   Date date, String headline ) throws SQLException {
 
-}
+        System.out.println("testing");
+        String addN = "INSERT INTO News VALUES ( ?, ?, ?)";
+        PreparedStatement update = con.prepareStatement(addN);
+        update.setString(2, URL);
+        update.setString(1, headline);
+        update.setDate(3, date);
+        update.executeUpdate();
+
+
+    }}
 
