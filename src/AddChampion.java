@@ -2,9 +2,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -38,7 +36,9 @@ public class AddChampion {
         TextField winRate = new TextField();
 
         Label typeLabel = new Label("Type:");
-        TextField type = new TextField();
+        ChoiceBox<String> type = new ChoiceBox<>();
+        type.getItems().addAll("Pick one:", "Tank", "Mage", "Fighter", "Support", "Hybrid", "Marksman");
+        type.setValue("Pick one:");
 
 
         Button button = new Button("Enter");
@@ -46,17 +46,49 @@ public class AddChampion {
 
         window.close();
         button.setOnAction(e -> {
-            try{
-            addChamp(con, name.getText(), Float.parseFloat(winRate.getText()) , type.getText());}
-            catch (SQLException e1){
-                e1.printStackTrace();
+            if (!name.getText().isEmpty() && !winRate.getText().isEmpty() && !(type.getValue() == "Pick one:")) {
+                try {
+                    addChamp(con, name.getText(), Float.parseFloat(winRate.getText()), type.getValue());
+                    AlertBox.display("Success", "Champion is successfully added to the database.");
+                    window.close();
+                } catch (SQLException e1) {
+                    if (e1.getErrorCode() == 1) AlertBox.display("Error", "A champion with that name already exists");
+                } catch (NumberFormatException nfe) {
+                    AlertBox.display("Error", "Win rate should be a number (e.g. 40.20)");
+                }
             }
-            window.close();
+            if (name.getText().isEmpty()) {
+                name.setStyle("-fx-background-color: #ff9ca0");
+                if (type.getValue() != "Pick one:") {
+                    type.setStyle("-fx-background-color: white");
+                }
+                if (!winRate.getText().isEmpty()) {
+                    winRate.setStyle("-fx-background-color: white");
+                }
+            }
+            if (winRate.getText().isEmpty()) {
+                winRate.setStyle("-fx-background-color: #ff9ca0");
+                if (type.getValue() != "Pick one:") {
+                    type.setStyle("-fx-background-color: white");
+                }
+                if (!name.getText().isEmpty()) {
+                    name.setStyle("-fx-background-color: white");
+                }
+            }
+            if (type.getValue() == "Pick one:") {
+                type.setStyle("-fx-background-color: #ff9ca0");
+                if (!type.getValue().isEmpty()) {
+                    type.setStyle("-fx-background-color: white");
+                }
+                if (!winRate.getText().isEmpty()) {
+                    winRate.setStyle("-fx-background-color: white");
+                }
+            }
         });
 
         //layout
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 5, 0, 10));
+        grid.setPadding(new Insets(10));
         grid.setVgap(5);
         grid.setHgap(5);
         GridPane.setConstraints(nameLabel, 0, 0);
@@ -81,7 +113,6 @@ public class AddChampion {
 
     public static void addChamp (Connection con , String name ,   Float winRate, String type ) throws SQLException {
        Champion Champ = new Champion(name,winRate, type);
-System.out.println("testing");
         String addC = "INSERT INTO Champion VALUES ( ?, ?, ?)";
         PreparedStatement update = con.prepareStatement(addC);
         update.setString(1, Champ.getName());
