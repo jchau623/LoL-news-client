@@ -138,7 +138,7 @@ public class SearchFor {
             player.setNationality(rs.getString(4));
             player.setCsPerMin(rs.getFloat(5));
             player.setGPM(rs.getFloat(6));
-            player.setKDA(rs.getFloat(7));
+                player.setKDA(rs.getFloat(7));
             listOfPlayers.add(player);
             System.out.println(player.returnAge());
             System.out.println(player.returnName());

@@ -11,6 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+
 /**
  * Created by jch on 09/06/15.
  */
@@ -67,5 +69,11 @@ public class AddChampion {
         //Shows this stage and waits for it to be hidden (closed) before returning to the caller.
         window.showAndWait();
     }
+
+    public static void addChamp (Connection con , String name , String cost , Float winRate, String resourceType , String Type )  {
+
+
+    }
+
 
 }
