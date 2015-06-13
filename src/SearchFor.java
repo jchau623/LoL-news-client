@@ -20,19 +20,19 @@ import java.util.List;
  * Created by Justin on 6/1/2015.
  */
 public class SearchFor {
-
     public static String summonerID ;
     public static int age ;
     public static String name ;
     public static String nationality ;
-    public static float csPerGame ;
+    public static float csPerMin ;
     public static float goldPerMin ;
     public static float kDA;
+
     private static TextField tf = new TextField();
-    private static Connection connection;
+
 
     public static void display(Connection con) {
-        connection = con;
+        Connection connection = con;
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Search");
@@ -124,12 +124,15 @@ public class SearchFor {
     //KA/D Ratio is either KAD or KDA
         List<Player> listOfPlayers = new ArrayList<>();
         Statement stmt = con.createStatement() ;
+        System.out.println("testing");
         //ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + realAttributeName + " = \'" + tf.getText() + "\'");
         ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
         if (!rs.next()) {
             AlertBox.display("Error", "No results found");
         }
+
         while (rs.next())  {
+
             Player player = new Player();
             player.setID(rs.getString("summonerID"));
             player.setAge(rs.getInt(2));
@@ -137,8 +140,9 @@ public class SearchFor {
             player.setNationality(rs.getString(4));
             player.setCsPerMin(rs.getFloat(5));
             player.setGPM(rs.getFloat(6));
-                player.setKDA(rs.getFloat(7));
+            player.setKDA(rs.getFloat(7));
             listOfPlayers.add(player);
+            System.out.println(player.returnGPM());
             System.out.println(player.returnAge());
             System.out.println(player.returnName());
         }
@@ -154,6 +158,7 @@ public class SearchFor {
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM TeamThatPlaysIn WHERE name = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
         while(rs.next()) {
+
             Team team = new Team();
             team.setTeamName(rs.getString(1));
             team.setWins(rs.getInt(2));
@@ -164,6 +169,7 @@ public class SearchFor {
             team.setAverageBarons(rs.getFloat(7));
             team.setRegion(rs.getString(8));
             listOfTeams.add(team);
+
         }
     }
 

@@ -1,12 +1,11 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -193,13 +192,13 @@ public class Main extends Application{
                 e1.printStackTrace();
             }
         });
-        Button button4 = new Button("Search");
+      Button button4 = new Button("Search");
         button4.setOnAction(e -> SearchFor.display(con));
-        Button button5 = new Button("Drop Player(TEMP)");
-        button5.setOnAction(e-> DropPlayer.display("Drop Player", "Enter info", con));
+      Button button5 = new Button("Delete Something");
+        button5.setOnAction(e-> DeleteBox.display(con,"Delete Something", "Choose Something To Delete"));
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(button1, button2, button4, button3, button5);
+        layout.getChildren().addAll(button1, button2, button3, button4 ,button5);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
