@@ -20,18 +20,14 @@ import java.sql.SQLException;
  */
 public class AddChampion {
 
-    public static void display(String title) {
+
+    public static void display(String title, Connection con) {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinHeight(100);
         window.setResizable(false);
 
-        Button button = new Button("Enter");
-        button.setOnAction(e -> {
-           // returnPlayer();
-            window.close();
-        });
 
         //attributes
         Label nameLabel = new Label("Name:");
@@ -44,6 +40,21 @@ public class AddChampion {
         TextField resourceType = new TextField();
         Label typeLabel = new Label("Type:");
         TextField type = new TextField();
+
+
+        Button button = new Button("Enter");
+        button.setOnAction(e -> {
+           // returnPlayer();
+            try {
+                addChamp(con, name.getText(), cost.getText(), winRate.getText(), resourceType.getText(), type.getText());
+                window.close();
+            }
+            catch (SQLException f ) {
+                f.printStackTrace();
+
+            }
+        });
+
 
         //layout
         GridPane grid = new GridPane();
@@ -72,16 +83,17 @@ public class AddChampion {
         window.showAndWait();
     }
 
-    public static void addChamp (Connection con , String name , String cost , Float winRate, String resourceType , String type ) throws SQLException {
+    public static void addChamp (Connection con , String name , String cost , String winRate, String resourceType , String type ) throws SQLException {
         new Champion(name, cost, winRate, resourceType, type);
         Statement stmt = con.createStatement() ;
         int rowCount = stmt.executeUpdate
                 ("INSERT INTO Champion " +
                 "VALUES ("  + name.toLowerCase().trim() +","
                 + cost.toLowerCase().trim() + ","
-                        + winRate.toString().trim() +
+                        + winRate.toLowerCase().trim() +
                         "," + resourceType.toLowerCase().trim()
                         + "," + type.toLowerCase().trim() +   ")") ;
+        System.out.println("Added");
     }
 
 

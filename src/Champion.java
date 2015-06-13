@@ -5,11 +5,11 @@ public class Champion {
 
     public static String name ;
     public static String cost;
-    public static Float winRate ;
+    public static String winRate ;
     public static String resourceType;
     public static String type;
 
-    public Champion(String name , String cost , Float winRate , String resourceType, String type) {
+    public Champion(String name , String cost , String winRate , String resourceType, String type) {
         this.name = name;
         this.cost = cost;
         this.winRate = winRate;
@@ -25,7 +25,7 @@ public class Champion {
         Champion.cost = cost;
     }
 
-    public static void setWinRate(Float winRate) {
+    public static void setWinRate(String winRate) {
         Champion.winRate = winRate;
     }
 
@@ -46,7 +46,7 @@ public class Champion {
         return cost;
     }
 
-    public static Float getWinRate() {
+    public static String getWinRate() {
         return winRate;
     }
 
