@@ -11,19 +11,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DropPlayer {
-    public static String summonerID ;
-    public static int age ;
-    public static String name ;
-    public static String nationality ;
-    public static float csPerGame ;
-    public static float goldPerMin ;
-    public static float kDA;
-
-
-
-
-    static String player = new String();
+/**
+ * Created by Jason on 2015-06-12.
+ */
+public class DropUser {static String uid = new String();
     private static javafx.scene.control.TextField tf;
 
     public static String display(Connection con, String title, String message) {
@@ -41,7 +32,7 @@ public class DropPlayer {
 
         button.setOnAction(e -> {
             try{
-             deletePlayer(con);}
+                deleteUser(con);}
             catch (SQLException e1){
                 e1.printStackTrace();
             }
@@ -59,51 +50,27 @@ public class DropPlayer {
 
         //Shows this stage and waits for it to be hidden (closed) before returning to the caller.
         window.showAndWait();
-        return returnPlayer();
+        return returnUID();
     }
 
-    private static String returnPlayer() {
-        player = tf.getText();
-        return player;
+    private static String returnUID() {
+        uid = tf.getText();
+        return uid;
     }
 
 
 
     // going to execute the SQL query to find the player
-    public static void deletePlayer(Connection con) throws SQLException {
+    public static void deleteUser(Connection con) throws SQLException {
 
 
-
-         /*   PreparedStatement preparedStatement = null;
-
-            String deleteSQL = "DELETE Player WHERE summonerID = ?";
-
-            try {
-
-                preparedStatement = con.prepareStatement(deleteSQL);
-                preparedStatement.setString(1,returnPlayer());
-
-                // execute delete SQL statement
-                preparedStatement.executeUpdate();
-
-                System.out.println("Record is deleted!");
-                System.out.println(returnPlayer());
-
-            } catch (SQLException e) {
-
-                System.out.println(e.getMessage());
-
-            }
-            }
-
-        }
-*/
 
         System.out.println("testing");
 // trying a different method here
         Statement stmt = con.createStatement() ;
         // find player is the result
-        stmt.execute("DELETE  FROM Player WHERE summonerID = \'" + returnPlayer() + "\'");}}
+        stmt.execute("DELETE  FROM FollowList WHERE uid = \'" + returnUID() + "\'");}}
 
 
-       // System.out.println(rs);
+
+
