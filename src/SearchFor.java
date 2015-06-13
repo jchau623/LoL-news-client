@@ -126,7 +126,6 @@ public class SearchFor {
         Statement stmt = con.createStatement() ;
         //ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + realAttributeName + " = \'" + tf.getText() + "\'");
         ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
-        System.out.println("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
         if (!rs.next()) {
             AlertBox.display("Error", "No results found");
         }
