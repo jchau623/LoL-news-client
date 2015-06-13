@@ -21,7 +21,7 @@ import java.sql.Statement;
  */
 public class AddChampion {
 
-    public static void display(Connection con, String title, String other) {
+    public static void display(Connection con, String title) {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
@@ -87,12 +87,10 @@ System.out.println("testing");
         update.setString(1, Champ.getName());
         update.setFloat(2, Champ.getWinRate());
         update.setString(3, Champ.getType());
+        update.executeUpdate();
 
 
-        // find player is the result
-        /*stmt.execute("INSERT INTO Champion  VALUES ( \'"+  Champ.getName() + "\'", + Champ.getWinRate(), Champ.getType())
 
-        ("SELECT * FROM Region WHERE name = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);*/
 
     }
 
