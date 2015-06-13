@@ -64,6 +64,8 @@ public class AddTeam {
         button.setOnAction(e -> {
             try {
                 addTeam(con, name.getText(), acronym.getText(), Float.parseFloat(averageBarons.getText()), Float.parseFloat(averageDragons.getText()), Integer.parseInt(win.getText()),Integer.parseInt(loss.getText()),sponsor.getText(), region.getValue());
+                AlertBox.display("Success", "Team is successfully added to the database.");
+
             }
             catch (SQLException e1){
                 e1.printStackTrace();
