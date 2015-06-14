@@ -20,15 +20,6 @@ import java.util.List;
  * Created by Justin on 6/1/2015.
  */
 public class SearchFor {
-    public static String summonerID ;
-    public static int age ;
-    public static String name ;
-    public static String nationality ;
-    public static float csPerMin ;
-    public static float goldPerMin ;
-    public static float kDA;
-    public static ResultSet results;
-
     private static TextField tf = new TextField();
 
 
@@ -67,7 +58,7 @@ public class SearchFor {
         layout.getChildren().addAll(selectCategories, player, team, region);
         layout.setAlignment(Pos.TOP_CENTER);
 
-        Label askReturn = new Label("Return data sorted by:");
+        Label askReturn = new Label("Return playerName sorted by:");
         ChoiceBox<String> attributes = new ChoiceBox<>();
         attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
         player.setOnAction(e -> {
@@ -102,8 +93,10 @@ public class SearchFor {
         searchButton.setOnAction(e->{
             try {
                 if (choices.getSelectedToggle() == player) {
-                    findPlayer(connection, attributes.getValue(), order.getValue());
-                    SearchResults.display(results);
+                    findPlayer(connection, attributes.getValue(), order.getValue()) ;
+                    System.out.println(findPlayer(connection, attributes.getValue(), order.getValue()));
+                    SearchResults.display(findPlayer(connection, attributes.getValue(), order.getValue()));
+
                 } else if (choices.getSelectedToggle() == team) {
                     findTeam(connection, attributes.getValue(), order.getValue());
                 } else if (choices.getSelectedToggle() == region) {
@@ -121,7 +114,7 @@ public class SearchFor {
 
     }
     // going to execute the SQL query to find the player
-    public static void findPlayer(Connection con, String attribute, String value) throws SQLException {
+    public static ArrayList<Player> findPlayer(Connection con, String attribute, String value) throws SQLException {
         String realAttributeName = (attribute=="Age") ? "age" : (attribute=="Name") ? "name" :
                 (attribute=="KA/D Ratio") ? "KDA" : (attribute=="Nationality") ? "nationality" : attribute;
         String order = (value=="Ascending order")?"ASC":"DESC";
@@ -130,27 +123,41 @@ public class SearchFor {
         Statement stmt = con.createStatement() ;
         //ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + realAttributeName + " = \'" + tf.getText() + "\'");
         ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
-        results = rs;
+        //results = rs;
         if (!rs.next()) {
             AlertBox.display("Error", "No results found");
         }
 
-        while (rs.next())  {
+        ArrayList<Player> p = new ArrayList<Player>() ;
+
+        // Todo : this currently works but if I do not comment out the while portion, the result set becomes blank. What is wrong?
+       // while (rs.next())  {
 
             Player player = new Player();
-            player.setID(rs.getString("summonerID"));
+            player.setID(rs.getString(1));
             player.setAge(rs.getInt(2));
             player.setName(rs.getString(3));
             player.setNationality(rs.getString(4));
             player.setCsPerMin(rs.getFloat(5));
             player.setGPM(rs.getFloat(6));
             player.setKDA(rs.getFloat(7));
+
             listOfPlayers.add(player);
+            p.add(player);
+
             System.out.println(player.returnGPM());
             System.out.println(player.returnAge());
             System.out.println(player.returnName());
-        }
+
+//        }
+        return  p;
+
     }
+
+
+
+
+
 
     public static void findTeam(Connection con, String attribute, String value) throws SQLException {
         List<Team> listOfTeams = new ArrayList<>();
@@ -191,6 +198,8 @@ public class SearchFor {
             System.out.println(region.getRegionName());
         }
     }
+
+
 
 
 
