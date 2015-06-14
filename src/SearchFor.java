@@ -65,11 +65,11 @@ public class SearchFor {
        Label askReturn = new Label("Return Player sorted by:");
 
         ChoiceBox<String> attributes = new ChoiceBox<>();
-        attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+        attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality", "Role");
         player.setOnAction(e -> {
             askReturn.setText("Return Player sorted by:");
             attributes.getItems().clear();
-            attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+            attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality", "Role");
 
 
         });
@@ -127,7 +127,7 @@ public class SearchFor {
     // going to execute the SQL query to find the player
     public static ArrayList<Player> findPlayer(Connection con, String attribute, String value) throws SQLException {
         String realAttributeName = (attribute=="Age") ? "age" : (attribute=="Name") ? "name" :
-                (attribute=="KA/D Ratio") ? "KDA" : (attribute=="Nationality") ? "nationality" : attribute;
+                (attribute=="KA/D Ratio") ? "KDA" : (attribute=="Nationality") ? "nationality" : (attribute=="Role") ? "role" : attribute;
         String order = (value=="Ascending order")?"ASC":"DESC";
     //KA/D Ratio is either KAD or KDA
         List<Player> listOfPlayers = new ArrayList<>();
@@ -152,6 +152,7 @@ public class SearchFor {
             player.setCsPerMin(rs.getFloat(5));
             player.setGPM(rs.getFloat(6));
             player.setKDA(rs.getFloat(7));
+            player.setRole(rs.getString(8));
 
             listOfPlayers.add(player);
             p.add(player);
@@ -160,7 +161,7 @@ public class SearchFor {
             System.out.println(player.returnAge());
             System.out.println(player.returnName());
 
-//        }
+   //     }
         return  p;
 
     }
