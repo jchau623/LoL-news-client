@@ -261,9 +261,8 @@ public class Main extends Application{
         } catch (SQLException e) {
             if (e.getErrorCode() == 17002) {
                 AlertBox.display("Error", "Could not establish connection to the database");
-            } else {
+            } else if (e.getErrorCode() == 1017){
                 AlertBox.display("Error", "Wrong user/password!");
-                e.printStackTrace();
             }
         }
     }
