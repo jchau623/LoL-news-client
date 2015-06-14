@@ -37,12 +37,11 @@ public class AddBox {
         Button addPlayer = new Button("Add Player");
 
         addPlayer.setOnAction(e -> {
-            String addedPlayer = AddPlayer.display(con ,"Add Player", "Enter Info");
-            System.out.println(addedPlayer);
+            AddPlayer.display(con, "Add Player", "Enter Info");
         });
 
         Button addTeam = new Button("Add Team");
-        addTeam.setOnAction(e-> {
+        addTeam.setOnAction(e -> {
             AddTeam.display(con, "Add Team");
         });
 
@@ -53,12 +52,12 @@ public class AddBox {
 
         //test
         Button addRegion = new Button ("Add Region");
-        addRegion.setOnAction(e-> {
+        addRegion.setOnAction(e -> {
             AddRegion.display(con, "Add Region");
         });
 
         Button deleteRegion = new Button ("delete Region");
-        deleteRegion.setOnAction(e-> {
+        deleteRegion.setOnAction(e -> {
             DropRegion.display(con, "Delete Region", "delete region");
         });
 
@@ -68,14 +67,14 @@ public class AddBox {
         });
 
         Button addNewsItem = new Button("Add News");
-        addNewsItem.setOnAction(e-> {
+        addNewsItem.setOnAction(e -> {
             AddNewsItem.display(con, "Add News Item");
         });
         Button addMatch = new Button("Add Match");
-        addMatch.setOnAction(e->AddMatch.display(con, "Add Match"));
+        addMatch.setOnAction(e -> AddMatch.display(con, "Add Match"));
 
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(label,addRegion,addChampion,addMatch,addNewsItem,addPlayer, addTeam);
+        layout.getChildren().addAll(label, addRegion, addChampion, addMatch, addNewsItem, addPlayer, addTeam);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(5));
 
@@ -250,14 +249,31 @@ public class AddBox {
 
             Button button = new Button("Enter");
             button.setOnAction(e -> {
+                if (!acronym.getText().isEmpty() && !name.getText().isEmpty()) {
                 try{
                     addRegion(con, name.getText(), acronym.getText());
                     AlertBox.display("Success", "Region is successfully added to the database.");
+                    window.close();
                 }
                 catch (SQLException e1){
-                    e1.printStackTrace();
+                    if (e1.getErrorCode()==1) {
+                        AlertBox.display("Error", "A region with that name or acronym already exists");
+                    }
+                    e1.printStackTrace(); //TODO: remove at code completion
                 }
-                window.close();
+            }
+                if (acronym.getText().isEmpty()) {
+                    acronym.setStyle("-fx-background-color: #ff9ca0");
+                    if (!name.getText().isEmpty()) {
+                        name.setStyle("-fx-background-color: white");
+                    }
+                }
+                if (name.getText().isEmpty()) {
+                    name.setStyle("-fx-background-color: #ff9ca0");
+                    if (!acronym.getText().isEmpty()) {
+                        acronym.setStyle("-fx-background-color: white");
+                    }
+                }
             });
 
             //layout
@@ -284,7 +300,6 @@ public class AddBox {
 
 
          public static void addRegion (Connection con, String name, String acronym) throws SQLException {
-    System.out.println("testin");
             String addR = "INSERT INTO Region VALUES (?,?)";
             PreparedStatement update = con.prepareStatement(addR);
             update.setString(1, name);
@@ -302,7 +317,7 @@ public class AddBox {
     public static class AddPlayer {
         static String player = new String();
         private static TextField summonerID;
-        public static String display(Connection con, String title, String message) {
+        public static void display(Connection con, String title, String message) {
             Stage window = new Stage();
 
 
@@ -357,16 +372,31 @@ public class AddBox {
             ChoiceBox<String> role = new ChoiceBox<>();
             role.getItems().addAll("Top", "Mid" , "Jungle", "Support" , "Marksman") ;
 
-            button.setOnAction(e -> {
-                returnPlayer();
-                window.close();
-                try {
-                    addPlayer( con, summonerID.getText(), age.getText(), name.getText(),KAD.getText(), csPerGame.getText(), goldPerMin.getText() ,nationality.getValue(), role.getValue()  );
+            List<TextField> textFields = new ArrayList<>();
+            textFields.add(summonerID);
+            textFields.add(age);
+            textFields.add(name);
+            textFields.add(KAD);
+            textFields.add(goldPerMin);
+            textFields.add(csPerGame);
+            List<ChoiceBox> choiceBoxes = new ArrayList<>();
+            choiceBoxes.add(nationality);
+            choiceBoxes.add(role);
 
+            button.setOnAction(e -> {
+                if (fieldChecker(textFields) && choiceBoxChecker(choiceBoxes))
+                try {
+                    addPlayer(con, summonerID.getText(), age.getText(), name.getText(), KAD.getText(), csPerGame.getText(), goldPerMin.getText(), nationality.getValue(), role.getValue());
                     AlertBox.display("Success", "Player is successfully added to the database.");
+                    window.close();
 
                 } catch (SQLException e1) {
-                    e1.printStackTrace();
+                    if (e1.getErrorCode() == 1) {
+                        AlertBox.display("Error", "This summonerID already exists in the database");
+                        e1.printStackTrace();
+                    }
+                } catch (NumberFormatException nfe) {
+                    AlertBox.display("Error", "Please ensure Age, KA/D Ratio, csPerGame, and goldPerMin are numbers");
                 }
             });
 
@@ -400,12 +430,6 @@ public class AddBox {
 
             //Shows this stage and waits for it to be hidden (closed) before returning to the caller.
             window.showAndWait();
-            return returnPlayer();
-        }
-
-        private static String returnPlayer() {
-            player = summonerID.getText();
-            return player;
         }
 
         private static void addPlayer(Connection con, String summonerID , String age, String name, String kda, String cs, String gold, String nationality , String role) throws SQLException {
@@ -424,6 +448,32 @@ public class AddBox {
             update.executeUpdate() ;
             System.out.println("testing");
 
+        }
+
+        private static boolean fieldChecker(List<TextField> textFields) {
+            boolean empty = true;
+            for (TextField textfield : textFields) {
+                if (textfield.getText().isEmpty()) {
+                    empty = false;
+                    textfield.setStyle("-fx-background-color: #ff9ca0");
+                } else {
+                    textfield.setStyle("-fx-background-color: white");
+                }
+            }
+            return empty;
+        }
+
+        private static boolean choiceBoxChecker(List<ChoiceBox> choiceBoxes) {
+            boolean empty = true;
+            for (ChoiceBox choiceBox : choiceBoxes) {
+                if (choiceBox.getValue() == null) {
+                    empty = false;
+                    choiceBox.setStyle("-fx-background-color: #ff9ca0");
+                } else {
+                    choiceBox.setStyle("-fx-background-color: white");
+                }
+            }
+            return empty;
         }
 
     }
@@ -681,8 +731,6 @@ public class AddBox {
 
 
         }
-
-
     }
 }
 

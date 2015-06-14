@@ -263,7 +263,6 @@ public class Main extends Application{
                 AlertBox.display("Error", "Could not establish connection to the database");
             } else {
                 AlertBox.display("Error", "Wrong user/password!");
-                e.printStackTrace();
             }
         }
     }
