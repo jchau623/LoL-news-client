@@ -559,7 +559,9 @@ public class AddBox {
             button.setOnAction(e -> {
                 if (!url.getText().isEmpty() && !headline.getText().isEmpty()) {
                     try {
+                        AddNewsTags.display(con,headline.getText(),url.getText());
                         addNews(con, url.getText(), sqlDate, headline.getText());
+
                         window.close();
                     } catch (SQLException e1) {
                         if (e1.getErrorCode() == 1) {
