@@ -559,8 +559,9 @@ public class AddBox {
             button.setOnAction(e -> {
                 if (!url.getText().isEmpty() && !headline.getText().isEmpty()) {
                     try {
-                        AddNewsTags.display(con,headline.getText(),url.getText());
+
                         addNews(con, url.getText(), sqlDate, headline.getText());
+
 
                         window.close();
                     } catch (SQLException e1) {
@@ -625,7 +626,9 @@ public class AddBox {
             update.setString(2, URL);
             update.setString(1, headline);
             update.setDate(3, date);
+            System.out.println("test2");
             update.executeUpdate();
+            AddNewsTags.display(con,headline,URL);
 
 
         }}
