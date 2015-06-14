@@ -50,6 +50,10 @@ public class SearchResults {
         root.getChildren().addAll(listView) ;
         window.setScene(new Scene (root, 200 , 250)) ;
         window.show();
+        window.setOnCloseRequest(
+                e->{playerName.clear();
+                playerStats.clear();}
+        );
 
         //System.out.println(resultSet);
        // System.out.println(resultSet.getString(1));

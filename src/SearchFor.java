@@ -119,37 +119,53 @@ public class SearchFor {
                 (attribute=="KA/D Ratio") ? "KDA" : (attribute=="Nationality") ? "nationality" : attribute;
         String order = (value=="Ascending order")?"ASC":"DESC";
     //KA/D Ratio is either KAD or KDA
-        List<Player> listOfPlayers = new ArrayList<>();
+      //  List<Player> listOfPlayers = new ArrayList<Player>();
         Statement stmt = con.createStatement() ;
         //ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + realAttributeName + " = \'" + tf.getText() + "\'");
         ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
         //results = rs;
+        ArrayList<Player> p = new ArrayList<Player>() ;
         if (!rs.next()) {
             AlertBox.display("Error", "No results found");
         }
 
-        ArrayList<Player> p = new ArrayList<Player>() ;
 
-        // Todo : this currently works but if I do not comment out the while portion, the result set becomes blank. What is wrong?
-       // while (rs.next())  {
+        else {
+            Player player1 = new Player();
+            player1.setID(rs.getString(1));
+            player1.setAge(rs.getInt(2));
+            player1.setName(rs.getString(3));
+            player1.setNationality(rs.getString(4));
+            player1.setCsPerMin(rs.getFloat(5));
+            player1.setGPM(rs.getFloat(6));
+            player1.setKDA(rs.getFloat(7));
 
-            Player player = new Player();
-            player.setID(rs.getString(1));
-            player.setAge(rs.getInt(2));
-            player.setName(rs.getString(3));
-            player.setNationality(rs.getString(4));
-            player.setCsPerMin(rs.getFloat(5));
-            player.setGPM(rs.getFloat(6));
-            player.setKDA(rs.getFloat(7));
+        //    listOfPlayers.add(player1);
+            p.add(player1);
 
-            listOfPlayers.add(player);
-            p.add(player);
+          //  System.out.println(player.returnGPM());
+           // System.out.println(player.returnAge());
+           // System.out.println(player.returnName());
 
-            System.out.println(player.returnGPM());
-            System.out.println(player.returnAge());
-            System.out.println(player.returnName());
+            while (rs.next()) {
+                Player player = new Player();
+                player.setID(rs.getString(1));
+                player.setAge(rs.getInt(2));
+                player.setName(rs.getString(3));
+                player.setNationality(rs.getString(4));
+                player.setCsPerMin(rs.getFloat(5));
+                player.setGPM(rs.getFloat(6));
+                player.setKDA(rs.getFloat(7));
 
-//        }
+             //   listOfPlayers.add(player);
+                p.add(player);
+
+              //  System.out.println(player.returnGPM());
+              //  System.out.println(player.returnAge());
+              //  System.out.println(player.returnName());
+
+            }
+        }
         return  p;
 
     }
