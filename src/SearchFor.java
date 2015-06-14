@@ -20,8 +20,11 @@ import java.util.List;
  * Created by Justin on 6/1/2015.
  */
 public class SearchFor {
+    private static Label askReturn;
     private static TextField tf = new TextField();
+//TODO: We should also be able to search for newsitems, matches, and champions.
 
+    // currently displaying
 
     public static void display(Connection con) {
         Connection connection = con;
@@ -34,7 +37,7 @@ public class SearchFor {
         tf.setMinWidth(234);
 
         Button searchButton = new Button("Search");
-
+        CheckBox advanced = new CheckBox("Advanced Search");
         ToggleGroup choices = new ToggleGroup();
         RadioButton player = new RadioButton("Player");
         RadioButton team = new RadioButton("Team");
@@ -55,13 +58,16 @@ public class SearchFor {
         GridPane.setConstraints(player, 0, 1);
         GridPane.setConstraints(team, 0, 2);
         GridPane.setConstraints(region, 1, 1);
-        layout.getChildren().addAll(selectCategories, player, team, region);
+        GridPane.setConstraints(advanced, 1, 2);
+        layout.getChildren().addAll(selectCategories, player, team, region, advanced);
         layout.setAlignment(Pos.TOP_CENTER);
 
-        Label askReturn = new Label("Return playerName sorted by:");
+       Label askReturn = new Label("Return Player sorted by:");
+
         ChoiceBox<String> attributes = new ChoiceBox<>();
         attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
         player.setOnAction(e -> {
+            askReturn.setText("Return Player sorted by:");
             attributes.getItems().clear();
             attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
 
@@ -70,10 +76,12 @@ public class SearchFor {
         team.setOnAction(e-> {
             attributes.getItems().clear();
             attributes.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+            askReturn.setText("Return Team sorted by:");
         });
         region.setOnAction(e->{
             attributes.getItems().clear();
             attributes.getItems().addAll("Acronym", "Name");
+            askReturn.setText("Return Region sorted by:");
         });
         GridPane.setConstraints(askReturn, 0, 3);
         GridPane.setConstraints(attributes, 0, 4);
@@ -89,7 +97,7 @@ public class SearchFor {
             borderPane.setTop(searchBar);
             borderPane.setPadding(new Insets(10));
             Scene scene = new Scene(borderPane);
-
+// TODO: add in a toggle button "Advanced Search". If this is checked off, we will do AdvancedFindPlayer, or AdvancedFindTeam, or AdvancedFindRegion
         searchButton.setOnAction(e->{
             try {
                 if (choices.getSelectedToggle() == player) {
@@ -113,6 +121,9 @@ public class SearchFor {
 
 
     }
+
+
+
     // going to execute the SQL query to find the player
     public static ArrayList<Player> findPlayer(Connection con, String attribute, String value) throws SQLException {
         String realAttributeName = (attribute=="Age") ? "age" : (attribute=="Name") ? "name" :
