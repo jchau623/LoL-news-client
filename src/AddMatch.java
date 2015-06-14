@@ -29,6 +29,7 @@ public class AddMatch {
 
         Label totalKillsLabel = new Label("Total Kills:");
         Label numberofBaronsLabel = new Label("# of Barons:");
+        Label numberofDragonLabel = new Label("# of Dragons");
         Label timeLabel = new Label("Duration (MM:SS):");
         Label matchIDLabel = new Label("Match ID:");
         Label totalGoldLabel = new Label("Total Gold:");
@@ -38,6 +39,7 @@ public class AddMatch {
 
         TextField totalKills = new TextField();
         TextField numberofBarons = new TextField();
+        TextField numberofDragons = new TextField();
         TextField time = new TextField();
         TextField matchID = new TextField();
         TextField totalGold = new TextField();
@@ -79,4 +81,7 @@ public class AddMatch {
         window.showAndWait();
 
     }
+
+    // ToDo match GUI updates and teams should be in aggregate
+    //public void addMatch(Connection con , String totalKills, String barons, String duration, String matchID, )
 }

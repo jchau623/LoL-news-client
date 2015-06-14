@@ -27,6 +27,7 @@ public class SearchFor {
     public static float csPerMin ;
     public static float goldPerMin ;
     public static float kDA;
+    public static ResultSet results;
 
     private static TextField tf = new TextField();
 
@@ -71,8 +72,10 @@ public class SearchFor {
         attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
         player.setOnAction(e -> {
             attributes.getItems().clear();
-            attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");})
-            ;
+            attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+
+
+        });
         team.setOnAction(e-> {
             attributes.getItems().clear();
             attributes.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
@@ -100,6 +103,7 @@ public class SearchFor {
             try {
                 if (choices.getSelectedToggle() == player) {
                     findPlayer(connection, attributes.getValue(), order.getValue());
+                    SearchResults.display(results);
                 } else if (choices.getSelectedToggle() == team) {
                     findTeam(connection, attributes.getValue(), order.getValue());
                 } else if (choices.getSelectedToggle() == region) {
@@ -126,6 +130,7 @@ public class SearchFor {
         Statement stmt = con.createStatement() ;
         //ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + realAttributeName + " = \'" + tf.getText() + "\'");
         ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
+        results = rs;
         if (!rs.next()) {
             AlertBox.display("Error", "No results found");
         }
