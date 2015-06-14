@@ -9,7 +9,15 @@ public class Player {
     public static float csPerMin ;
     public static float goldPerMin ;
     public static float kDA;
+    public static String role;
 
+    public static String getRole() {
+        return role;
+    }
+
+    public static void setRole(String role) {
+        Player.role = role;
+    }
 
     public String returnID() {
         return summonerID ;
