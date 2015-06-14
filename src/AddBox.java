@@ -741,7 +741,7 @@ public class AddBox {
                         AlertBox.display("Error", "Win rate should be a number (e.g. 40.20)");
                     }
                 }
-                //TODO: set choicebox to red when nothing is selected
+
                 if (name.getText().isEmpty()) {
                     name.setStyle("-fx-background-color: #ff9ca0");
                     if (type.getValue() != "Pick one:") {

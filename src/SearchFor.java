@@ -100,24 +100,46 @@ public class SearchFor {
 // TODO expand the search box to include the fields for the advanced search, decompress the box to get rid of advanced fields\
 //
         advanced.setOnAction(e -> {
-            if (advanced.isSelected() && choices.getSelectedToggle() == player) {
-                Label selectLabel = new Label("select:");
+            Label selectLabel = new Label("select:");
             ChoiceBox<String> select = new ChoiceBox<>();
             select.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
             Label whereLabel = new Label("Where");
             ChoiceBox<String> whereAttributes = new ChoiceBox<>();
             whereAttributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
             ChoiceBox<String> condition = new ChoiceBox<>();
-            condition.getItems().addAll("=","<",">","<>");
+            condition.getItems().addAll("=", "<", ">", "<>");
             TextField condition2 = new TextField();
             condition2.setMinWidth(100);
-            GridPane.setConstraints(selectLabel,2,7);
-          /*  GridPane.setConstraints(whereLabel ,1,8 );
-            GridPane.setConstraints(whereAttributes,2,8);
-            GridPane.setConstraints(condition, 3,8);
-            GridPane.setConstraints(condition2,4,8);*/
-                layout.getChildren().addAll(selectLabel/* ,whereLabel, whereAttributes,condition,condition2*/);
-        }});
+            GridPane.setConstraints(selectLabel, 2, 7);
+            GridPane.setConstraints(whereLabel ,1,8 );
+            GridPane.setConstraints(whereAttributes, 2, 8);
+            GridPane.setConstraints(condition, 3, 8);
+            GridPane.setConstraints(condition2, 4, 8);
+            if (advanced.isSelected() && choices.getSelectedToggle() == player) {
+                GridPane layout3 = new GridPane();
+                layout3.setVgap(5);
+                layout3.setPadding(new Insets(10));
+                layout3.getChildren().addAll(selectCategories, player, team, region, advanced, askReturn, attributes, in, order, selectLabel, whereLabel, whereAttributes, condition, condition2);
+                layout.setAlignment(Pos.TOP_CENTER);
+                BorderPane borderPane2 = new BorderPane(layout3);
+                borderPane2.setTop(searchBar);
+                borderPane2.setPadding(new Insets(10));
+                Scene scene2 = new Scene(borderPane2);
+                window.setScene(scene2);
+            }
+            if (!advanced.isSelected()) {
+                GridPane layout2 = new GridPane();
+                layout2.setVgap(5);
+                layout2.setPadding(new Insets(10));
+                layout2.getChildren().addAll(selectCategories, player, team, region, advanced, askReturn, attributes, in, order);
+                layout2.setAlignment(Pos.TOP_CENTER);
+                BorderPane borderPane3 = new BorderPane(layout2);
+                borderPane3.setTop(searchBar);
+                borderPane3.setPadding(new Insets(10));
+                Scene scene3 = new Scene(borderPane3);
+                window.setScene(scene3);
+            }
+        });
 // TODO: add in a toggle button "Advanced Search". If this is checked off, we will do AdvancedFindPlayer, or AdvancedFindTeam, or AdvancedFindRegion
         searchButton.setOnAction(e->{
             try {
