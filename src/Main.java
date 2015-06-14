@@ -1,16 +1,16 @@
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
@@ -307,8 +307,8 @@ public class Main extends Application{
         });
         Button button4 = new Button("Search");
         button4.setOnAction(e -> SearchFor.display(con));
-        Button button5 = new Button("Delete Something");
-        button5.setOnAction(e-> DeleteBox.display(con,"Delete Something", "Choose Something To Delete"));
+        Button button5 = new Button("Add News");
+        button5.setOnAction(e-> AddBox.AddNewsItem.display(con, "Add News"));
 
         VBox layout = new VBox(20);
         layout.getChildren().addAll(message,loggedInAs,button0, button1, button4, button5, button3);
