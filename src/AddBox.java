@@ -4,10 +4,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
         import javafx.geometry.Pos;
         import javafx.scene.Scene;
-        import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -122,7 +119,7 @@ public class AddBox {
 
             ArrayList<String> teamList = null;
             try {
-                teamList = getAllTeams(con);
+                teamList = getAllRegions(con);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -132,18 +129,30 @@ public class AddBox {
             region.getItems().addAll(teamList);
             region.getItems().add("Other");
 
+            List<TextField> textFields = new ArrayList<>();
+            textFields.add(name);
+            textFields.add(acronym);
+            textFields.add(averageBarons);
+            textFields.add(averageDragons);
+            textFields.add(win);
+            textFields.add(loss);
+            textFields.add(sponsor);
+            List<ChoiceBox> choiceBoxes = new ArrayList<>();
+            choiceBoxes.add(region);
 
             Button button = new Button("Enter");
             button.setOnAction(e -> {
-                try {
-                    addTeam(con, name.getText(), acronym.getText(), Float.parseFloat(averageBarons.getText()), Float.parseFloat(averageDragons.getText()), Integer.parseInt(win.getText()),Integer.parseInt(loss.getText()),sponsor.getText(), region.getValue());
-                    AlertBox.display("Success", "Team is successfully added to the database.");
-
+                if (choiceBoxChecker(choiceBoxes, textFields) && fieldChecker(textFields, choiceBoxes)) {
+                    try {
+                        addTeam(con, name.getText(), acronym.getText(), Float.parseFloat(averageBarons.getText()), Float.parseFloat(averageDragons.getText()), Integer.parseInt(win.getText()), Integer.parseInt(loss.getText()), sponsor.getText(), region.getValue());
+                        AlertBox.display("Success", "Team is successfully added to the database.");
+                        window.close();
+                    } catch (SQLException e1) {
+                        if (e1.getErrorCode() == 1) AlertBox.display("Error", "A team with the same name or acronym already exists");
+                    } catch (NumberFormatException nfe) {
+                        AlertBox.display("Error", "Please ensure Average Barons, Average Dragons, Wins, and Losses are numbers");
+                    }
                 }
-                catch (SQLException e1){
-                    e1.printStackTrace();
-                }
-                window.close();
             });
 
             GridPane grid = new GridPane();
@@ -197,7 +206,7 @@ public class AddBox {
                 return team;
             }*/
 
-        public static ArrayList<String> getAllTeams(Connection con) throws SQLException {
+        public static ArrayList<String> getAllRegions(Connection con) throws SQLException {
 
 
 
@@ -210,14 +219,50 @@ public class AddBox {
                     String arr ;
                     String n = rs.getString("name");
                     arr = n.replace("\n", ",");
-    System.out.println("added to teamlist");
-                        System.out.println(arr);
                         temp.add(arr);
 
                 }
             return temp;
             }
+        private static boolean fieldChecker(List<TextField> textFields, List<ChoiceBox> choiceBoxes) {
+            boolean empty = true;
+            for (TextField textfield : textFields) {
+                if (textfield.getText().isEmpty()) {
+                    empty = false;
+                    textfield.setStyle("-fx-background-color: #ff9ca0");
+                } else {
+                    textfield.setStyle("-fx-background-color: white");
+                }
+            }
+            for (ChoiceBox choiceBox : choiceBoxes) {
+                if (choiceBox.getValue() == null) {
+                    choiceBox.setStyle("-fx-background-color: #ff9ca0");
+                } else {
+                    choiceBox.setStyle("-fx-background-color: white");
+                }
+            }
+            return empty;
+        }
 
+        private static boolean choiceBoxChecker(List<ChoiceBox> choiceBoxes, List<TextField> textFields) {
+            boolean empty = true;
+            for (ChoiceBox choiceBox : choiceBoxes) {
+                if (choiceBox.getValue() == null) {
+                    empty = false;
+                    choiceBox.setStyle("-fx-background-color: #ff9ca0");
+                } else {
+                    choiceBox.setStyle("-fx-background-color: white");
+                }
+            }
+            for (TextField textfield : textFields) {
+                if (textfield.getText().isEmpty()) {
+                    textfield.setStyle("-fx-background-color: #ff9ca0");
+                } else {
+                    textfield.setStyle("-fx-background-color: white");
+                }
+            }
+            return empty;
+        }
     }
 
     /**
@@ -384,9 +429,9 @@ public class AddBox {
             choiceBoxes.add(role);
 
             button.setOnAction(e -> {
-                if (fieldChecker(textFields) && choiceBoxChecker(choiceBoxes))
+                if (fieldChecker(textFields, choiceBoxes) && choiceBoxChecker(choiceBoxes,textFields))
                 try {
-                    addPlayer(con, summonerID.getText(), age.getText(), name.getText(), KAD.getText(), csPerGame.getText(), goldPerMin.getText(), nationality.getValue(), role.getValue());
+                    addPlayer(con, summonerID.getText(), Integer.parseInt(age.getText()), name.getText(), Float.parseFloat(KAD.getText()), Float.parseFloat(csPerGame.getText()), Float.parseFloat(goldPerMin.getText()), nationality.getValue(), role.getValue());
                     AlertBox.display("Success", "Player is successfully added to the database.");
                     window.close();
 
@@ -432,17 +477,17 @@ public class AddBox {
             window.showAndWait();
         }
 
-        private static void addPlayer(Connection con, String summonerID , String age, String name, String kda, String cs, String gold, String nationality , String role) throws SQLException {
-
+        private static void addPlayer(Connection con, String summonerID , Integer age, String name, Float kda, Float cs, Float gold, String nationality , String role) throws SQLException {
+            System.out.println("testing");
             String result = "INSERT INTO Player VALUES (?, ?, ?, ?, ?,?,? , ?) " ;
             PreparedStatement update = con.prepareStatement(result) ;
             update.setString(1,summonerID );
-            update.setString(2, age );
+            update.setInt(2, age);
             update.setString(3, name);
             update.setString(4, nationality);
-            update.setString(5,cs);
-            update.setString(6, gold);
-            update.setString(7, kda);
+            update.setFloat(5, cs);
+            update.setFloat(6, gold);
+            update.setFloat(7, kda);
             update.setString(8, role);
 
             update.executeUpdate() ;
@@ -450,7 +495,7 @@ public class AddBox {
 
         }
 
-        private static boolean fieldChecker(List<TextField> textFields) {
+        private static boolean fieldChecker(List<TextField> textFields, List<ChoiceBox> choiceBoxes) {
             boolean empty = true;
             for (TextField textfield : textFields) {
                 if (textfield.getText().isEmpty()) {
@@ -460,10 +505,17 @@ public class AddBox {
                     textfield.setStyle("-fx-background-color: white");
                 }
             }
+            for (ChoiceBox choiceBox : choiceBoxes) {
+                if (choiceBox.getValue() == null) {
+                    choiceBox.setStyle("-fx-background-color: #ff9ca0");
+                } else {
+                    choiceBox.setStyle("-fx-background-color: white");
+                }
+            }
             return empty;
         }
 
-        private static boolean choiceBoxChecker(List<ChoiceBox> choiceBoxes) {
+        private static boolean choiceBoxChecker(List<ChoiceBox> choiceBoxes, List<TextField> textFields) {
             boolean empty = true;
             for (ChoiceBox choiceBox : choiceBoxes) {
                 if (choiceBox.getValue() == null) {
@@ -471,6 +523,13 @@ public class AddBox {
                     choiceBox.setStyle("-fx-background-color: #ff9ca0");
                 } else {
                     choiceBox.setStyle("-fx-background-color: white");
+                }
+            }
+            for (TextField textfield : textFields) {
+                if (textfield.getText().isEmpty()) {
+                    textfield.setStyle("-fx-background-color: #ff9ca0");
+                } else {
+                    textfield.setStyle("-fx-background-color: white");
                 }
             }
             return empty;
@@ -498,12 +557,28 @@ public class AddBox {
 
             Button button = new Button("Enter");
             button.setOnAction(e -> {
-                try {
-                    addNews(con, url.getText(), sqlDate,headline.getText());
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
+                if (!url.getText().isEmpty() && !headline.getText().isEmpty()) {
+                    try {
+                        addNews(con, url.getText(), sqlDate, headline.getText());
+                        window.close();
+                    } catch (SQLException e1) {
+                        if (e1.getErrorCode() == 1) {
+                            AlertBox.display("Error", "URL already exists in database");
+                        }
+                    }
                 }
-                window.close();
+                if (url.getText().isEmpty()) {
+                    url.setStyle("-fx-background-color: #ff9ca0");
+                    if (!headline.getText().isEmpty()) {
+                        headline.setStyle("-fx-background-color: white");
+                    }
+                }
+                if (headline.getText().isEmpty()) {
+                    headline.setStyle("-fx-background-color: #ff9ca0");
+                    if (!url.getText().isEmpty()) {
+                        url.setStyle("-fx-background-color: white");
+                    }
+                }
             });
 
             //Attribute text fields
@@ -664,6 +739,7 @@ public class AddBox {
                         AlertBox.display("Error", "Win rate should be a number (e.g. 40.20)");
                     }
                 }
+                //TODO: set choicebox to red when nothing is selected
                 if (name.getText().isEmpty()) {
                     name.setStyle("-fx-background-color: #ff9ca0");
                     if (type.getValue() != "Pick one:") {
