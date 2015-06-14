@@ -97,9 +97,43 @@ public class SearchFor {
             borderPane.setTop(searchBar);
             borderPane.setPadding(new Insets(10));
             Scene scene = new Scene(borderPane);
+// TODO expand the search box to include the fields for the advanced search, decompress the box to get rid of advanced fields\
+//
+        advanced.setOnAction(e -> {
+            if (advanced.isSelected() && choices.getSelectedToggle() == player) {
+                Label selectLabel = new Label("select:");
+            ChoiceBox<String> select = new ChoiceBox<>();
+            select.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+            Label whereLabel = new Label("Where");
+            ChoiceBox<String> whereAttributes = new ChoiceBox<>();
+            whereAttributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+            ChoiceBox<String> condition = new ChoiceBox<>();
+            condition.getItems().addAll("=","<",">","<>");
+            TextField condition2 = new TextField();
+            condition2.setMinWidth(100);
+            GridPane.setConstraints(selectLabel,2,7);
+          /*  GridPane.setConstraints(whereLabel ,1,8 );
+            GridPane.setConstraints(whereAttributes,2,8);
+            GridPane.setConstraints(condition, 3,8);
+            GridPane.setConstraints(condition2,4,8);*/
+                layout.getChildren().addAll(selectLabel/* ,whereLabel, whereAttributes,condition,condition2*/);
+        }});
 // TODO: add in a toggle button "Advanced Search". If this is checked off, we will do AdvancedFindPlayer, or AdvancedFindTeam, or AdvancedFindRegion
         searchButton.setOnAction(e->{
             try {
+               /* if (advanced.isSelected()){
+                    if (choices.getSelectedToggle() == player) {
+                        advancedFindPlayer(connection, attributes.getValue(), order.getValue()) ;
+                        System.out.println(findPlayer(connection, attributes.getValue(), order.getValue()));
+                        SearchResults.display(findPlayer(connection, attributes.getValue(), order.getValue()));
+
+                    } else if (choices.getSelectedToggle() == team) {
+                        advancedFindTeam(connection, attributes.getValue(), order.getValue());
+                    } else if (choices.getSelectedToggle() == region) {
+                        advancedFindRegion(connection, attributes.getValue(), order.getValue());
+                    }
+                }
+                else */
                 if (choices.getSelectedToggle() == player) {
                     findPlayer(connection, attributes.getValue(), order.getValue()) ;
                     System.out.println(findPlayer(connection, attributes.getValue(), order.getValue()));
@@ -121,6 +155,10 @@ public class SearchFor {
 
 
     }
+
+
+
+
 
 
 
