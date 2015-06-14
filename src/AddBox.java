@@ -760,8 +760,8 @@ public class AddBox {
                 }
                 if (type.getValue() == "Pick one:") {
                     type.setStyle("-fx-background-color: #ff9ca0");
-                    if (!type.getValue().isEmpty()) {
-                        type.setStyle("-fx-background-color: white");
+                    if (!name.getText().isEmpty()) {
+                        name.setStyle("-fx-background-color: white");
                     }
                     if (!winRate.getText().isEmpty()) {
                         winRate.setStyle("-fx-background-color: white");
