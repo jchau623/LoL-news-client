@@ -160,7 +160,8 @@ class DropPlayer {
             try{
                 deletePlayer(con);}
             catch (SQLException e1){
-                e1.printStackTrace();
+                //e1.printStackTrace();
+                AlertBox.display("Error: Can't Delete", "Player has existing news or does not exist.");
             }
             window.close();
         });
@@ -217,7 +218,8 @@ class DropTeam {static String name = new String();
             try{
                 deleteTeam(con);}
             catch (SQLException e1){
-                e1.printStackTrace();
+
+                AlertBox.display("Error: Can't Delete", "Team has existing news or does not exist.");
             }
             window.close();
         });
@@ -332,7 +334,8 @@ class DropRegion {static String rname = new String();
             try{
                 deleteRegion(con);}
             catch (SQLException e1){
-                e1.printStackTrace();
+                //e1.printStackTrace();
+                AlertBox.display("Error: Can't Delete", "Region has existing news or does not exist.");
             }
             window.close();
         });
