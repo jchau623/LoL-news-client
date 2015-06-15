@@ -70,15 +70,13 @@ public class SearchFor {
             askReturn.setText("Return Player sorted by:");
             attributes.getItems().clear();
             attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality", "Role");
-
-
         });
         team.setOnAction(e-> {
             attributes.getItems().clear();
             attributes.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
             askReturn.setText("Return Team sorted by:");
         });
-        region.setOnAction(e->{
+        region.setOnAction(e -> {
             attributes.getItems().clear();
             attributes.getItems().addAll("Acronym", "Name");
             askReturn.setText("Return Region sorted by:");
@@ -118,8 +116,6 @@ public class SearchFor {
 
         window.setScene(scene);
         window.show();
-
-
     }
 
 
@@ -142,7 +138,7 @@ public class SearchFor {
         ArrayList<Player> p = new ArrayList<Player>() ;
 
         // Todo : this currently works but if I do not comment out the while portion, the result set becomes blank. What is wrong?
-       // while (rs.next())  {
+        while (rs.next())  {
 
             Player player = new Player();
             player.setID(rs.getString(1));
@@ -161,7 +157,7 @@ public class SearchFor {
             System.out.println(player.returnAge());
             System.out.println(player.returnName());
 
-   //     }
+             }
         return  p;
 
     }

@@ -87,8 +87,6 @@ public class AddBox {
      */
     public static class AddTeam {
 
-
-
         public static void display(Connection con , String title)  {
             Stage window = new Stage();
 
