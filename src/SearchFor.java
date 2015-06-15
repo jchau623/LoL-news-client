@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class SearchFor {
     private static TextField tf = new TextField();
+    private static Label askReturn;
 
 
     public static void display(Connection con) {
@@ -34,7 +35,7 @@ public class SearchFor {
         tf.setMinWidth(234);
 
         Button searchButton = new Button("Search");
-
+        CheckBox advanced = new CheckBox("Advanced Search");
         ToggleGroup choices = new ToggleGroup();
         RadioButton player = new RadioButton("Player");
         RadioButton team = new RadioButton("Team");
@@ -55,23 +56,28 @@ public class SearchFor {
         GridPane.setConstraints(player, 0, 1);
         GridPane.setConstraints(team, 0, 2);
         GridPane.setConstraints(region, 1, 1);
-        layout.getChildren().addAll(selectCategories, player, team, region);
+        GridPane.setConstraints(advanced, 1, 2);
+        layout.getChildren().addAll(selectCategories, player, team, region, advanced);
         layout.setAlignment(Pos.TOP_CENTER);
 
         Label askReturn = new Label("Return playerName sorted by:");
         ChoiceBox<String> attributes = new ChoiceBox<>();
         attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
         player.setOnAction(e -> {
+
+            askReturn.setText("Return Player sorted by:");
             attributes.getItems().clear();
-            attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+                 attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality", "Role");
 
 
         });
         team.setOnAction(e-> {
+            askReturn.setText("Return Team sorted by:");
             attributes.getItems().clear();
             attributes.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
         });
         region.setOnAction(e->{
+            askReturn.setText("Return Region sorted by:");
             attributes.getItems().clear();
             attributes.getItems().addAll("Acronym", "Name");
         });
@@ -84,15 +90,70 @@ public class SearchFor {
         GridPane.setConstraints(order, 0, 6);
 
         layout.getChildren().addAll(askReturn, attributes, in, order);
-
         BorderPane borderPane = new BorderPane(layout);
-        borderPane.setTop(searchBar);
-        borderPane.setPadding(new Insets(10));
-        Scene scene = new Scene(borderPane);
+                  borderPane.setTop(searchBar);
+                   borderPane.setPadding(new Insets(10));
+                    Scene scene = new Scene(borderPane);
+        // TODO expand the search box to include the fields for the advanced search, decompress the box to get rid of advanced fields\
+
+                               advanced.setOnAction(e -> {
+                                        Label selectLabel = new Label("select:");
+                                        ChoiceBox<String> select = new ChoiceBox<>();
+                                       select.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+                                        Label whereLabel = new Label("Where");
+                                        ChoiceBox<String> whereAttributes = new ChoiceBox<>();
+                                        whereAttributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+                                        ChoiceBox<String> condition = new ChoiceBox<>();
+                                        condition.getItems().addAll("=", "<", ">", "<>");
+                                       TextField condition2 = new TextField();
+                                        condition2.setMinWidth(100);
+                                        GridPane.setConstraints(selectLabel, 2, 7);
+                                        GridPane.setConstraints(whereLabel ,1,8 );
+                                        GridPane.setConstraints(whereAttributes, 2, 8);
+                                        GridPane.setConstraints(condition, 3, 8);
+                                        GridPane.setConstraints(condition2, 4, 8);
+                                       if (advanced.isSelected() && choices.getSelectedToggle() == player) {
+                                                GridPane layout3 = new GridPane();
+                                                layout3.setVgap(5);
+                                               layout3.setPadding(new Insets(10));
+                                                layout3.getChildren().addAll(selectCategories, player, team, region, advanced, askReturn, attributes, in, order, selectLabel, whereLabel, whereAttributes, condition, condition2);
+                                                layout.setAlignment(Pos.TOP_CENTER);
+                                                BorderPane borderPane2 = new BorderPane(layout3);
+                                                borderPane2.setTop(searchBar);
+                                                borderPane2.setPadding(new Insets(10));
+                                                Scene scene2 = new Scene(borderPane2);
+                                                window.setScene(scene2);
+                                            }
+                                       if (!advanced.isSelected()) {
+                                                GridPane layout2 = new GridPane();
+                                                layout2.setVgap(5);
+                                                layout2.setPadding(new Insets(10));
+                                                layout2.getChildren().addAll(selectCategories, player, team, region, advanced, askReturn, attributes, in, order);
+                                                layout2.setAlignment(Pos.TOP_CENTER);
+                                                BorderPane borderPane3 = new BorderPane(layout2);
+                                                borderPane3.setTop(searchBar);
+                                                borderPane3.setPadding(new Insets(10));
+                                                Scene scene3 = new Scene(borderPane3);
+                                                window.setScene(scene3);
+                                            }
+                                    });
+
 
         //Todo must finish linking results and search  !!!
         searchButton.setOnAction(e->{
-            try {
+            try {/* if (advanced.isSelected()){
+                    if (choices.getSelectedToggle() == player) {
+                        advancedFindPlayer(connection, attributes.getValue(), order.getValue()) ;
+                        System.out.println(findPlayer(connection, attributes.getValue(), order.getValue()));
+                        SearchResults.display(findPlayer(connection, attributes.getValue(), order.getValue()));
+
+                    } else if (choices.getSelectedToggle() == team) {
+                        advancedFindTeam(connection, attributes.getValue(), order.getValue());
+                    } else if (choices.getSelectedToggle() == region) {
+                        advancedFindRegion(connection, attributes.getValue(), order.getValue());
+                    }
+                }
+                else */
                 if (choices.getSelectedToggle() == player) {
                     findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()) ;
                     System.out.println(findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()));

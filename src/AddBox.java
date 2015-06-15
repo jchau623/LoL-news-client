@@ -626,10 +626,10 @@ public class AddBox {
             update.setString(2, URL);
             update.setString(1, headline);
             update.setDate(3, date);
-            System.out.println("test2");
-            System.out.println(update);
-            System.out.println(update.executeUpdate());
-            System.out.println("test3");
+
+
+           update.executeUpdate();
+
             AddNewsTags.display(con, headline, URL);
 
 
