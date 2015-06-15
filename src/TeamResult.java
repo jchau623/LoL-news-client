@@ -1,6 +1,7 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -8,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
@@ -53,16 +55,24 @@ public class TeamResult {
         // intentionally left out a row to give space
         GridPane.setConstraints(pLabel, 1 , 0);
 
+
+        grid.getChildren().addAll(teamAcrLabel, teamAverageBaronsLabel,teamAverageDragonsLabel,
+                teamLossesLabel,teamRegionLabel,teamSponsorLabel,teamWinsLabel);
+
+
         for (int i = 0 ;  i < listOfPlayers.size() ; i++ ) {
             Player p = listOfPlayers.get(i) ;
             Button teamPlayerButton = new Button(p.returnID()) ;
             GridPane.setConstraints(teamPlayerButton, 1 , (i+1));
-
            teamPlayerButton.setOnAction(
                     e->PlayerResult.display(p)
             );
+            grid.getChildren().add(teamPlayerButton);
 
         };
+
+
+
 
         Scene scene = new Scene(grid) ;
         window.setScene(scene);
