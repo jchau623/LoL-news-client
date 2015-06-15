@@ -557,7 +557,10 @@ public class AddBox {
             button.setOnAction(e -> {
                 if (!url.getText().isEmpty() && !headline.getText().isEmpty()) {
                     try {
+
                         addNews(con, url.getText(), sqlDate, headline.getText());
+
+
                         window.close();
                     } catch (SQLException e1) {
                         if (e1.getErrorCode() == 1) {
@@ -621,7 +624,11 @@ public class AddBox {
             update.setString(2, URL);
             update.setString(1, headline);
             update.setDate(3, date);
-            update.executeUpdate();
+
+
+           update.executeUpdate();
+
+            AddNewsTags.display(con, headline, URL);
 
 
         }}
@@ -641,22 +648,30 @@ public class AddBox {
             });
 
             Label totalKillsLabel = new Label("Total Kills:");
-            Label numberofBaronsLabel = new Label("# of Barons:");
+            Label redNumberofBaronsLabel = new Label("Red Team # of Barons:");
+            Label redNumberofDragonsLabel = new Label("Red Team # of Dragons:");
+            Label blueNumberofBaronsLabel = new Label("Red Team # of Barons:");
+            Label blueNumberofDragonsLabel = new Label("Red Team # of Dragons:");
             Label timeLabel = new Label("Duration (MM:SS):");
             Label matchIDLabel = new Label("Match ID:");
             Label totalGoldLabel = new Label("Total Gold:");
             Label redNameLabel = new Label(" Team:"); Text red = new Text("Red"); red.setFill(Color.RED);
             Label blueNameLabel = new Label(" Team:"); Text blue = new Text("Blue"); blue.setFill(Color.BLUE);
-            Label datePlayedLabel = new Label("Date:"); //format to be determined
+            Label datePlayedLabel = new Label("Date: (YYYYMMDD"); //format to be determined
+            Label winnerLabel = new Label("Winner:");
 
             TextField totalKills = new TextField();
-            TextField numberofBarons = new TextField();
+            TextField redNumberofBarons = new TextField();
+            TextField blueNumberofBarons = new TextField();
+            TextField blueNumberofDragons = new TextField();
+            TextField redNumberofDragons = new TextField();
             TextField time = new TextField();
             TextField matchID = new TextField();
             TextField totalGold = new TextField();
             TextField redName = new TextField();
             TextField blueName = new TextField();
             TextField datePlayed = new TextField();
+            TextField winner = new TextField();
 
             HBox redHBox = new HBox(0);
             HBox blueHBox = new HBox(0);
@@ -669,23 +684,31 @@ public class AddBox {
             grid.setHgap(5);
             GridPane.setConstraints(totalKillsLabel, 0, 0);
             GridPane.setConstraints(totalKills, 1, 0);
-            GridPane.setConstraints(numberofBaronsLabel, 0, 1);
-            GridPane.setConstraints(numberofBarons, 1, 1);
-            GridPane.setConstraints(timeLabel, 0, 2);
-            GridPane.setConstraints(time, 1, 2);
-            GridPane.setConstraints(matchIDLabel, 0, 3);
-            GridPane.setConstraints(matchID, 1, 3);
-            GridPane.setConstraints(totalGoldLabel, 0, 4);
-            GridPane.setConstraints(totalGold, 1, 4);
-            GridPane.setConstraints(redHBox, 0, 5);
-            GridPane.setConstraints(redName, 1, 5);
-            GridPane.setConstraints(blueHBox, 0, 6);
-            GridPane.setConstraints(blueName, 1, 6);
-            GridPane.setConstraints(datePlayedLabel, 0, 7);
-            GridPane.setConstraints(datePlayed, 1, 7);
-            GridPane.setConstraints(button, 1, 8);
+            GridPane.setConstraints(redNumberofBaronsLabel, 0, 1);
+            GridPane.setConstraints(redNumberofBarons, 1, 1);
+            GridPane.setConstraints(redNumberofDragonsLabel, 0, 2);
+            GridPane.setConstraints(redNumberofDragons, 1, 2);
+            GridPane.setConstraints(blueNumberofBaronsLabel, 0, 3);
+            GridPane.setConstraints(blueNumberofBarons, 1, 3);
+            GridPane.setConstraints(blueNumberofDragonsLabel, 0, 4);
+            GridPane.setConstraints(blueNumberofDragons, 1, 4);
+            GridPane.setConstraints(winner, 1, 5);
+            GridPane.setConstraints(winnerLabel,0,5);
+            GridPane.setConstraints(timeLabel, 0, 6);
+            GridPane.setConstraints(time, 1, 6);
+            GridPane.setConstraints(matchIDLabel, 0, 7);
+            GridPane.setConstraints(matchID, 1, 7);
+            GridPane.setConstraints(totalGoldLabel, 0, 8);
+            GridPane.setConstraints(totalGold, 1, 8);
+            GridPane.setConstraints(redHBox, 0, 9);
+            GridPane.setConstraints(redName, 1, 9);
+            GridPane.setConstraints(blueHBox, 0, 10);
+            GridPane.setConstraints(blueName, 1, 10);
+            GridPane.setConstraints(datePlayedLabel, 0, 11);
+            GridPane.setConstraints(datePlayed, 1, 11);
+            GridPane.setConstraints(button, 1, 12);
             GridPane.setHalignment(button, HPos.RIGHT);
-            grid.getChildren().addAll(totalKillsLabel, totalKills, numberofBaronsLabel, numberofBarons, timeLabel, time, matchIDLabel, matchID, totalGoldLabel, totalGold, redHBox, redName, blueHBox, blueName, datePlayedLabel, datePlayed, button);
+            grid.getChildren().addAll(totalKillsLabel, totalKills, redNumberofBarons, redNumberofBaronsLabel, redNumberofDragons, redNumberofDragonsLabel, timeLabel, time, matchIDLabel, matchID, totalGoldLabel, totalGold, redHBox, redName, blueHBox, blueName, datePlayedLabel, datePlayed, button);
 
             Scene scene = new Scene(grid);
             window.setScene(scene);
@@ -737,7 +760,7 @@ public class AddBox {
                         AlertBox.display("Error", "Win rate should be a number (e.g. 40.20)");
                     }
                 }
-                //TODO: set choicebox to red when nothing is selected
+
                 if (name.getText().isEmpty()) {
                     name.setStyle("-fx-background-color: #ff9ca0");
                     if (type.getValue() != "Pick one:") {
