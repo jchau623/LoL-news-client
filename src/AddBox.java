@@ -559,7 +559,10 @@ public class AddBox {
             button.setOnAction(e -> {
                 if (!url.getText().isEmpty() && !headline.getText().isEmpty()) {
                     try {
+
                         addNews(con, url.getText(), sqlDate, headline.getText());
+
+
                         window.close();
                     } catch (SQLException e1) {
                         if (e1.getErrorCode() == 1) {
@@ -623,7 +626,11 @@ public class AddBox {
             update.setString(2, URL);
             update.setString(1, headline);
             update.setDate(3, date);
-            update.executeUpdate();
+            System.out.println("test2");
+            System.out.println(update);
+            System.out.println(update.executeUpdate());
+            System.out.println("test3");
+            AddNewsTags.display(con, headline, URL);
 
 
         }}
@@ -739,7 +746,7 @@ public class AddBox {
                         AlertBox.display("Error", "Win rate should be a number (e.g. 40.20)");
                     }
                 }
-                //TODO: set choicebox to red when nothing is selected
+
                 if (name.getText().isEmpty()) {
                     name.setStyle("-fx-background-color: #ff9ca0");
                     if (type.getValue() != "Pick one:") {

@@ -85,10 +85,10 @@ public class SearchFor {
 
         layout.getChildren().addAll(askReturn, attributes, in, order);
 
-            BorderPane borderPane = new BorderPane(layout);
-            borderPane.setTop(searchBar);
-            borderPane.setPadding(new Insets(10));
-            Scene scene = new Scene(borderPane);
+        BorderPane borderPane = new BorderPane(layout);
+        borderPane.setTop(searchBar);
+        borderPane.setPadding(new Insets(10));
+        Scene scene = new Scene(borderPane);
 
         searchButton.setOnAction(e->{
             try {
@@ -118,8 +118,8 @@ public class SearchFor {
         String realAttributeName = (attribute=="Age") ? "age" : (attribute=="Name") ? "name" :
                 (attribute=="KA/D Ratio") ? "KDA" : (attribute=="Nationality") ? "nationality" : attribute;
         String order = (value=="Ascending order")?"ASC":"DESC";
-    //KA/D Ratio is either KAD or KDA
-      //  List<Player> listOfPlayers = new ArrayList<Player>();
+        //KA/D Ratio is either KAD or KDA
+        //  List<Player> listOfPlayers = new ArrayList<Player>();
         Statement stmt = con.createStatement() ;
         //ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + realAttributeName + " = \'" + tf.getText() + "\'");
         ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
@@ -129,7 +129,7 @@ public class SearchFor {
             AlertBox.display("Error", "No results found");
         }
 
-
+// dont mess this up
         else {
             Player player1 = new Player();
             player1.setID(rs.getString(1));
@@ -140,12 +140,12 @@ public class SearchFor {
             player1.setGPM(rs.getFloat(6));
             player1.setKDA(rs.getFloat(7));
 
-        //    listOfPlayers.add(player1);
+            //    listOfPlayers.add(player1);
             p.add(player1);
 
-          //  System.out.println(player.returnGPM());
-           // System.out.println(player.returnAge());
-           // System.out.println(player.returnName());
+            //  System.out.println(player.returnGPM());
+            // System.out.println(player.returnAge());
+            // System.out.println(player.returnName());
 
             while (rs.next()) {
                 Player player = new Player();
@@ -157,12 +157,12 @@ public class SearchFor {
                 player.setGPM(rs.getFloat(6));
                 player.setKDA(rs.getFloat(7));
 
-             //   listOfPlayers.add(player);
+                //   listOfPlayers.add(player);
                 p.add(player);
 
-              //  System.out.println(player.returnGPM());
-              //  System.out.println(player.returnAge());
-              //  System.out.println(player.returnName());
+                //  System.out.println(player.returnGPM());
+                //  System.out.println(player.returnAge());
+                //  System.out.println(player.returnName());
 
             }
         }
