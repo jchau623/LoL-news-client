@@ -93,9 +93,9 @@ public class SearchFor {
         searchButton.setOnAction(e->{
             try {
                 if (choices.getSelectedToggle() == player) {
-                    findPlayer(connection, attributes.getValue(), order.getValue()) ;
-                    System.out.println(findPlayer(connection, attributes.getValue(), order.getValue()));
-                    SearchResults.display(findPlayer(connection, attributes.getValue(), order.getValue()));
+                    findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()) ;
+                    System.out.println(findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()));
+                    SearchResults.display(findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()));
 
                 } else if (choices.getSelectedToggle() == team) {
                     findTeam(connection, attributes.getValue(), order.getValue());
@@ -114,16 +114,25 @@ public class SearchFor {
 
     }
     // going to execute the SQL query to find the player
-    public static ArrayList<Player> findPlayer(Connection con, String attribute, String value) throws SQLException {
+    public static ArrayList<Player> findPlayer(String filter , Connection con, String attribute, String value) throws SQLException {
+
         String realAttributeName = (attribute=="Age") ? "age" : (attribute=="Name") ? "name" :
                 (attribute=="KA/D Ratio") ? "KDA" : (attribute=="Nationality") ? "nationality" : attribute;
         String order = (value=="Ascending order")?"ASC":"DESC";
-        //KA/D Ratio is either KAD or KDA
-        //  List<Player> listOfPlayers = new ArrayList<Player>();
+
+
         Statement stmt = con.createStatement() ;
-        //ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE " + realAttributeName + " = \'" + tf.getText() + "\'");
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Player WHERE summonerID = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
-        //results = rs;
+
+        ResultSet rs =
+                stmt.executeQuery(
+                                "SELECT * " +
+                                "FROM Player WHERE " +
+
+                                        filter +   //"summonerID " +
+
+                                        "= \'" + tf.getText() + "\'" +
+                                " ORDER BY " + realAttributeName + " " + order);
+
         ArrayList<Player> p = new ArrayList<Player>() ;
         if (!rs.next()) {
             AlertBox.display("Error", "No results found");
