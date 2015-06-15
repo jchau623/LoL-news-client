@@ -51,10 +51,14 @@ public class DeleteBox {
         });
 
         Button deleteUser = new Button("Delete User");
-        deleteUser.setOnAction(e->DropUser.display(con,"Delete User", "Delete user:"));
+        deleteUser.setOnAction(e-> {
+            DropUser.display(con,"Delete User", "Delete user:");
+        });
 
         Button deleteMatch = new Button("Delete Match");
-        deleteMatch.setOnAction(e->DropMatch.display(con, "Delete Match", "Enter matchID:"));
+        deleteMatch.setOnAction(e-> {
+            DropMatch.display(con, "Delete Match", "Enter matchID:");
+        });
 
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label,deleteRegion, deleteNewsItem, deletePlayer , deleteTeam , deleteMatch, deleteUser);
@@ -74,7 +78,7 @@ public class DeleteBox {
 class DropNews {
 
     static String url = new String();
-    static int rowsUpdated;
+    private static int rowsUpdated;
     private static javafx.scene.control.TextField tf;
 
     public static String display(Connection con, String title, String message) {
@@ -141,7 +145,7 @@ class DropNews {
 
 class DropPlayer {
     static String player = new String();
-    static int rowsUpdated;
+    private static int rowsUpdated;
     private static javafx.scene.control.TextField tf;
 
     public static String display(Connection con, String title, String message) {
@@ -206,7 +210,7 @@ class DropPlayer {
 class DropTeam {
 
     static String name = new String();
-    static int rowsUpdated;
+    private static int rowsUpdated;
     private static javafx.scene.control.TextField tf;
 
     public static String display(Connection con, String title, String message) {
@@ -328,7 +332,7 @@ class DropUser {static String uid = new String();
 
 class DropRegion {
     static String rname = new String();
-    static int rowsUpdated;
+    private static int rowsUpdated;
     private static javafx.scene.control.TextField tf;
 
     public static String display(Connection con, String title, String message) {
@@ -350,7 +354,7 @@ class DropRegion {
                 if (rowsUpdated == 0) {
                     AlertBox.display("Error", "No rows were updated");
                 } else {
-                    AlertBox.display("Success", "Team deleted");
+                    AlertBox.display("Success", "Region deleted");
                 }
             }
             catch (SQLException e1){
@@ -388,7 +392,6 @@ class DropRegion {
         System.out.println("testing");
 // trying a different method here
         Statement stmt = con.createStatement() ;
-        // find player is the result
         rowsUpdated = stmt.executeUpdate("DELETE  FROM Region WHERE name = \'" + returnRName() + "\'");
         stmt.execute("DELETE  FROM Region WHERE name = \'" + returnRName() + "\'");}
 
