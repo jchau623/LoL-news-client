@@ -94,7 +94,6 @@ public class SearchFor {
                   borderPane.setTop(searchBar);
                    borderPane.setPadding(new Insets(10));
                     Scene scene = new Scene(borderPane);
-        // TODO expand the search box to include the fields for the advanced search, decompress the box to get rid of advanced fields\
 
                                advanced.setOnAction(e -> {
                                         Label selectLabel = new Label("select:");
@@ -155,23 +154,21 @@ public class SearchFor {
                 }
                 else */
                 if (choices.getSelectedToggle() == player) {
-                    findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()) ;
-                    System.out.println(findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()));
                     SearchResults.display(findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()));
 
                 } else if (choices.getSelectedToggle() == team) {
                     Team seachedteam = findTeam(connection, attributes.getValue(), order.getValue());
+                    ArrayList<Player> searchedPlayers = null;
+                    if (seachedteam != null) {
+                        searchedPlayers = findPlayerFromTeam(connection, seachedteam.returnTeamName());
+                        for (int i = 0; i < searchedPlayers.size(); i++) {
+                            System.out.println(searchedPlayers.get(i).returnID());
+                        }
 
-                    System.out.print(seachedteam.returnTeamName() + "  " +  seachedteam.returnSponsor()); // this works
-
-                    ArrayList<Player> searchedPlayers = findPlayerFromTeam(connection, seachedteam.returnTeamName()) ;
-
-                    //check -- this works too, i used CounterLogicGaming , returned DoubleLift
-                    for (int i= 0 ; i < searchedPlayers.size() ; i++) {
-                        System.out.println(searchedPlayers.get(i).returnID());
+                        TeamResult.display(seachedteam, searchedPlayers);
                     }
 
-                    TeamResult.display(seachedteam ,searchedPlayers );
+                    //check -- this works too, i used CounterLogicGaming , returned DoubleLift
 
                 } else if (choices.getSelectedToggle() == region) {
                     findRegion(connection, attributes.getValue(), order.getValue());
@@ -179,7 +176,6 @@ public class SearchFor {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            window.close();
         });
 
         window.setScene(scene);
@@ -204,7 +200,7 @@ public class SearchFor {
 
                                         filter +   //"summonerID " +
 
-                                        "= \'" + tf.getText() + "\'" +
+                                        "LIKE \'%" + tf.getText() + "%\'" +
                                 " ORDER BY " + realAttributeName + " " + order);
 
         ArrayList<Player> p = new ArrayList<Player>() ;
@@ -213,6 +209,7 @@ public class SearchFor {
         }
 
 // dont mess this up
+        //TODO: BUG: It can only return one player at a time, try searching for "D" and you get "Dyrus Dyrus" instead of "Dyrus Doublelift"
         else {
             Player player1 = new Player();
             player1.setID(rs.getString(1));
@@ -248,7 +245,8 @@ public class SearchFor {
                         "losses":(attribute=="Sponsor")?"sponsor":(attribute=="Region")?"region":attribute;
         String order = (value=="Ascending order")?"ASC":"DESC";
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM TeamThatPlaysIn WHERE name = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
+        ResultSet rs = stmt.executeQuery("SELECT * FROM TeamThatPlaysIn WHERE name LIKE \'%" + tf.getText() + "%\' ORDER BY " + realAttributeName + " " + order);
+        if (!rs.next()) AlertBox.display("Error", "No results found");
         while(rs.next()) {
 
             Team team = new Team();
@@ -271,7 +269,8 @@ public class SearchFor {
         String realAttributeName = (attribute=="Acronym")?"acronym":(attribute=="Name")?"name":attribute;
         String order = (value=="Ascending order")?"ASC":"DESC";
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Region WHERE name = \'" + tf.getText() + "\' ORDER BY " + realAttributeName + " " + order);
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Region WHERE name LIKE \'%" + tf.getText() + "%\' ORDER BY " + realAttributeName + " " + order);
+        if (!rs.next()) AlertBox.display("Error", "No results found");
         while(rs.next()) {
             Region region = new Region();
             region.setRegionName(rs.getString(1));

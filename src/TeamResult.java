@@ -41,7 +41,7 @@ public class TeamResult {
         Label teamAverageBaronsLabel = new Label ("Average Barons: " + Float.toString(team.returnB()) );
 
         Label teamWinsLabel = new Label("Wins: " + Integer.toString(team.returnWins()) ) ;
-        Label teamLossesLabel = new Label("Loses: " + Integer.toString(team.returnLosses())) ;
+        Label teamLossesLabel = new Label("Losses: " + Integer.toString(team.returnLosses())) ;
         Label pLabel = new Label("Players on the Roster") ;
 
         GridPane.setConstraints(teamAcrLabel, 0, 0);

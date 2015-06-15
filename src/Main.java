@@ -280,9 +280,10 @@ public class Main extends Application{
         //Post-login: Main menu
         Text message = new Text("Logged in as:");
         Text loggedInAs = new Text(userID);
-        loggedInAs.setFont(Font.font(30));
+        loggedInAs.setFont(Font.font(40));
+
         Button button0 = new Button("Log out");
-        button0.setOnAction(e->{
+        button0.setOnAction(e -> {
             try {
                 start(login);
                 try {
@@ -295,6 +296,10 @@ public class Main extends Application{
                 e1.printStackTrace();
             }
         });
+
+        HBox userAndButton = new HBox(15);
+        userAndButton.setAlignment(Pos.CENTER);
+        userAndButton.getChildren().addAll(loggedInAs, button0);
         Button button1 = new Button("Check your feed");
         button1.setOnAction(e -> AlertBox.display("News feed", "Click button to close"));
         Button button3 = new Button("Return to desktop");
@@ -307,11 +312,9 @@ public class Main extends Application{
         });
         Button button4 = new Button("Search");
         button4.setOnAction(e -> SearchFor.display(con));
-        Button button5 = new Button("Add News");
-        button5.setOnAction(e-> AddBox.AddNewsItem.display(con, "Add News"));
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(message,loggedInAs,button0, button1, button4, button5, button3);
+        layout.getChildren().addAll(message,userAndButton, button1, button4, button3);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
