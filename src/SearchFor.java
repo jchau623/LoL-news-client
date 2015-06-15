@@ -90,6 +90,7 @@ public class SearchFor {
         borderPane.setPadding(new Insets(10));
         Scene scene = new Scene(borderPane);
 
+        //Todo must finish linking results and search  !!!
         searchButton.setOnAction(e->{
             try {
                 if (choices.getSelectedToggle() == player) {
@@ -98,7 +99,19 @@ public class SearchFor {
                     SearchResults.display(findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()));
 
                 } else if (choices.getSelectedToggle() == team) {
-                    findTeam(connection, attributes.getValue(), order.getValue());
+                    Team seachedteam = findTeam(connection, attributes.getValue(), order.getValue());
+
+                    System.out.print(seachedteam.returnTeamName() + "  " +  seachedteam.returnSponsor()); // this works
+
+                    ArrayList<Player> searchedPlayers = findPlayerFromTeam(connection, seachedteam.returnTeamName()) ;
+
+                    //check -- this works too, i used CounterLogicGaming , returned DoubleLift
+                    for (int i= 0 ; i < searchedPlayers.size() ; i++) {
+                        System.out.println(searchedPlayers.get(i).returnID());
+                    }
+
+                    TeamResult.display(seachedteam ,searchedPlayers );
+
                 } else if (choices.getSelectedToggle() == region) {
                     findRegion(connection, attributes.getValue(), order.getValue());
                 }
@@ -148,14 +161,7 @@ public class SearchFor {
             player1.setCsPerMin(rs.getFloat(5));
             player1.setGPM(rs.getFloat(6));
             player1.setKDA(rs.getFloat(7));
-
-            //    listOfPlayers.add(player1);
             p.add(player1);
-
-            //  System.out.println(player.returnGPM());
-            // System.out.println(player.returnAge());
-            // System.out.println(player.returnName());
-
             while (rs.next()) {
                 Player player = new Player();
                 player.setID(rs.getString(1));
@@ -165,26 +171,15 @@ public class SearchFor {
                 player.setCsPerMin(rs.getFloat(5));
                 player.setGPM(rs.getFloat(6));
                 player.setKDA(rs.getFloat(7));
-
-                //   listOfPlayers.add(player);
+                player.setRole(rs.getString(8));
                 p.add(player);
-
-                //  System.out.println(player.returnGPM());
-                //  System.out.println(player.returnAge());
-                //  System.out.println(player.returnName());
-
             }
         }
         return  p;
 
     }
 
-
-
-
-
-
-    public static void findTeam(Connection con, String attribute, String value) throws SQLException {
+    public static Team findTeam(Connection con, String attribute, String value) throws SQLException {
         List<Team> listOfTeams = new ArrayList<>();
         String realAttributeName = (attribute=="Name")?"name":(attribute=="Acronym")?"acronym":
                 (attribute=="Average Barons")?"averageBarons":(attribute=="Average Dragons")?
@@ -204,9 +199,10 @@ public class SearchFor {
             team.setAverageDragons(rs.getFloat(6));
             team.setAverageBarons(rs.getFloat(7));
             team.setRegion(rs.getString(8));
-            listOfTeams.add(team);
-
+            return team ;
         }
+        return null ;
+
     }
 
     public static void findRegion(Connection con, String attribute, String value) throws SQLException {
@@ -224,7 +220,30 @@ public class SearchFor {
         }
     }
 
+    public static ArrayList<Player> findPlayerFromTeam (Connection con, String teamName) throws SQLException {
 
+        ArrayList<Player> listOfPlayers = new ArrayList<Player>() ;
+        Statement stmt = con.createStatement() ;
+        ResultSet rs = stmt.executeQuery(
+                "SELECT p.summonerID, p.age, p.name, p.nationality , p.csPerMin, p.goldPerMin , p.KDA , p.role " +
+                        "FROM BelongsTo b , Player p " +
+                        "WHERE b.summonerID = p.summonerID " +
+                        "AND b.name = " + "\'" + teamName + "\'"
+        ) ;
+        while(rs.next()) {
+            Player p = new Player();
+            p.setID(rs.getString(1));
+            p.setAge(rs.getInt(2));
+            p.setName(rs.getString(3));
+            p.setNationality(rs.getString(4));
+            p.setCsPerMin(rs.getFloat(5));
+            p.setGPM(rs.getFloat(6));
+            p.setKDA(rs.getFloat(7));
+            p.setRole(rs.getString(8));
+            listOfPlayers.add(p) ;
+        }
+        return listOfPlayers ;
+    }
 
 
 

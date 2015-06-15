@@ -20,6 +20,8 @@ import java.util.Observable;
 public class TeamResult {
 
     // will be passed player objects that this class will display
+
+
     public static void display(Team team, ArrayList<Player> listOfPlayers) {
         Stage window = new Stage() ;
         window.setTitle("Team Results: " + team.returnTeamName());
