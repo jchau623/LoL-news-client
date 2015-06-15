@@ -46,7 +46,7 @@ public class AddNewsTags {
         Button done = new Button("Done Adding Tags");
         done.setOnAction(e-> {
 
-           window.close();});
+            window.close();});
 
 
         Button button = new Button("Enter");
@@ -109,7 +109,7 @@ public class AddNewsTags {
         GridPane.setConstraints(button, 2, 3);
         GridPane.setConstraints(done,0, 3);
         GridPane.setHalignment(button, HPos.RIGHT);
-        grid.getChildren().addAll( tf, textFieldLabel, player ,team,  region, button, done);
+        grid.getChildren().addAll( tf, textFieldLabel, player ,team,  region, button);
 
         Scene scene = new Scene(grid);
         window.setScene(scene);
