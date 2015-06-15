@@ -48,7 +48,7 @@ public class AddNewsTags {
         button.setOnAction(e -> {
             if (choices.getSelectedToggle()==player) {
                 try{
-                    addPlayerNews(con, player.getText(), headline, URL);
+                    addPlayerNews(con, tf.getText(), headline, URL);
                     //AlertBox.display("Success", "Region is successfully added to the database.");
                     System.out.println("player news added");
                   //  window.close();
@@ -59,11 +59,11 @@ public class AddNewsTags {
                     }
                     e1.printStackTrace();
                 }
-            }
+            }// TODO get addTeamNews and addRegionNews working. AddPlayerNews is working, but not sure why these ones aren't.
             else if (choices.getSelectedToggle()==team){
-                try{
-                    addTeamNews(con, team.getText(), headline, URL);
-                    //AlertBox.display("Success", "Region is successfully added to the database.");
+                try{System.out.println("got to addteam");
+                    addTeamNews(con, tf.getText(), headline, URL);
+
                     System.out.println("team news added");
                     //  window.close();
                 }
@@ -76,9 +76,9 @@ public class AddNewsTags {
             }}
             else if (choices.getSelectedToggle() == region){
             try{
-                addRegionNews(con, region.getText(), headline, URL);
+                addRegionNews(con, tf.getText(), headline, URL);
                 //AlertBox.display("Success", "Region is successfully added to the database.");
-                System.out.println("player news added");
+
                 //  window.close();
             }
             catch (SQLException e1){
