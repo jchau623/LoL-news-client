@@ -129,7 +129,7 @@ public class SearchFor {
             AlertBox.display("Error", "No results found");
         }
 
-// dont mess this up 
+// dont mess this up
         else {
             Player player1 = new Player();
             player1.setID(rs.getString(1));

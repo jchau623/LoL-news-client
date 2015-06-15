@@ -2,12 +2,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -51,8 +53,13 @@ public class TeamResult {
 
         for (int i = 0 ;  i < listOfPlayers.size() ; i++ ) {
             Player p = listOfPlayers.get(i) ;
-            Label teamPlayerLabel = new Label(p.returnID()) ;
-            GridPane.setConstraints(teamPlayerLabel, 1, (i + 1));
+            Button teamPlayerButton = new Button(p.returnID()) ;
+            GridPane.setConstraints(teamPlayerButton, 1 , (i+1));
+
+           teamPlayerButton.setOnAction(
+                    e->PlayerResult.display(p)
+            );
+
         };
 
         Scene scene = new Scene(grid) ;
