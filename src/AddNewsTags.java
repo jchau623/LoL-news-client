@@ -43,15 +43,19 @@ public class AddNewsTags {
         player.setSelected(true);
         Label textFieldLabel = new Label("Add Tag:");
         TextField tf = new TextField();
+        Button done = new Button("Done Adding Tags");
+        done.setOnAction(e-> {
+
+           window.close();});
+
 
         Button button = new Button("Enter");
         button.setOnAction(e -> {
             if (choices.getSelectedToggle()==player) {
                 try{
-                    addPlayerNews(con, player.getText(), headline, URL);
-                    //AlertBox.display("Success", "Region is successfully added to the database.");
-                    System.out.println("player news added");
-                  //  window.close();
+                    addPlayerNews(con, tf.getText(), headline, URL);
+
+                    AlertBox.display("Success", "PlayerNewsTag is successfully added to the database.");                 //  window.close();
                 }
                 catch (SQLException e1){
                     if (e1.getErrorCode()==1) {
@@ -59,12 +63,12 @@ public class AddNewsTags {
                     }
                     e1.printStackTrace();
                 }
-            }
+            }// TODO get addTeamNews and addRegionNews working. AddPlayerNews is working, but not sure why these ones aren't.
             else if (choices.getSelectedToggle()==team){
                 try{
-                    addTeamNews(con, team.getText(), headline, URL);
-                    //AlertBox.display("Success", "Region is successfully added to the database.");
-                    System.out.println("team news added");
+                    addTeamNews(con, tf.getText(), headline, URL);
+
+                    AlertBox.display("Success", "TeamNewsTag is successfully added to the database.");
                     //  window.close();
                 }
                 catch (SQLException e1){
@@ -76,9 +80,10 @@ public class AddNewsTags {
             }}
             else if (choices.getSelectedToggle() == region){
             try{
-                addRegionNews(con, region.getText(), headline, URL);
-                //AlertBox.display("Success", "Region is successfully added to the database.");
-                System.out.println("player news added");
+
+                addRegionNews(con, tf.getText(), headline, URL);
+                AlertBox.display("Success", "RegionNewsTag is successfully added to the database.");
+
                 //  window.close();
             }
             catch (SQLException e1){
@@ -102,8 +107,9 @@ public class AddNewsTags {
         GridPane.setConstraints(region, 1, 1);
         GridPane.setConstraints(tf, 1, 2);
         GridPane.setConstraints(button, 2, 3);
+        GridPane.setConstraints(done,0, 3);
         GridPane.setHalignment(button, HPos.RIGHT);
-        grid.getChildren().addAll( tf, textFieldLabel, player ,team,  region, button);
+        grid.getChildren().addAll( tf, textFieldLabel, player ,team,  region, button, done);
 
         Scene scene = new Scene(grid);
         window.setScene(scene);
@@ -135,11 +141,11 @@ public class AddNewsTags {
         update.setString(1, text);
         update.setString(2, headline);
         update.setString(3, url);
-        update.executeUpdate();}
+        update.executeUpdate();
 
 
 
 
 
 
-}
+}}
