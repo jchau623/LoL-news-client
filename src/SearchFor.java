@@ -178,12 +178,6 @@ public class SearchFor {
 
     }
 
-
-
-
-
-
-
     // going to execute the SQL query to find the player
     public static ArrayList<Player> findPlayer(Connection con, String attribute, String value) throws SQLException {
         String realAttributeName = (attribute=="Age") ? "age" : (attribute=="Name") ? "name" :
