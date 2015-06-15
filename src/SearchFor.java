@@ -204,22 +204,11 @@ public class SearchFor {
                                 " ORDER BY " + realAttributeName + " " + order);
 
         ArrayList<Player> p = new ArrayList<Player>() ;
-        if (!rs.next()) {
+        if (!rs.isBeforeFirst()) {
             AlertBox.display("Error", "No results found");
         }
 
-// dont mess this up
-        //TODO: BUG: It can only return one player at a time, try searching for "D" and you get "Dyrus Dyrus" instead of "Dyrus Doublelift"
         else {
-            Player player1 = new Player();
-            player1.setID(rs.getString(1));
-            player1.setAge(rs.getInt(2));
-            player1.setName(rs.getString(3));
-            player1.setNationality(rs.getString(4));
-            player1.setCsPerMin(rs.getFloat(5));
-            player1.setGPM(rs.getFloat(6));
-            player1.setKDA(rs.getFloat(7));
-            p.add(player1);
             while (rs.next()) {
                 Player player = new Player();
                 player.setID(rs.getString(1));
@@ -230,6 +219,7 @@ public class SearchFor {
                 player.setGPM(rs.getFloat(6));
                 player.setKDA(rs.getFloat(7));
                 player.setRole(rs.getString(8));
+                System.out.println(player.returnID());
                 p.add(player);
             }
         }
@@ -246,9 +236,11 @@ public class SearchFor {
         String order = (value=="Ascending order")?"ASC":"DESC";
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM TeamThatPlaysIn WHERE name LIKE \'%" + tf.getText() + "%\' ORDER BY " + realAttributeName + " " + order);
-        if (!rs.next()) AlertBox.display("Error", "No results found");
+        if (!rs.isBeforeFirst()) {
+            //System.out.println("TEST");
+            AlertBox.display("Error", "No results found");
+        }
         while(rs.next()) {
-
             Team team = new Team();
             team.setTeamName(rs.getString(1));
             team.setWins(rs.getInt(2));
