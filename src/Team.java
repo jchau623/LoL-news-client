@@ -5,14 +5,14 @@
  */
 public class Team {
 
-    public static String teamName ;
-    public static int wins;
-    public static int losses;
-    public static String sponsor;
-    public static String acronym;
-    public static Float averageDragons;
-    public static Float averageBarons;
-    public static String region;
+    public  String teamName ;
+    public  int wins;
+    public  int losses;
+    public  String sponsor;
+    public  String acronym;
+    public  Float averageDragons;
+    public  Float averageBarons;
+    public  String region;
 
     public String returnTeamName() {
         return teamName;
@@ -22,40 +22,40 @@ public class Team {
         return wins ;
     }
 
-    public static void setTeamName(String teamName) {
-        Team.teamName = teamName;
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 
-    public static void setWins(int wins) {
-        Team.wins = wins;
+    public void setWins(int wins) {
+        this.wins = wins;
     }
 
-    public static void setLosses(int losses) {
-        Team.losses = losses;
+    public void setLosses(int losses) {
+        this.losses = losses;
     }
 
-    public static void setSponsor(String sponsor) {
-        Team.sponsor = sponsor;
+    public void setSponsor(String sponsor) {
+        this.sponsor = sponsor;
     }
 
-    public static void setAcronym(String acronym) {
-        Team.acronym = acronym;
+    public void setAcronym(String acronym) {
+        this.acronym = acronym;
     }
 
-    public static void setAverageDragons(Float averageDragons) {
-        Team.averageDragons = averageDragons;
+    public void setAverageDragons(Float averageDragons) {
+        this.averageDragons = averageDragons;
     }
 
-    public static void setAverageBarons(Float averageBarons) {
-        Team.averageBarons = averageBarons;
+    public void setAverageBarons(Float averageBarons) {
+        this.averageBarons = averageBarons;
     }
 
     public int returnLosses(){
         return losses ;
     }
 
-    public static void setRegion(String region) {
-        Team.region = region;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String returnSponsor(){
