@@ -154,18 +154,12 @@ public class SearchFor {
                 }
                 else */
                 if (choices.getSelectedToggle() == player) {
-                    SearchResults.display(user, con, findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()));
+                    SearchResults.display(user, con, findPlayer("summonerID ", connection, attributes.getValue(), order.getValue()));
 
                 } else if (choices.getSelectedToggle() == team) {
                     ArrayList<Team> seachedteam = findTeam(connection, attributes.getValue(), order.getValue());
                    // TeamListView.display(seachedteam);
-
-
                     ArrayList<Player> searchedPlayers = null;
-
-
-
-
                     if (seachedteam != null) {
                   //      searchedPlayers = findPlayerFromTeam(connection, seachedteam.returnTeamName());
                         TeamListView.display(user, connection, seachedteam);
