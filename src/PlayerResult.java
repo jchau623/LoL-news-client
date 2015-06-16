@@ -28,6 +28,7 @@ public class PlayerResult {
         Button followButton = new Button("(+) Follow");
         followButton.setOnAction(e -> {
             try {
+                System.out.println(user);
                 Following.followPlayer(con, user, player.returnID());
             } catch (SQLException e1) {
                 if(e1.getErrorCode() == 1)
