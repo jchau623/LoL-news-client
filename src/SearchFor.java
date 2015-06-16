@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -157,21 +158,35 @@ public class SearchFor {
                     SearchResults.display(findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()));
 
                 } else if (choices.getSelectedToggle() == team) {
-                    Team seachedteam = findTeam(connection, attributes.getValue(), order.getValue());
+                    ArrayList<Team> seachedteam = findTeam(connection, attributes.getValue(), order.getValue());
+                   // TeamListView.display(seachedteam);
+
+
                     ArrayList<Player> searchedPlayers = null;
+
+
+
+
                     if (seachedteam != null) {
-                        searchedPlayers = findPlayerFromTeam(connection, seachedteam.returnTeamName());
-                        for (int i = 0; i < searchedPlayers.size(); i++) {
-                            System.out.println(searchedPlayers.get(i).returnID());
-                        }
+                  //      searchedPlayers = findPlayerFromTeam(connection, seachedteam.returnTeamName());
+                        TeamListView.display(connection, seachedteam);
 
-                        TeamResult.display(seachedteam, searchedPlayers);
+                        //for (int i = 0; i < searchedPlayers.size(); i++) {
+                         //   System.out.println(searchedPlayers.get(i).returnID());
+                      //  }
+
+                       // TeamResult.display(seachedteam, searchedPlayers);
                     }
-
                     //check -- this works too, i used CounterLogicGaming , returned DoubleLift
 
                 } else if (choices.getSelectedToggle() == region) {
-                    findRegion(connection, attributes.getValue(), order.getValue());
+                   ArrayList<Region> searchedRegion =  findRegion(connection, attributes.getValue(), order.getValue());
+                   //System.out.println(searchedRegion.get(0).getRegionName());
+
+                    RegionListResult.display(connection, searchedRegion);
+
+
+
                 }
             } catch (SQLException e1) {
                 e1.printStackTrace();
@@ -224,10 +239,9 @@ public class SearchFor {
             }
         }
         return  p;
-
     }
 
-    public static Team findTeam(Connection con, String attribute, String value) throws SQLException {
+    public static ArrayList<Team> findTeam(Connection con, String attribute, String value) throws SQLException {
         List<Team> listOfTeams = new ArrayList<>();
         String realAttributeName = (attribute=="Name")?"name":(attribute=="Acronym")?"acronym":
                 (attribute=="Average Barons")?"averageBarons":(attribute=="Average Dragons")?
@@ -236,6 +250,8 @@ public class SearchFor {
         String order = (value=="Ascending order")?"ASC":"DESC";
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM TeamThatPlaysIn WHERE name LIKE \'%" + tf.getText() + "%\' ORDER BY " + realAttributeName + " " + order);
+        ArrayList<Team> searchedTeams = new ArrayList<Team>() ;
+
         if (!rs.isBeforeFirst()) {
             //System.out.println("TEST");
             AlertBox.display("Error", "No results found");
@@ -250,26 +266,37 @@ public class SearchFor {
             team.setAverageDragons(rs.getFloat(6));
             team.setAverageBarons(rs.getFloat(7));
             team.setRegion(rs.getString(8));
-            return team ;
+            searchedTeams.add(team);
         }
-        return null ;
+        return searchedTeams;
 
     }
 
-    public static void findRegion(Connection con, String attribute, String value) throws SQLException {
-        List<Region> listofRegions = new ArrayList<>();
+    public static ArrayList<Region> findRegion(Connection con, String attribute, String value) throws SQLException {
+        ArrayList<Region> listofRegions = new ArrayList<>();
         String realAttributeName = (attribute=="Acronym")?"acronym":(attribute=="Name")?"name":attribute;
         String order = (value=="Ascending order")?"ASC":"DESC";
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Region WHERE name LIKE \'%" + tf.getText() + "%\' ORDER BY " + realAttributeName + " " + order);
-        if (!rs.next()) AlertBox.display("Error", "No results found");
+        ResultSet rs = stmt.executeQuery
+                ("SELECT * " +
+                        "FROM Region" +
+                        " WHERE name LIKE \'%" + tf.getText() + "%\' " +
+                        "ORDER BY " + realAttributeName + " " + order);
+
+
+
+
+        if(!rs.isBeforeFirst()){AlertBox.display("Error", "No results found");} ;
         while(rs.next()) {
             Region region = new Region();
             region.setRegionName(rs.getString(1));
             region.setAcronym(rs.getString(2));
+
+            listofRegions.add(region);
             System.out.println(region.getAcronym());
             System.out.println(region.getRegionName());
         }
+        return listofRegions;
     }
 
     public static ArrayList<Player> findPlayerFromTeam (Connection con, String teamName) throws SQLException {
