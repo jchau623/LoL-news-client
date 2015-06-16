@@ -323,7 +323,7 @@ public class Main extends Application {
             }
         });
         Button button4 = new Button("Search");
-        button4.setOnAction(e -> SearchFor.display(con, user));
+        button4.setOnAction(e -> SearchFor.display(con, userID));
 
         VBox layout = new VBox(20);
         layout.getChildren().addAll(message, userAndButton, button1, button4, button3);

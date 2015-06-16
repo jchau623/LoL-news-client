@@ -12,12 +12,16 @@ public class Following {
     // if you search for a player/team/region, there will be a button on the results window that calls followplayer/followteam/followregion
 
 public static void followPlayer(Connection con, String uid, String summonerID) throws SQLException {
+
+
+
+
     String addN = "INSERT INTO FollowListHasPlayer VALUES ( ?, ?)";
     PreparedStatement update = con.prepareStatement(addN);
     update.setString(1, uid);
     update.setString(2, summonerID);
     update.executeUpdate();
-
+   System.out.print("Finished");
     AlertBox.display("Success",  uid + " successfully followed "+ summonerID);
 }
 

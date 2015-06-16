@@ -25,6 +25,7 @@ public class SearchFor {
 
 
     public static void display(Connection con, String user) {
+        System.out.println(user);
         Connection connection = con;
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
