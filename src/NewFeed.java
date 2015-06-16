@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class NewFeed {
     @FXML
     static ObservableList<String> headlines;
+
     @FXML
     public static void display(Connection con, String user) {
         Stage window = new Stage();
@@ -33,9 +34,9 @@ public class NewFeed {
         ArrayList<News> playerNews = getPlayerNews(con, user);
         ArrayList<News> teamNews = getTeamNews(con, user);
         ArrayList<News> regionNews = getRegionNews(con, user);
-        if (!(playerNews==null)) news.addAll(playerNews);
-        if (!(teamNews==null)) news.addAll(teamNews);
-        if (!(regionNews==null)) news.addAll(regionNews);
+        if (!(playerNews == null)) news.addAll(playerNews);
+        if (!(teamNews == null)) news.addAll(teamNews);
+        if (!(regionNews == null)) news.addAll(regionNews);
 
         for (News news1 : news) {
             headlines.add(news1.getHeadline());
@@ -54,8 +55,8 @@ public class NewFeed {
             try {
                 Statement getPlayerURL = con.createStatement();
                 ResultSet playerRS = getPlayerURL.executeQuery("SELECT url FROM PlayerNews WHERE headline = '" + newValue + "'");
-                if(playerRS.next()) {
-                        Browser.display(newValue, playerRS.getString(1));
+                if (playerRS.next()) {
+                    Browser.display(newValue, playerRS.getString(1));
                 } else {
                     Statement getTeamURL = con.createStatement();
                     ResultSet teamRS = getTeamURL.executeQuery("SELECT url FROM TeamNews WHERE headline = '" + newValue + "'");
@@ -85,8 +86,8 @@ public class NewFeed {
             ResultSet playerNewsResultSet = playerNews.executeQuery(
 
                     "SELECT p.headline, p.url " +
-                    "FROM PlayerNews p, FollowListHasPlayer f " +
-                    "WHERE f.user_id = '" + user + "' AND f.summonerID = p.summonerID");
+                            "FROM PlayerNews p, FollowListHasPlayer f " +
+                            "WHERE f.user_id = '" + user + "' AND f.summonerID = p.summonerID");
 
 
             ArrayList<News> newsList = new ArrayList<>();
@@ -106,6 +107,7 @@ public class NewFeed {
         }
         return null;
     }
+
     private static ArrayList<News> getTeamNews(Connection con, String user) {
         try {
             Statement teamNews = con.createStatement();
@@ -130,24 +132,28 @@ public class NewFeed {
         }
         return null;
     }
+
     private static ArrayList<News> getRegionNews(Connection con, String user) {
         try {
             Statement regionNews = con.createStatement();
-            ResultSet regionNewsResultSet = regionNews.executeQuery("SELECT rn.headline, rn.url " +
-                    "FROM RegionNews rn, FollowListHasRegion f " +
-                    "WHERE f.user_id = '" + user + "' AND f.name = rn.name");
+            ResultSet regionNewsResultSet = regionNews.executeQuery(
+                    "SELECT rn.headline, rn.url " +
+                            "FROM RegionNews rn, FollowListHasRegion f " +
+                            "WHERE f.user_id = '" + user + "' AND f.name = rn.name");
             ArrayList<News> newsList = new ArrayList<>();
             if (regionNewsResultSet.isBeforeFirst()) {
                 while (regionNewsResultSet.next()) {
                     News news = new News();
                     news.setHeadline(regionNewsResultSet.getString("headline"));
                     news.setURL(regionNewsResultSet.getString("url"));
+                    newsList.add(news);
                 }
-}
+                return newsList;
+            }
         } catch (SQLException e) {
-        e.printStackTrace();
+            e.printStackTrace();
         }
 
         return null;
-        }
-        }
+    }
+}

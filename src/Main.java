@@ -174,7 +174,7 @@ public class Main extends Application {
         login.show();
     }
 
-    private void adminMenu(String userID, String userState) {
+    private void adminMenu(String userID, String userState) throws SQLException {
         window = new Stage();
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
@@ -248,6 +248,14 @@ public class Main extends Application {
         window.setTitle("LOLNews (" + userState + ")");
         window.setScene(scene1);
         window.show();
+
+        if(!getAllUsers(con).contains(userID)){
+            String addR = "INSERT INTO FollowList VALUES (?)";
+            PreparedStatement update = con.prepareStatement(addR);
+            update.setString(1, userID);
+            update.executeUpdate();
+        }
+
     }
 
     private void closeProgram(Stage stage) throws SQLException {

@@ -77,8 +77,11 @@ public class RegionResults {
         followButton.setOnAction(e -> {
             try {
                 Following.followRegion(con, user, rName);
+
             } catch (SQLException e1) {
-                e1.printStackTrace();
+                if(e1.getErrorCode() == 1)
+                    AlertBox.display("Error", "You are already following this region");
+                System.out.println(e1);
             }
         });
 

@@ -13,9 +13,6 @@ public class Following {
 
 public static void followPlayer(Connection con, String uid, String summonerID) throws SQLException {
 
-
-
-
     String addN = "INSERT INTO FollowListHasPlayer VALUES ( ?, ?)";
     PreparedStatement update = con.prepareStatement(addN);
     update.setString(1, uid);
