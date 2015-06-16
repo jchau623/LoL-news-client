@@ -24,6 +24,7 @@ public class ChampPool {
         window.setTitle("Champion Pool");
         champs = FXCollections.observableArrayList();
 
+        ListView<String> champList = null;
         try {
             Statement getPool = con.createStatement();
             ResultSet gprs = getPool.executeQuery("SELECT cname FROM HasPlayed WHERE summonerID = '" + summonerID + "'");
@@ -32,23 +33,26 @@ public class ChampPool {
             } else {
                 while (gprs.next()) {
                     champs.add(gprs.getString("cname"));
+                    champList = new ListView<>();
+                    champList.setItems(champs);
+                    champList.setPrefHeight(400);
+                    champList.setPrefWidth(150);
                 }
+                champList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    DisplayChamp.display(con, newValue);
+                });
+                Scene scene = new Scene(champList);
+                window.setScene(scene);
+                window.showAndWait();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        ListView<String> champList = new ListView<>();
-        champList.setItems(champs);
-        champList.setPrefHeight(400);
-        champList.setPrefWidth(150);
-        champList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
-        });
 
-        Scene scene = new Scene(champList);
-        window.setScene(scene);
-        window.showAndWait();
 
     }
+
+
 }
