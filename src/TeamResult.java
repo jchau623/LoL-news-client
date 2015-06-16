@@ -27,7 +27,6 @@ public class TeamResult {
     public static void display(Team team, ArrayList<Player> listOfPlayers) {
         Stage window = new Stage() ;
         window.setTitle("Team Results: " + team.returnTeamName());
-
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));
         grid.setVgap(5);
@@ -44,6 +43,8 @@ public class TeamResult {
         Label teamLossesLabel = new Label("Losses: " + Integer.toString(team.returnLosses())) ;
         Label pLabel = new Label("Players on the Roster") ;
 
+        Button followButton = new Button("(+) Follow") ;
+
         GridPane.setConstraints(teamAcrLabel, 0, 0);
         GridPane.setConstraints(teamRegionLabel, 0, 1);
         GridPane.setConstraints(teamSponsorLabel, 0 , 2);
@@ -51,13 +52,14 @@ public class TeamResult {
         GridPane.setConstraints(teamAverageDragonsLabel, 0,4);
         GridPane.setConstraints(teamWinsLabel,0,5);
         GridPane.setConstraints(teamLossesLabel, 0,6);
+        GridPane.setConstraints(followButton, 0 , 7);
 
         // intentionally left out a row to give space
         GridPane.setConstraints(pLabel, 1 , 0);
 
 
         grid.getChildren().addAll(teamAcrLabel, teamAverageBaronsLabel,teamAverageDragonsLabel,
-                teamLossesLabel,teamRegionLabel,teamSponsorLabel,teamWinsLabel);
+                teamLossesLabel,teamRegionLabel,teamSponsorLabel,teamWinsLabel, followButton);
 
 
         for (int i = 0 ;  i < listOfPlayers.size() ; i++ ) {
@@ -71,11 +73,15 @@ public class TeamResult {
 
         };
 
+        // action for follow Button
+       // followButton.setOnAction( e->);
+
 
 
 
         Scene scene = new Scene(grid) ;
         window.setScene(scene);
+        window.setResizable(false);
         window.showAndWait();
     }
 

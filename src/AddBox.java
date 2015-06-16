@@ -68,10 +68,7 @@ public class AddBox {
             AddNewsItem.display(con, "Add News Item");
         });
         Button addMatch = new Button("Add Match");
-        addMatch.setOnAction(e -> {
-            System.out.println("clicked the button");
-            AddMatch.display(con, "Add Match");
-        });
+        addMatch.setOnAction(e -> AddMatch.display(con, "Add Match"));
 
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label, addRegion, addChampion, addMatch, addNewsItem, addPlayer, addTeam);
@@ -642,25 +639,27 @@ public class AddBox {
      * Created by Justin on 6/10/2015.
      */
     public static class AddMatch {
-
         public static void display(Connection con , String title) {
-
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
             window.setTitle(title);
             window.setMinWidth(100);
             Button button = new Button("Enter");
-
+            button.setOnAction(e -> {
+                window.close();
+            });
 
             Label totalKillsLabel = new Label("Total Kills:");
             Label redNumberofBaronsLabel = new Label("Red Team # of Barons:");
             Label redNumberofDragonsLabel = new Label("Red Team # of Dragons:");
-            Label blueNumberofBaronsLabel = new Label("Blue Team # of Barons:");
-            Label blueNumberofDragonsLabel = new Label("Blue Team # of Dragons:");
+            Label blueNumberofBaronsLabel = new Label("Red Team # of Barons:");
+            Label blueNumberofDragonsLabel = new Label("Red Team # of Dragons:");
             Label timeLabel = new Label("Duration (MM:SS):");
+            Label matchIDLabel = new Label("Match ID:");
             Label totalGoldLabel = new Label("Total Gold:");
             Label redNameLabel = new Label(" Team:"); Text red = new Text("Red"); red.setFill(Color.RED);
             Label blueNameLabel = new Label(" Team:"); Text blue = new Text("Blue"); blue.setFill(Color.BLUE);
+            Label datePlayedLabel = new Label("Date: (YYYYMMDD"); //format to be determined
             Label winnerLabel = new Label("Winner:");
 
             TextField totalKills = new TextField();
@@ -669,21 +668,12 @@ public class AddBox {
             TextField blueNumberofDragons = new TextField();
             TextField redNumberofDragons = new TextField();
             TextField time = new TextField();
+            TextField matchID = new TextField();
             TextField totalGold = new TextField();
             TextField redName = new TextField();
             TextField blueName = new TextField();
+            TextField datePlayed = new TextField();
             TextField winner = new TextField();
-
-            button.setOnAction(e -> {
-                try {
-                    addMatch(con, redName, blueName, winner, totalKills, redNumberofBarons, redNumberofDragons, blueNumberofBarons, blueNumberofDragons, time, totalGold);
-                    AlertBox.display("Success", "Match is successfully added to the database.");
-                    window.close();
-                } catch (SQLException e1) {
-                    System.out.println(e1);
-                }
-            });
-
 
             HBox redHBox = new HBox(0);
             HBox blueHBox = new HBox(0);
@@ -708,61 +698,28 @@ public class AddBox {
             GridPane.setConstraints(winnerLabel,0,5);
             GridPane.setConstraints(timeLabel, 0, 6);
             GridPane.setConstraints(time, 1, 6);
-            GridPane.setConstraints(totalGoldLabel, 0, 7);
-            GridPane.setConstraints(totalGold, 1, 7);
-            GridPane.setConstraints(redHBox, 0, 8);
-            GridPane.setConstraints(redName, 1, 8);
-            GridPane.setConstraints(blueHBox, 0, 9);
-            GridPane.setConstraints(blueName, 1, 9);
-            GridPane.setConstraints(button, 1, 10);
+            GridPane.setConstraints(matchIDLabel, 0, 7);
+            GridPane.setConstraints(matchID, 1, 7);
+            GridPane.setConstraints(totalGoldLabel, 0, 8);
+            GridPane.setConstraints(totalGold, 1, 8);
+            GridPane.setConstraints(redHBox, 0, 9);
+            GridPane.setConstraints(redName, 1, 9);
+            GridPane.setConstraints(blueHBox, 0, 10);
+            GridPane.setConstraints(blueName, 1, 10);
+            GridPane.setConstraints(datePlayedLabel, 0, 11);
+            GridPane.setConstraints(datePlayed, 1, 11);
+            GridPane.setConstraints(button, 1, 12);
             GridPane.setHalignment(button, HPos.RIGHT);
-            grid.getChildren().addAll(totalKillsLabel, totalKills, redNumberofBarons, redNumberofBaronsLabel, redNumberofDragons, redNumberofDragonsLabel,
-                    blueNumberofBaronsLabel, blueNumberofBarons, blueNumberofDragonsLabel, blueNumberofDragons, timeLabel, time, totalGoldLabel, totalGold, redHBox, redName, blueHBox, blueName, winnerLabel, winner, button);
+            grid.getChildren().addAll(totalKillsLabel, totalKills, redNumberofBarons, redNumberofBaronsLabel, redNumberofDragons, redNumberofDragonsLabel, timeLabel, time, matchIDLabel, matchID, totalGoldLabel, totalGold, redHBox, redName, blueHBox, blueName, datePlayedLabel, datePlayed, button);
 
             Scene scene = new Scene(grid);
             window.setScene(scene);
             window.showAndWait();
-           System.out.println("got to the end of display");
-        }
-
-
-        private static void addMatch(Connection con, TextField redName, TextField blueName, TextField winner,
-                                     TextField totalKills, TextField redNumberofBarons, TextField redNumberofDragons,
-                                     TextField blueNumberofBarons, TextField blueNumberofDragons, TextField time, TextField totalGold) throws SQLException {
-            java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
-            String addM = "INSERT INTO Match VALUES ( ?, ?, ?,?,?,?,?,?,?,?,?,?)";
-            PreparedStatement update = con.prepareStatement(addM);
-            update.setInt(1, Integer.parseInt(totalKills.getText()));
-
-            update.setInt(2, Integer.parseInt(redNumberofBarons.getText()));
-            update.setInt(3, Integer.parseInt(redNumberofDragons.getText()));
-            update.setInt(4, Integer.parseInt(blueNumberofBarons.getText()));
-            update.setInt(5, Integer.parseInt(blueNumberofDragons.getText()));
-            update.setString(6, time.getText());
-            update.setInt(7, getMatchID(con));
-            update.setInt(8,Integer.parseInt(totalGold.getText()));
-            update.setString(9,redName.getText());
-            update.setString(10,blueName.getText());
-            update.setDate(11, sqlDate);
-            update.setString(12, winner.getText());
-            update.executeUpdate();
-
 
         }
-        static Statement stmt = null;
-        private static int getMatchID(Connection con) throws SQLException {
-            int count = 0;
-           stmt = con.createStatement();
-          ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM MATCH");
+    }
 
-
-            while (rs.next()) {
-                    count = rs.getInt("total");
-            }
-            return count;
-        }}
-
-        /**
+    /**
      * Created by jch on 09/06/15.
      */
     public static class AddChampion {

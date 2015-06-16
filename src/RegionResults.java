@@ -1,4 +1,5 @@
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -19,9 +20,15 @@ public class RegionResults {
 
         Statement stmt = con.createStatement();
         ArrayList<Team> listOfTeams = new ArrayList<Team>() ;
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Team WHERE region = \'" + regionName + "\'");
+        ResultSet rs = stmt.executeQuery
+                ("SELECT * " +
+                        "FROM TeamThatPlaysIn " +
+                        "WHERE rname = \'" + regionName + "\'");
+
+        if(!rs.isBeforeFirst()){AlertBox.display("Error", "No teams in selected region");} ;
         while (rs.next()) {
             Team team = new Team();
+
             team.setTeamName(rs.getString(1));
             team.setWins(rs.getInt(2));
             team.setLosses(rs.getInt(3));
@@ -30,14 +37,16 @@ public class RegionResults {
             team.setAverageDragons(rs.getFloat(6));
             team.setAverageBarons(rs.getFloat(7));
             team.setRegion(rs.getString(8));
+
             listOfTeams.add(team);
         }
-        createWindow (regionName, listOfTeams) ;
+        createWindow (con , regionName, listOfTeams) ;
 
     }
 
-    private static void createWindow(String rName , ArrayList<Team> teamlist) {
+    private static void createWindow(Connection con , String rName , ArrayList<Team> teamlist) {
         Stage window = new Stage();
+        window.setTitle(rName);
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));
         grid.setVgap(5);
@@ -51,6 +60,27 @@ public class RegionResults {
             Team t = teamlist.get(i) ;
             Button teamButton = new Button(t.returnTeamName()) ;
             GridPane.setConstraints(teamButton, 0 , (i +1));
+            grid.getChildren().add(teamButton);
+
+            teamButton.setOnAction(event -> {
+                        try {
+                            ArrayList<Player> searchedPlayers =  SearchFor.findPlayerFromTeam(con, t.returnTeamName()) ;
+                            TeamResult.display(t, searchedPlayers);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+            );
         }
+
+        Button followButton = new Button("(+) Follow") ;
+        GridPane.setConstraints(followButton,1,0);
+        grid.getChildren().add(followButton);
+
+
+        window.setResizable(false);
+        Scene scene = new Scene(grid) ;
+        window.setScene(scene);
+        window.showAndWait();
     }
 }
