@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by jch on 15/06/15.
  */
-public class NewFeed {
+public class NewsFeed {
     @FXML
     static ObservableList<String> headlines;
 

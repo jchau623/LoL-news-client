@@ -216,7 +216,7 @@ public class Main extends Application {
         userAndButton.getChildren().addAll(loggedInAs, button0);
 
         Button button1 = new Button("Check your feed");
-        button1.setOnAction(e -> NewFeed.display(con, userID) ) ;
+        button1.setOnAction(e -> NewsFeed.display(con, userID) ) ;
 
 
         Button button2 = new Button("Add Something");
@@ -321,7 +321,7 @@ public class Main extends Application {
         userAndButton.setAlignment(Pos.CENTER);
         userAndButton.getChildren().addAll(loggedInAs, button0);
         Button button1 = new Button("Check your feed");
-        button1.setOnAction(e -> NewFeed.display(con, userID));
+        button1.setOnAction(e -> NewsFeed.display(con, userID));
         Button button3 = new Button("Return to desktop");
         button3.setOnAction(e -> {
             try {
