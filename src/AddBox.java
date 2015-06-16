@@ -677,6 +677,8 @@ public class AddBox {
             button.setOnAction(e -> {
                 try {
                     addMatch(con, redName, blueName, winner, totalKills, redNumberofBarons, redNumberofDragons, blueNumberofBarons, blueNumberofDragons, time, totalGold);
+                    AlertBox.display("Success", "Match is successfully added to the database.");
+                    window.close();
                 } catch (SQLException e1) {
                     System.out.println(e1);
                 }
