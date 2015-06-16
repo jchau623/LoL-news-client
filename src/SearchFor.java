@@ -23,7 +23,7 @@ public class SearchFor {
     private static TextField tf = new TextField();
     private static Label askReturn;
 
-
+//TODO FIX ADVANCED SEARCH SPACING, PLS JUSTIN SENPAI, I DON'T KNOW HOW TO DO IT QQ 
     public static void display(Connection con, String user) {
         System.out.println(user);
         Connection connection = con;
@@ -77,7 +77,7 @@ public class SearchFor {
             attributes.getItems().clear();
             attributes.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
         });
-        region.setOnAction(e->{
+        region.setOnAction(e -> {
             askReturn.setText("Return Region sorted by:");
             attributes.getItems().clear();
             attributes.getItems().addAll("Acronym", "Name");
@@ -98,96 +98,47 @@ public class SearchFor {
 
                                advanced.setOnAction(e -> {
                                    if(choices.getSelectedToggle() == player){
-                                        Label selectLabel = new Label("select:");
-                                        ChoiceBox<String> select = new ChoiceBox<>();
-                                       select.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
-                                        Label whereLabel = new Label("Where");
-                                        ChoiceBox<String> whereAttributes = new ChoiceBox<>();
-                                        whereAttributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
-                                        ChoiceBox<String> condition = new ChoiceBox<>();
-                                        condition.getItems().addAll("=", "<", ">", "<>");
-                                       TextField condition2 = new TextField();
-                                        condition2.setMinWidth(100);
-
-                                   ChoiceBox<String> select1 = new ChoiceBox<>();
-                                   select1.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
-
-                                   ChoiceBox<String> select2 = new ChoiceBox<>();
-                                   select2.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
-
-                                   ChoiceBox<String> select3 = new ChoiceBox<>();
-                                   select3.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
-
-                                        GridPane.setConstraints(selectLabel, 1, 7);
-                                        GridPane.setConstraints(select1,2,7);
-                                         GridPane.setConstraints(select2,3,7);
-                                         GridPane.setConstraints(select3,4,7);
-                                        GridPane.setConstraints(whereLabel ,1,8 );
-                                        GridPane.setConstraints(whereAttributes, 2, 8);
-                                        GridPane.setConstraints(condition, 3, 8);
-                                        GridPane.setConstraints(condition2, 4, 8);
-                                       if (advanced.isSelected() && choices.getSelectedToggle() == player) {
-                                                GridPane layout3 = new GridPane();
-                                                layout3.setVgap(5);
-                                               layout3.setPadding(new Insets(10));
-                                                layout3.getChildren().addAll(selectCategories, player, team, region, advanced, askReturn, attributes, in, order, selectLabel,select1,select2,select3, whereLabel, whereAttributes, condition, condition2);
-                                                layout.setAlignment(Pos.TOP_CENTER);
-                                                BorderPane borderPane2 = new BorderPane(layout3);
-                                                borderPane2.setTop(searchBar);
-                                                borderPane2.setPadding(new Insets(10));
-                                                Scene scene2 = new Scene(borderPane2);
-                                                window.setScene(scene2);
-                                            }
-                                       if (!advanced.isSelected()) {
-                                                GridPane layout2 = new GridPane();
-                                                layout2.setVgap(5);
-                                                layout2.setPadding(new Insets(10));
-                                                layout2.getChildren().addAll(selectCategories, player, team, region, advanced, askReturn, attributes, in, order);
-                                                layout2.setAlignment(Pos.TOP_CENTER);
-                                                BorderPane borderPane3 = new BorderPane(layout2);
-                                                borderPane3.setTop(searchBar);
-                                                borderPane3.setPadding(new Insets(10));
-                                                Scene scene3 = new Scene(borderPane3);
-                                                window.setScene(scene3);
-                                            }}
-
-                                   else if (choices.getSelectedToggle() == team){
-
                                        Label selectLabel = new Label("select:");
                                        ChoiceBox<String> select = new ChoiceBox<>();
-                                       select.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+                                       select.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+                                       ChoiceBox<String> select2 = new ChoiceBox<>();
+                                       select2.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+                                       ChoiceBox<String> select3 = new ChoiceBox<>();
+                                       select3.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
                                        Label whereLabel = new Label("Where");
                                        ChoiceBox<String> whereAttributes = new ChoiceBox<>();
-                                       whereAttributes.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+                                       whereAttributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
                                        ChoiceBox<String> condition = new ChoiceBox<>();
                                        condition.getItems().addAll("=", "<", ">", "<>");
                                        TextField condition2 = new TextField();
-                                       condition2.setMinWidth(100);
 
-                                       ChoiceBox<String> select1 = new ChoiceBox<>();
-                                       select1.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
-
-                                       ChoiceBox<String> select2 = new ChoiceBox<>();
-                                       select2.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
-
-                                       ChoiceBox<String> select3 = new ChoiceBox<>();
-                                       select3.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
-
-                                       GridPane.setConstraints(selectLabel, 1, 7);
-                                       GridPane.setConstraints(select1,2,7);
-                                       GridPane.setConstraints(select2,3,7);
-                                       GridPane.setConstraints(select3,4,7);
+                                       Label whereLabel2 = new Label("Where");
+                                       ChoiceBox<String> whereAttributes2 = new ChoiceBox<>();
+                                       whereAttributes2.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+                                       ChoiceBox<String> condition3 = new ChoiceBox<>();
+                                       condition3.getItems().addAll("=", "<", ">", "<>");
+                                       TextField condition4 = new TextField();
+                                       condition4.setMinWidth(100);
+                                       GridPane.setConstraints(selectLabel, 2, 7);
+                                       GridPane.setConstraints(select, 3, 7);
+                                       GridPane.setConstraints(select2, 4, 7);
+                                       GridPane.setConstraints(select3, 5,7);
                                        GridPane.setConstraints(whereLabel ,1,8 );
                                        GridPane.setConstraints(whereAttributes, 2, 8);
                                        GridPane.setConstraints(condition, 3, 8);
                                        GridPane.setConstraints(condition2, 4, 8);
-                                       if (advanced.isSelected() && choices.getSelectedToggle() == team) {
-                                           GridPane layout4 = new GridPane();
-                                           layout4.setVgap(5);
-                                           layout4.setPadding(new Insets(10));
-                                           layout4.getChildren().addAll(selectCategories, player, team, region, advanced, askReturn, attributes, in, order, selectLabel,select1,select2,select3, whereLabel, whereAttributes, condition, condition2);
+
+                                       GridPane.setConstraints(whereLabel2 ,1,9 );
+                                       GridPane.setConstraints(whereAttributes2, 2, 9);
+                                       GridPane.setConstraints(condition3, 3, 9);
+                                       GridPane.setConstraints(condition4, 4, 9);
+                                       if (advanced.isSelected() && choices.getSelectedToggle() == player) {
+                                           GridPane layout3 = new GridPane();
+                                           layout3.setVgap(5);
+                                           layout3.setPadding(new Insets(10));
+                                           layout3.getChildren().addAll(select, select2, select3,whereLabel2, whereAttributes2, condition3, condition4,selectCategories, player, team, region, advanced, askReturn, attributes, in, order, selectLabel, whereLabel, whereAttributes, condition, condition2);
                                            layout.setAlignment(Pos.TOP_CENTER);
-                                           BorderPane borderPane2 = new BorderPane(layout4);
+                                           BorderPane borderPane2 = new BorderPane(layout3);
                                            borderPane2.setTop(searchBar);
                                            borderPane2.setPadding(new Insets(10));
                                            Scene scene2 = new Scene(borderPane2);
@@ -204,44 +155,113 @@ public class SearchFor {
                                            borderPane3.setPadding(new Insets(10));
                                            Scene scene3 = new Scene(borderPane3);
                                            window.setScene(scene3);
-                                       }}
-                                   else if (choices.getSelectedToggle() == region){
+                                       }
+                                   }
+                                  // "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region"
+
+                                   else if (choices.getSelectedToggle() == team){
 
                                        Label selectLabel = new Label("select:");
                                        ChoiceBox<String> select = new ChoiceBox<>();
-                                       select.getItems().addAll("Acronym", "Name");
+                                       select.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+                                       ChoiceBox<String> select2 = new ChoiceBox<>();
+                                       select2.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+                                       ChoiceBox<String> select3 = new ChoiceBox<>();
+                                       select3.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
                                        Label whereLabel = new Label("Where");
                                        ChoiceBox<String> whereAttributes = new ChoiceBox<>();
-                                       whereAttributes.getItems().addAll("Acronym", "Name");
+                                       whereAttributes.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
                                        ChoiceBox<String> condition = new ChoiceBox<>();
                                        condition.getItems().addAll("=", "<", ">", "<>");
                                        TextField condition2 = new TextField();
-                                       condition2.setMinWidth(100);
 
-                                       ChoiceBox<String> select1 = new ChoiceBox<>();
-                                       select1.getItems().addAll("Acronym", "Name");
-
-                                       ChoiceBox<String> select2 = new ChoiceBox<>();
-                                       select2.getItems().addAll("Acronym", "Name");
-
-                                       ChoiceBox<String> select3 = new ChoiceBox<>();
-                                       select3.getItems().addAll("Acronym", "Name");
-
-                                       GridPane.setConstraints(selectLabel, 1, 7);
-                                       GridPane.setConstraints(select1,2,7);
-                                       GridPane.setConstraints(select2,3,7);
-                                       GridPane.setConstraints(select3,4,7);
+                                       Label whereLabel2 = new Label("Where");
+                                       ChoiceBox<String> whereAttributes2 = new ChoiceBox<>();
+                                       whereAttributes2.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+                                       ChoiceBox<String> condition3 = new ChoiceBox<>();
+                                       condition3.getItems().addAll("=", "<", ">", "<>");
+                                       TextField condition4 = new TextField();
+                                       condition4.setMinWidth(100);
+                                       GridPane.setConstraints(selectLabel, 2, 7);
+                                       GridPane.setConstraints(select, 3, 7);
+                                       GridPane.setConstraints(select2, 4, 7);
+                                       GridPane.setConstraints(select3, 5,7);
                                        GridPane.setConstraints(whereLabel ,1,8 );
                                        GridPane.setConstraints(whereAttributes, 2, 8);
                                        GridPane.setConstraints(condition, 3, 8);
                                        GridPane.setConstraints(condition2, 4, 8);
-                                       if (advanced.isSelected() && choices.getSelectedToggle() == region) {
-                                           GridPane layout4 = new GridPane();
-                                           layout4.setVgap(5);
-                                           layout4.setPadding(new Insets(10));
-                                           layout4.getChildren().addAll(selectCategories, player, team, region, advanced, askReturn, attributes, in, order, selectLabel,select1,select2,select3, whereLabel, whereAttributes, condition, condition2);
+
+                                       GridPane.setConstraints(whereLabel2 ,1,9 );
+                                       GridPane.setConstraints(whereAttributes2, 2, 9);
+                                       GridPane.setConstraints(condition3, 3, 9);
+                                       GridPane.setConstraints(condition4, 4, 9);
+                                       if (advanced.isSelected() && choices.getSelectedToggle() == team) {
+                                           GridPane layout3 = new GridPane();
+                                           layout3.setVgap(5);
+                                           layout3.setPadding(new Insets(10));
+                                           layout3.getChildren().addAll(select, select2, select3,whereLabel2, whereAttributes2, condition3, condition4,selectCategories, player, team, region, advanced, askReturn, attributes, in, order, selectLabel, whereLabel, whereAttributes, condition, condition2);
                                            layout.setAlignment(Pos.TOP_CENTER);
-                                           BorderPane borderPane2 = new BorderPane(layout4);
+                                           BorderPane borderPane2 = new BorderPane(layout3);
+                                           borderPane2.setTop(searchBar);
+                                           borderPane2.setPadding(new Insets(10));
+                                           Scene scene2 = new Scene(borderPane2);
+                                           window.setScene(scene2);
+                                       }
+                                       if (!advanced.isSelected()) {
+                                           GridPane layout2 = new GridPane();
+                                           layout2.setVgap(5);
+                                           layout2.setPadding(new Insets(10));
+                                           layout2.getChildren().addAll(selectCategories, player, team, region, advanced, askReturn, attributes, in, order);
+                                           layout2.setAlignment(Pos.TOP_CENTER);
+                                           BorderPane borderPane3 = new BorderPane(layout2);
+                                           borderPane3.setTop(searchBar);
+                                           borderPane3.setPadding(new Insets(10));
+                                           Scene scene3 = new Scene(borderPane3);
+                                           window.setScene(scene3);
+                                       }}//"Acronym", "Name"
+                                   else if (choices.getSelectedToggle() == region){
+
+                                       Label selectLabel = new Label("select:");
+                                       ChoiceBox<String> select = new ChoiceBox<>();
+                                       select.getItems().addAll( "Acronym", "Name");
+                                       ChoiceBox<String> select2 = new ChoiceBox<>();
+                                       select2.getItems().addAll( "Acronym", "Name");
+                                       ChoiceBox<String> select3 = new ChoiceBox<>();
+                                       select3.getItems().addAll( "Acronym", "Name");
+                                       Label whereLabel = new Label("Where");
+                                       ChoiceBox<String> whereAttributes = new ChoiceBox<>();
+                                       whereAttributes.getItems().addAll( "Acronym", "Name");
+                                       ChoiceBox<String> condition = new ChoiceBox<>();
+                                       condition.getItems().addAll("=", "<", ">", "<>");
+                                       TextField condition2 = new TextField();
+
+                                       Label whereLabel2 = new Label("Where");
+                                       ChoiceBox<String> whereAttributes2 = new ChoiceBox<>();
+                                       whereAttributes2.getItems().addAll( "Acronym", "Name");
+                                       ChoiceBox<String> condition3 = new ChoiceBox<>();
+                                       condition3.getItems().addAll("=", "<", ">", "<>");
+                                       TextField condition4 = new TextField();
+                                       condition4.setMinWidth(100);
+                                       GridPane.setConstraints(selectLabel, 2, 7);
+                                       GridPane.setConstraints(select, 3, 7);
+                                       GridPane.setConstraints(select2, 4, 7);
+                                       GridPane.setConstraints(select3, 5,7);
+                                       GridPane.setConstraints(whereLabel ,1,8 );
+                                       GridPane.setConstraints(whereAttributes, 2, 8);
+                                       GridPane.setConstraints(condition, 3, 8);
+                                       GridPane.setConstraints(condition2, 4, 8);
+
+                                       GridPane.setConstraints(whereLabel2 ,1,9 );
+                                       GridPane.setConstraints(whereAttributes2, 2, 9);
+                                       GridPane.setConstraints(condition3, 3, 9);
+                                       GridPane.setConstraints(condition4, 4, 9);
+                                       if (advanced.isSelected() && choices.getSelectedToggle() == region) {
+                                           GridPane layout3 = new GridPane();
+                                           layout3.setVgap(5);
+                                           layout3.setPadding(new Insets(10));
+                                           layout3.getChildren().addAll(select, select2, select3,whereLabel2, whereAttributes2, condition3, condition4,selectCategories, player, team, region, advanced, askReturn, attributes, in, order, selectLabel, whereLabel, whereAttributes, condition, condition2);
+                                           layout.setAlignment(Pos.TOP_CENTER);
+                                           BorderPane borderPane2 = new BorderPane(layout3);
                                            borderPane2.setTop(searchBar);
                                            borderPane2.setPadding(new Insets(10));
                                            Scene scene2 = new Scene(borderPane2);
