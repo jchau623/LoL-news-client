@@ -29,8 +29,13 @@ public class TeamResult {
         Label teamRegionLabel = new Label ("Located In: " + team.returnRegion()) ;
         Label teamSponsorLabel = new Label("Sponsored By: " + team.returnSponsor()) ;
 
+
+        ////
         Label teamAverageDragonsLabel = new Label("Average Dragons: " + Float.toString(team.returnAvgD())) ;
         Label teamAverageBaronsLabel = new Label ("Average Barons: " + Float.toString(team.returnB()) );
+        ////
+
+
 
         Label teamWinsLabel = new Label("Wins: " + Integer.toString(team.returnWins()) ) ;
         Label teamLossesLabel = new Label("Losses: " + Integer.toString(team.returnLosses())) ;

@@ -406,9 +406,38 @@ public class SearchFor {
             team.setLosses(rs.getInt(3));
             team.setSponsor(rs.getString(4));
             team.setAcronym(rs.getString(5));
-            team.setAverageDragons(rs.getFloat(6));
-            team.setAverageBarons(rs.getFloat(7));
-            team.setRegion(rs.getString(8));
+
+            Statement sumRedBaron = con.createStatement();
+            ResultSet sumRBRS = sumRedBaron.executeQuery("SELECT SUM(redNumOfBarons) AS redBaronSum FROM Match m " +
+                    "WHERE m.redName = '" + team.returnTeamName() + "'");
+            sumRBRS.next();
+            float redBaronSum = sumRBRS.getFloat(1);
+            Statement sumBlueBaron = con.createStatement();
+            ResultSet sumBBRS = sumBlueBaron.executeQuery("SELECT SUM(blueNumOfBarons) AS blueBaronSum FROM Match m " +
+                    "WHERE m.blueName = '" + team.returnTeamName() + "'");
+            sumBBRS.next();
+            float blueBaronSum = sumBBRS.getFloat(1);
+            Statement matchCount = con.createStatement();
+            ResultSet tm = matchCount.executeQuery("SELECT COUNT(*) FROM Match m WHERE m.redname = '" + team.returnTeamName() + "' OR " +
+                    "m.bluename = '" + team.returnTeamName() +"'");
+            tm.next();
+            float totalMatches = tm.getFloat(1);
+            float averageBaron = (redBaronSum+blueBaronSum)/totalMatches;
+            team.setAverageBarons(averageBaron);
+            Statement sumRedDragon = con.createStatement();
+            ResultSet sumRDRS = sumRedDragon.executeQuery("SELECT SUM(redNumOfDragons) AS redDragonSum FROM Match m " +
+                    "WHERE m.redName = '" + team.returnTeamName() + "'");
+            sumRDRS.next();
+            float redDragonSum = sumRDRS.getFloat(1);
+            Statement sumBlueDragon = con.createStatement();
+            ResultSet sumBDRS = sumBlueDragon.executeQuery("SELECT SUM(blueNumOfDragons) AS blueDragonSum FROM Match m " +
+                    "WHERE m.blueName = '" + team.returnTeamName() + "'");
+            sumBDRS.next();
+            float blueDragonSum = sumBDRS.getFloat(1);
+            float averageDragon = (redDragonSum+blueDragonSum)/totalMatches;
+            team.setAverageDragons(averageDragon);
+
+                    team.setRegion(rs.getString(6));
             searchedTeams.add(team);
         }
         return searchedTeams;
