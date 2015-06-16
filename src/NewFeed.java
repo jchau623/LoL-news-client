@@ -11,6 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -37,9 +40,12 @@ public class NewFeed {
         if (!(playerNews == null)) news.addAll(playerNews);
         if (!(teamNews == null)) news.addAll(teamNews);
         if (!(regionNews == null)) news.addAll(regionNews);
-
+        Set<String> set = new TreeSet<>();
         for (News news1 : news) {
-            headlines.add(news1.getHeadline());
+            set.add(news1.getHeadline());
+        }
+        for (String headline : set) {
+            headlines.add(headline);
         }
 
         /*
@@ -51,7 +57,6 @@ public class NewFeed {
         listView.setPrefWidth(350);
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println(newValue);
             try {
                 Statement getPlayerURL = con.createStatement();
                 ResultSet playerRS = getPlayerURL.executeQuery("SELECT url FROM PlayerNews WHERE headline = '" + newValue + "'");
@@ -98,8 +103,6 @@ public class NewFeed {
                     news.setURL(playerNewsResultSet.getString("url"));
                     newsList.add(news);
                 }
-            } else {
-                System.out.println("getPlayerNews is empty? Check.");
             }
             return newsList;
         } catch (SQLException e) {
@@ -122,8 +125,6 @@ public class NewFeed {
                     news.setURL(teamNewsResultSet.getString("url"));
                     newsList.add(news);
                 }
-            } else {
-                System.out.println("getTeamNews is empty? Check.");
             }
             return newsList;
 
