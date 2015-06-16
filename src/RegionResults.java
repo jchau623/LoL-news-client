@@ -74,7 +74,15 @@ public class RegionResults {
         }
 
         Button followButton = new Button("(+) Follow") ;
-        GridPane.setConstraints(followButton,1,0);
+        followButton.setOnAction(e -> {
+            try {
+                Following.followRegion(con, user, rName);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        GridPane.setConstraints(followButton, 1, 0);
         grid.getChildren().add(followButton);
 
 

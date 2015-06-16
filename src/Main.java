@@ -192,6 +192,8 @@ public class Main extends Application {
         Text loggedInAs = new Text(userID);
         user = userID;
 
+        System.out.println(user);
+
         loggedInAs.setFont(Font.font(40));
 
         Button button0 = new Button("Log out");
@@ -279,9 +281,6 @@ public class Main extends Application {
     private void userMenu(Connection con, String userID, String userState) throws SQLException {
 
         window = new Stage();
-
-
-
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
             try {
@@ -331,19 +330,15 @@ public class Main extends Application {
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
-
-
         window.setTitle("LOLNews (" + userState + ")");
         window.setScene(scene1);
         window.show();
-
 
         if(!getAllUsers(con).contains(userID)){
             String addR = "INSERT INTO FollowList VALUES (?)";
             PreparedStatement update = con.prepareStatement(addR);
             update.setString(1, userID);
             update.executeUpdate();
-
         }
     }
 
