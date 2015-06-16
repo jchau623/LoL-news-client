@@ -42,6 +42,9 @@ public class ChampPool {
         champList.setItems(champs);
         champList.setPrefHeight(400);
         champList.setPrefWidth(150);
+        champList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+
+        });
 
         Scene scene = new Scene(champList);
         window.setScene(scene);
