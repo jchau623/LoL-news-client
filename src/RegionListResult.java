@@ -33,7 +33,7 @@ public class RegionListResult {
                 try {
                     RegionResults.display(user, r.getRegionName(),con);
                 } catch (SQLException e1) {
-                    e1.printStackTrace();
+                    System.out.println(e1);
                 }
 
 

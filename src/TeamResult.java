@@ -37,13 +37,12 @@ public class TeamResult {
         Label pLabel = new Label("Players on the Roster") ;
 
         Button followButton = new Button("(+) Follow") ;
-        
-        //TODO:
+
         followButton.setOnAction(e -> {
             try {
                 Following.followTeam(con, user, team.returnTeamName());
             } catch (SQLException e1) {
-                e1.printStackTrace();
+                System.out.println(e1);
             }
         });
 
