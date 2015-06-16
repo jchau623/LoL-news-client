@@ -2,20 +2,20 @@
  * Created by Jason on 2015-06-10.
  */
 public class Region {
-    public static String acronym;
-    public static String RegionName;
+    public  String acronym;
+    public  String RegionName;
 
     public Region(/*String acronym, String name*/) {
        /* this.RegionName = name;
         this.acronym = acronym;*/
     }
 
-    public static void setAcronym(String acronym) {
-        Region.acronym = acronym;
+    public void setAcronym(String acronym) {
+        this.acronym = acronym;
     }
 
-    public static void setRegionName(String regionName) {
-        RegionName = regionName;
+    public void setRegionName(String regionName) {
+        this.RegionName = regionName;
     }
 
     public String getRegionName(){
