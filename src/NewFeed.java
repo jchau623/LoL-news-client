@@ -1,6 +1,8 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -17,8 +19,9 @@ import java.util.ArrayList;
  * Created by jch on 15/06/15.
  */
 public class NewFeed {
+    @FXML
     static ObservableList<String> headlines;
-
+    @FXML
     public static void display(Connection con, String user) {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -47,6 +50,33 @@ public class NewFeed {
         listView.setItems(headlines);
         listView.setPrefHeight(600);
         listView.setPrefWidth(350);
+
+        listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println(newValue);
+            try {
+                Statement getPlayerURL = con.createStatement();
+                ResultSet playerRS = getPlayerURL.executeQuery("SELECT url FROM PlayerNews WHERE headline = '" + newValue + "'");
+                if(playerRS.next()) {
+                        System.out.println(playerRS.getString(1));
+
+                } else {
+                    Statement getTeamURL = con.createStatement();
+                    ResultSet teamRS = getTeamURL.executeQuery("SELECT url FROM TeamNews WHERE headline = '" + newValue + "'");
+                    if (teamRS.next()) {
+                            System.out.println(teamRS.getString(1));
+                    } else {
+                        Statement getRegionURL = con.createStatement();
+                        ResultSet regionRS = getRegionURL.executeQuery("SELECT url FROM RegionNews WHERE headline = '" + newValue + "'");
+                        if (regionRS.next()) {
+                                System.out.println(regionRS.getString(1));
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
         Scene scene = new Scene(listView);
         window.setScene(scene);
         window.showAndWait();
