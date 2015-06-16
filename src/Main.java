@@ -21,6 +21,8 @@ public class Main extends Application{
     Stage window, login;
     Scene scene1;
     Connection con;
+    String user;
+    String password;
 
     public static void main(String[] args) {
         launch(args);
@@ -47,6 +49,8 @@ public class Main extends Application{
         username.setOnKeyPressed(event -> {
                     if (event.getCode().equals(KeyCode.ENTER)) {
                         if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
+                            this.password = password.getText();
+                            this.user = username.getText();
                             loginPress(username.getText(), password.getText(), adminUser.getValue());
                         }
                         if (username.getText().isEmpty()) {
@@ -83,6 +87,8 @@ public class Main extends Application{
                     if (event.getCode().equals(KeyCode.ENTER)) {
                         if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
                             loginPress(username.getText(), password.getText(), adminUser.getValue());
+                            this.password = password.getText();
+                            this.user = username.getText();
                         }
                         if (username.getText().isEmpty()) {
                             username.setStyle("-fx-background-color: #ff9ca0");
@@ -128,6 +134,8 @@ public class Main extends Application{
         logInButton.setOnAction(event -> {
                     if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
                         loginPress(username.getText(), password.getText(), adminUser.getValue());
+                        this.password = password.getText();
+                        this.user = username.getText();
                     }
                     if (username.getText().isEmpty()) {
                         username.setStyle("-fx-background-color: #ff9ca0");
@@ -211,7 +219,7 @@ public class Main extends Application{
         userAndButton.getChildren().addAll(loggedInAs,button0);
 
         Button button1 = new Button("Check your feed");
-        //button1.setOnAction(e -> NewFeed.display(s) ) ;
+        button1.setOnAction(e -> NewFeed.display(con, user));
 
 
         Button button2 = new Button("Add Something");
@@ -311,7 +319,7 @@ public class Main extends Application{
         userAndButton.setAlignment(Pos.CENTER);
         userAndButton.getChildren().addAll(loggedInAs, button0);
         Button button1 = new Button("Check your feed");
-        button1.setOnAction(e -> AlertBox.display("News feed", "Click button to close"));
+        button1.setOnAction(e -> NewFeed.display(con, user));
         Button button3 = new Button("Return to desktop");
         button3.setOnAction(e -> {
             try {
