@@ -29,7 +29,7 @@ public class DeleteBox {
         Button deletePlayer = new Button("Delete Player");
 
         deletePlayer.setOnAction(e -> {
-            String deletedPlayer = DropPlayer.display(con, "Delete Player", "Enter Info");
+            String deletedPlayer = DropPlayer.display(con, "Delete Player", "Enter Player's Name:");
             System.out.println(deletedPlayer);
         });
 

@@ -13,16 +13,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-public class Main extends Application{
+public class Main extends Application {
 
     Stage window, login;
     Scene scene1;
     Connection con;
-    String user;
-    String password;
 
     public static void main(String[] args) {
         launch(args);
@@ -48,9 +46,7 @@ public class Main extends Application{
         adminUser.setValue("Log in as: (Select one)");
         username.setOnKeyPressed(event -> {
                     if (event.getCode().equals(KeyCode.ENTER)) {
-                        if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
-                            this.password = password.getText();
-                            this.user = username.getText();
+                        if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue() != "Log in as: (Select one)") {
                             loginPress(username.getText(), password.getText(), adminUser.getValue());
                         }
                         if (username.getText().isEmpty()) {
@@ -58,7 +54,7 @@ public class Main extends Application{
                             if (!password.getText().isEmpty()) {
                                 password.setStyle("-fx-background-color: white");
                             }
-                            if (adminUser.getValue()!="Log in as: (Select one)") {
+                            if (adminUser.getValue() != "Log in as: (Select one)") {
                                 adminUser.setStyle("-fx-background-color: white");
                             }
                         }
@@ -67,11 +63,11 @@ public class Main extends Application{
                             if (!username.getText().isEmpty()) {
                                 username.setStyle("-fx-background-color: white");
                             }
-                            if (adminUser.getValue()!="Log in as: (Select one)") {
+                            if (adminUser.getValue() != "Log in as: (Select one)") {
                                 adminUser.setStyle("-fx-background-color: white");
                             }
                         }
-                        if (adminUser.getValue()=="Log in as: (Select one)") {
+                        if (adminUser.getValue() == "Log in as: (Select one)") {
                             adminUser.setStyle("-fx-background-color: #ff9ca0");
                             if (!password.getText().isEmpty()) {
                                 password.setStyle("-fx-background-color: white");
@@ -85,17 +81,15 @@ public class Main extends Application{
         );
         password.setOnKeyPressed(event -> {
                     if (event.getCode().equals(KeyCode.ENTER)) {
-                        if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
+                        if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue() != "Log in as: (Select one)") {
                             loginPress(username.getText(), password.getText(), adminUser.getValue());
-                            this.password = password.getText();
-                            this.user = username.getText();
                         }
                         if (username.getText().isEmpty()) {
                             username.setStyle("-fx-background-color: #ff9ca0");
                             if (!password.getText().isEmpty()) {
                                 password.setStyle("-fx-background-color: white");
                             }
-                            if (adminUser.getValue()!="Log in as: (Select one)") {
+                            if (adminUser.getValue() != "Log in as: (Select one)") {
                                 adminUser.setStyle("-fx-background-color: white");
                             }
                         }
@@ -104,11 +98,11 @@ public class Main extends Application{
                             if (!username.getText().isEmpty()) {
                                 username.setStyle("-fx-background-color: white");
                             }
-                            if (adminUser.getValue()!="Log in as: (Select one)") {
+                            if (adminUser.getValue() != "Log in as: (Select one)") {
                                 adminUser.setStyle("-fx-background-color: white");
                             }
                         }
-                        if (adminUser.getValue()=="Log in as: (Select one)") {
+                        if (adminUser.getValue() == "Log in as: (Select one)") {
                             adminUser.setStyle("-fx-background-color: #ff9ca0");
                             if (!password.getText().isEmpty()) {
                                 password.setStyle("-fx-background-color: white");
@@ -127,22 +121,20 @@ public class Main extends Application{
         //Login screen layout
         HBox loginHBox = new HBox(5);
         loginHBox.setPadding(new Insets(5));
-        VBox fields = new VBox (5);
+        VBox fields = new VBox(5);
         fields.setPadding(new Insets(5));
         fields.getChildren().addAll(username, password, adminUser);
         loginHBox.getChildren().addAll(fields, logInButton);
         logInButton.setOnAction(event -> {
-                    if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue()!= "Log in as: (Select one)") {
+                    if (!username.getText().isEmpty() && !password.getText().isEmpty() && adminUser.getValue() != "Log in as: (Select one)") {
                         loginPress(username.getText(), password.getText(), adminUser.getValue());
-                        this.password = password.getText();
-                        this.user = username.getText();
                     }
                     if (username.getText().isEmpty()) {
                         username.setStyle("-fx-background-color: #ff9ca0");
                         if (!password.getText().isEmpty()) {
                             password.setStyle("-fx-background-color: white");
                         }
-                        if (adminUser.getValue()!="Log in as: (Select one)") {
+                        if (adminUser.getValue() != "Log in as: (Select one)") {
                             adminUser.setStyle("-fx-background-color: white");
                         }
                     }
@@ -151,11 +143,11 @@ public class Main extends Application{
                         if (!username.getText().isEmpty()) {
                             username.setStyle("-fx-background-color: white");
                         }
-                        if (adminUser.getValue()!="Log in as: (Select one)") {
+                        if (adminUser.getValue() != "Log in as: (Select one)") {
                             adminUser.setStyle("-fx-background-color: white");
                         }
                     }
-                    if (adminUser.getValue()=="Log in as: (Select one)") {
+                    if (adminUser.getValue() == "Log in as: (Select one)") {
                         adminUser.setStyle("-fx-background-color: #ff9ca0");
                         if (!password.getText().isEmpty()) {
                             password.setStyle("-fx-background-color: white");
@@ -192,7 +184,7 @@ public class Main extends Application{
             }
         });
 
-        Stage s = new Stage() ;
+        Stage s = new Stage();
 
         //Post-login: Main menu
         Text message = new Text("Logged in as:");
@@ -216,10 +208,10 @@ public class Main extends Application{
 
         HBox userAndButton = new HBox(15);
         userAndButton.setAlignment(Pos.CENTER);
-        userAndButton.getChildren().addAll(loggedInAs,button0);
+        userAndButton.getChildren().addAll(loggedInAs, button0);
 
         Button button1 = new Button("Check your feed");
-        button1.setOnAction(e -> NewFeed.display(con, user));
+        //button1.setOnAction(e -> NewFeed.display(s) ) ;
 
 
         Button button2 = new Button("Add Something");
@@ -232,17 +224,23 @@ public class Main extends Application{
                 e1.printStackTrace();
             }
         });
-      Button button4 = new Button("Search");
+
+        Button button4 = new Button("Search");
         button4.setOnAction(e -> SearchFor.display(con));
-      Button button5 = new Button("Delete Something");
-        button5.setOnAction(e-> DeleteBox.display(con,"Delete Something", "Choose Something To Delete"));
+
+        Button button5 = new Button("Delete Something");
+        button5.setOnAction(e -> DeleteBox.display(con, "Delete Something", "Choose Something To Delete"));
+
+
+        Button button6 = new Button("Update Something");
+        button6.setOnAction(e -> Update.display(con, "Update Something", "Choose Something To Update"));
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(message,userAndButton,button1, button2, button4, button5, button3);
+        layout.getChildren().addAll(message, userAndButton, button1, button2, button4, button5, button6, button3);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
-        window.setTitle("LOLNews ("+userState+")");
+        window.setTitle("LOLNews (" + userState + ")");
         window.setScene(scene1);
         window.show();
     }
@@ -259,34 +257,24 @@ public class Main extends Application{
         }
     }
 
-    private void loginPress (String user, String password, String state) {
+    private void loginPress(String user, String password, String state) {
         LoginConnection loginConnection = new LoginConnection();
         try {
-            con = loginConnection.logIn(user,password);
+            con = loginConnection.logIn(user, password);
             login.close();
             if (state == "Admin") adminMenu(user, state);
-            else if (state == "User") userMenu(con, user, state);
+            else if (state == "User") userMenu(user, state);
         } catch (SQLException e) {
             if (e.getErrorCode() == 17002) {
                 AlertBox.display("Error", "Could not establish connection to the database");
-            } else if (e.getErrorCode() == 1017){
+            } else if (e.getErrorCode() == 1017) {
                 AlertBox.display("Error", "Wrong user/password!");
             }
         }
     }
 
-    private void userMenu(Connection con, String userID, String userState) throws SQLException {
+    private void userMenu(String userID, String userState) {
         window = new Stage();
-
-
-        if(!getAllUsers(con).contains(userID)){
-            String addR = "INSERT INTO FollowList VALUES (?)";
-            PreparedStatement update = con.prepareStatement(addR);
-            update.setString(1, userID);
-
-            update.executeUpdate();
-
-        }
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
             try {
@@ -305,7 +293,7 @@ public class Main extends Application{
             try {
                 start(login);
                 try {
-                    this.con.close();
+                    con.close();
                     window.close();
                 } catch (NullPointerException c) {
                     window.close();
@@ -319,7 +307,7 @@ public class Main extends Application{
         userAndButton.setAlignment(Pos.CENTER);
         userAndButton.getChildren().addAll(loggedInAs, button0);
         Button button1 = new Button("Check your feed");
-        button1.setOnAction(e -> NewFeed.display(con, user));
+        button1.setOnAction(e -> AlertBox.display("News feed", "Click button to close"));
         Button button3 = new Button("Return to desktop");
         button3.setOnAction(e -> {
             try {
@@ -329,34 +317,15 @@ public class Main extends Application{
             }
         });
         Button button4 = new Button("Search");
-        button4.setOnAction(e -> SearchFor.display(this.con));
+        button4.setOnAction(e -> SearchFor.display(con));
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(message,userAndButton, button1, button4, button3);
+        layout.getChildren().addAll(message, userAndButton, button1, button4, button3);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
-        window.setTitle("LOLNews ("+userState+")");
+        window.setTitle("LOLNews (" + userState + ")");
         window.setScene(scene1);
         window.show();
-    }
-
-    public static ArrayList<String> getAllUsers(Connection con) throws SQLException {
-
-
-
-        ArrayList<String> temp = new ArrayList<String>();
-        Statement st = con.createStatement();
-        ResultSet rs = st.executeQuery("SELECT user_ID FROM FollowList");
-
-        while (rs.next()) {
-
-            String arr ;
-            String n = rs.getString("user_ID");
-            arr = n.replace("\n", ",");
-            temp.add(arr);
-
-        }
-        return temp;
     }
 }
