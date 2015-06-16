@@ -33,6 +33,8 @@ public class RegionListResult {
                 try {
                     RegionResults.display(user, r.getRegionName(),con);
                 } catch (SQLException e1) {
+                    if(e1.getErrorCode() == 1)
+                        AlertBox.display("Error", "You are already following this region");
                     System.out.println(e1);
                 }
 
