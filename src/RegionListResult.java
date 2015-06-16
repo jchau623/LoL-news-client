@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class RegionListResult {
 
-    public static void display (Connection con , ArrayList<Region> listOfRegions) {
+    public static void display (String user, Connection con , ArrayList<Region> listOfRegions) {
 
         Stage window = new Stage();
         window.setTitle("Region Search Results");
@@ -31,7 +31,7 @@ public class RegionListResult {
 
             regionButton.setOnAction(e->{
                 try {
-                    RegionResults.display(r.getRegionName(),con);
+                    RegionResults.display(user, r.getRegionName(),con);
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }

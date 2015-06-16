@@ -1,20 +1,12 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
+import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Observable;
 
 /**
  * Created by wesley on 2015-06-14.
@@ -24,7 +16,7 @@ public class TeamResult {
     // will be passed player objects that this class will display
 
 
-    public static void display(Team team, ArrayList<Player> listOfPlayers) {
+    public static void display(String user, Connection con, Team team, ArrayList<Player> listOfPlayers) {
         Stage window = new Stage() ;
         window.setTitle("Team Results: " + team.returnTeamName());
         GridPane grid = new GridPane();
@@ -58,8 +50,8 @@ public class TeamResult {
         GridPane.setConstraints(pLabel, 1 , 0);
 
 
-        grid.getChildren().addAll(teamAcrLabel, teamAverageBaronsLabel,teamAverageDragonsLabel,
-                teamLossesLabel,teamRegionLabel,teamSponsorLabel,teamWinsLabel, followButton);
+        grid.getChildren().addAll(teamAcrLabel, teamAverageBaronsLabel, teamAverageDragonsLabel,
+                teamLossesLabel, teamRegionLabel, teamSponsorLabel, teamWinsLabel, followButton);
 
 
         for (int i = 0 ;  i < listOfPlayers.size() ; i++ ) {
@@ -67,7 +59,7 @@ public class TeamResult {
             Button teamPlayerButton = new Button(p.returnID()) ;
             GridPane.setConstraints(teamPlayerButton, 1 , (i+1));
            teamPlayerButton.setOnAction(
-                    e->PlayerResult.display(p)
+                    e->PlayerResult.display(user, con, p)
             );
             grid.getChildren().add(teamPlayerButton);
 

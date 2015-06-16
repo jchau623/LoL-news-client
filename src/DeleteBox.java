@@ -169,7 +169,6 @@ class DropPlayer {
                 } else {
                     AlertBox.display("Success", "Player deleted");
                 }
-
             }
             catch (SQLException e1){
                 if (e1.getErrorCode() == 2292)

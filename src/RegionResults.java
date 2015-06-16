@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class RegionResults {
 
-    public static void display(String regionName ,Connection con) throws SQLException {
+    public static void display(String user, String regionName ,Connection con) throws SQLException {
 
         Statement stmt = con.createStatement();
         ArrayList<Team> listOfTeams = new ArrayList<Team>() ;
@@ -40,11 +40,11 @@ public class RegionResults {
 
             listOfTeams.add(team);
         }
-        createWindow (con , regionName, listOfTeams) ;
+        createWindow (user, con , regionName, listOfTeams) ;
 
     }
 
-    private static void createWindow(Connection con , String rName , ArrayList<Team> teamlist) {
+    private static void createWindow(String user, Connection con , String rName , ArrayList<Team> teamlist) {
         Stage window = new Stage();
         window.setTitle(rName);
         GridPane grid = new GridPane();
@@ -65,7 +65,7 @@ public class RegionResults {
             teamButton.setOnAction(event -> {
                         try {
                             ArrayList<Player> searchedPlayers =  SearchFor.findPlayerFromTeam(con, t.returnTeamName()) ;
-                            TeamResult.display(t, searchedPlayers);
+                            TeamResult.display(user, con, t, searchedPlayers);
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }

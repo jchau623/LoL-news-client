@@ -12,12 +12,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class Main extends Application {
-
+    String user;
     Stage window, login;
     Scene scene1;
     Connection con;
@@ -35,6 +34,9 @@ public class Main extends Application {
         login.setMaxHeight(132);
         login.setResizable(false);
         TextField username = new TextField();
+
+        user = username.getText();
+
         username.setPromptText("CS ID (e.g. a2x9)");
         PasswordField password = new PasswordField();
         password.setPromptText("UBC ID");
@@ -211,7 +213,7 @@ public class Main extends Application {
         userAndButton.getChildren().addAll(loggedInAs, button0);
 
         Button button1 = new Button("Check your feed");
-        //button1.setOnAction(e -> NewFeed.display(s) ) ;
+        button1.setOnAction(e -> NewFeed.display(con, userID) ) ;
 
 
         Button button2 = new Button("Add Something");
@@ -226,7 +228,7 @@ public class Main extends Application {
         });
 
         Button button4 = new Button("Search");
-        button4.setOnAction(e -> SearchFor.display(con));
+        button4.setOnAction(e -> SearchFor.display(con, user));
 
         Button button5 = new Button("Delete Something");
         button5.setOnAction(e -> DeleteBox.display(con, "Delete Something", "Choose Something To Delete"));
@@ -307,7 +309,7 @@ public class Main extends Application {
         userAndButton.setAlignment(Pos.CENTER);
         userAndButton.getChildren().addAll(loggedInAs, button0);
         Button button1 = new Button("Check your feed");
-        button1.setOnAction(e -> AlertBox.display("News feed", "Click button to close"));
+        button1.setOnAction(e -> NewFeed.display(con, userID));
         Button button3 = new Button("Return to desktop");
         button3.setOnAction(e -> {
             try {
@@ -317,7 +319,7 @@ public class Main extends Application {
             }
         });
         Button button4 = new Button("Search");
-        button4.setOnAction(e -> SearchFor.display(con));
+        button4.setOnAction(e -> SearchFor.display(con, user));
 
         VBox layout = new VBox(20);
         layout.getChildren().addAll(message, userAndButton, button1, button4, button3);
