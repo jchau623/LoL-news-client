@@ -27,7 +27,6 @@ public class TeamResult {
     public static void display(Team team, ArrayList<Player> listOfPlayers) {
         Stage window = new Stage() ;
         window.setTitle("Team Results: " + team.returnTeamName());
-
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));
         grid.setVgap(5);

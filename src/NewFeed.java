@@ -57,18 +57,17 @@ public class NewFeed {
                 Statement getPlayerURL = con.createStatement();
                 ResultSet playerRS = getPlayerURL.executeQuery("SELECT url FROM PlayerNews WHERE headline = '" + newValue + "'");
                 if(playerRS.next()) {
-                        System.out.println(playerRS.getString(1));
-
+                        Browser.display(newValue, playerRS.getString(1));
                 } else {
                     Statement getTeamURL = con.createStatement();
                     ResultSet teamRS = getTeamURL.executeQuery("SELECT url FROM TeamNews WHERE headline = '" + newValue + "'");
                     if (teamRS.next()) {
-                            System.out.println(teamRS.getString(1));
+                        Browser.display(newValue, teamRS.getString(1));
                     } else {
                         Statement getRegionURL = con.createStatement();
                         ResultSet regionRS = getRegionURL.executeQuery("SELECT url FROM RegionNews WHERE headline = '" + newValue + "'");
                         if (regionRS.next()) {
-                                System.out.println(regionRS.getString(1));
+                            Browser.display(newValue, regionRS.getString(1));
                         }
                     }
                 }
