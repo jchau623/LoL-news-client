@@ -673,11 +673,20 @@ public class AddBox {
 
             button.setOnAction(e -> {
                 try {
-                    addMatch(con, redName, blueName, winner, totalKills, redNumberofBarons, redNumberofDragons, blueNumberofBarons, blueNumberofDragons, time, totalGold);
-                    AlertBox.display("Success", "Match is successfully added to the database.");
-                    window.close();
+                    if (!totalKills.getText().isEmpty() && !redNumberofBarons.getText().isEmpty() &&
+                            !blueNumberofBarons.getText().isEmpty() && !blueNumberofDragons.getText().isEmpty() &&
+                            !redNumberofDragons.getText().isEmpty() && !time.getText().isEmpty() && !totalGold.getText().isEmpty() &&
+                            !redName.getText().isEmpty() && !blueName.getText().isEmpty() && !winner.getText().isEmpty()) {
+                        addMatch(con, redName, blueName, winner, totalKills, redNumberofBarons, redNumberofDragons, blueNumberofBarons, blueNumberofDragons, time, totalGold);
+                        AlertBox.display("Success", "Match is successfully added to the database.");
+                        window.close();
+                    } else {
+                        AlertBox.display("Error", "Please ensure all fields are filled in");
+                    }
                 } catch (SQLException e1) {
                     System.out.println(e1);
+                } catch (NumberFormatException nfe) {
+                    AlertBox.display("Error", "Total Kills, # of Barons/Dragons, and Gold must be numbers");
                 }
             });
 

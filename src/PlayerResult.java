@@ -6,6 +6,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Created by wesley on 2015-06-14.
@@ -23,7 +24,19 @@ public class PlayerResult {
 
         Label options = new Label("Options");
         Button champPoolButton = new Button("Champion Pool");
+        champPoolButton.setOnAction(e->ChampPool.display(con,player.returnID()));
         Button followButton = new Button("(+) Follow");
+        followButton.setOnAction(e -> {
+            try {
+                System.out.println(user);
+                Following.followPlayer(con, user, player.returnID());
+            } catch (SQLException e1) {
+                if(e1.getErrorCode() == 1)
+                    AlertBox.display("Error", "You are already following this player");
+                System.out.println(e1);
+            }
+        });
+
 
 
         Label pIDLabel = new Label("SummonerID: " + player.returnID()) ;

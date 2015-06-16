@@ -174,7 +174,7 @@ public class Main extends Application {
         login.show();
     }
 
-    private void adminMenu(String userID, String userState) {
+    private void adminMenu(String userID, String userState) throws SQLException {
         window = new Stage();
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
@@ -191,6 +191,8 @@ public class Main extends Application {
         Text message = new Text("Logged in as:");
         Text loggedInAs = new Text(userID);
         user = userID;
+
+        System.out.println(user);
 
         loggedInAs.setFont(Font.font(40));
 
@@ -246,6 +248,14 @@ public class Main extends Application {
         window.setTitle("LOLNews (" + userState + ")");
         window.setScene(scene1);
         window.show();
+
+        if(!getAllUsers(con).contains(userID)){
+            String addR = "INSERT INTO FollowList VALUES (?)";
+            PreparedStatement update = con.prepareStatement(addR);
+            update.setString(1, userID);
+            update.executeUpdate();
+        }
+
     }
 
     private void closeProgram(Stage stage) throws SQLException {
@@ -279,15 +289,6 @@ public class Main extends Application {
     private void userMenu(Connection con, String userID, String userState) throws SQLException {
 
         window = new Stage();
-
-        if(!getAllUsers(con).contains(userID)){
-            String addR = "INSERT INTO FollowList VALUES (?)";
-            PreparedStatement update = con.prepareStatement(addR);
-            update.setString(1, userID);
-            update.executeUpdate();
-
-        }
-
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
             try {
@@ -330,7 +331,7 @@ public class Main extends Application {
             }
         });
         Button button4 = new Button("Search");
-        button4.setOnAction(e -> SearchFor.display(con, user));
+        button4.setOnAction(e -> SearchFor.display(con, userID));
 
         VBox layout = new VBox(20);
         layout.getChildren().addAll(message, userAndButton, button1, button4, button3);
@@ -340,6 +341,13 @@ public class Main extends Application {
         window.setTitle("LOLNews (" + userState + ")");
         window.setScene(scene1);
         window.show();
+
+        if(!getAllUsers(con).contains(userID)){
+            String addR = "INSERT INTO FollowList VALUES (?)";
+            PreparedStatement update = con.prepareStatement(addR);
+            update.setString(1, userID);
+            update.executeUpdate();
+        }
     }
 
     public static ArrayList<String> getAllUsers(Connection con) throws SQLException {
