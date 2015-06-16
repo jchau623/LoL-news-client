@@ -16,7 +16,7 @@ public class Following {
     // How do we get to these methods? Are we going to have a "follows" button in search? yeah that would probably work.
     // if you search for a player/team/region, there will be a button on the results window that calls followplayer/followteam/followregion
 
-private static void followPlayer(Connection con, String uid, String summonerID) throws SQLException {
+public static void followPlayer(Connection con, String uid, String summonerID) throws SQLException {
     String addN = "INSERT INTO FollowListHasPlayer VALUES ( ?, ?)";
     PreparedStatement update = con.prepareStatement(addN);
     update.setString(1, uid);
@@ -24,7 +24,7 @@ private static void followPlayer(Connection con, String uid, String summonerID) 
     update.executeUpdate();
 }
 
-private static void followTeam(Connection con, String uid, String teamName) throws SQLException{
+public static void followTeam(Connection con, String uid, String teamName) throws SQLException{
         String addN="INSERT INTO FollowListHasTeam VALUES ( ?, ?)";
         PreparedStatement update=con.prepareStatement(addN);
         update.setString(1,uid);
@@ -32,7 +32,7 @@ private static void followTeam(Connection con, String uid, String teamName) thro
         update.executeUpdate();
         }
 
-private static void followRegion(Connection con, String uid, String regionName) throws SQLException {
+public static void followRegion(Connection con, String uid, String regionName) throws SQLException {
     String addN = "INSERT INTO FollowListHasRegion VALUES ( ?, ?)";
     PreparedStatement update = con.prepareStatement(addN);
     update.setString(1, uid);

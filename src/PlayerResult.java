@@ -1,19 +1,18 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
 
 /**
  * Created by wesley on 2015-06-14.
  */
 public class PlayerResult {
 
-    public static void display(Player player) {
+    public static void display(String user, Connection con, Player player) {
         Stage window = new Stage();
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));

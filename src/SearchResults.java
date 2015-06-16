@@ -2,12 +2,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxListCell;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +19,7 @@ public class SearchResults {
     public static final ObservableList playerStats = FXCollections.observableArrayList();
     public static final ObservableList playerName = FXCollections.observableArrayList();
 
-    public static void display ( ArrayList<Player> players) {
+    public static void display (String user, Connection con, ArrayList<Player> players) {
 
         Stage window = new Stage();
         window.setTitle("Following Results");
@@ -35,7 +34,7 @@ public class SearchResults {
             GridPane.setConstraints(playerButton,0,i);
             playerButton.setOnAction(e -> {
                         // open up a new player page
-                        PlayerResult.display(p);
+                        PlayerResult.display(user, con, p);
                     }
             );
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class TeamListView {
 
-    public  static void display(Connection con , ArrayList<Team> teams) {
+    public  static void display(String user, Connection con , ArrayList<Team> teams) {
         Stage window = new Stage() ;
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));
@@ -35,7 +35,7 @@ public class TeamListView {
                            // System.out.print(searchedPlayers.get(0));
 
                            // if (searchedPlayers != null){
-                                TeamResult.display(t, searchedPlayers);
+                                TeamResult.display(user, con, t, searchedPlayers);
                            // }
                         } catch (SQLException e1) {
                             e1.printStackTrace();

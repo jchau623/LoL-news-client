@@ -9,7 +9,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +24,7 @@ public class SearchFor {
     private static Label askReturn;
 
 
-    public static void display(Connection con) {
+    public static void display(Connection con, String user) {
         Connection connection = con;
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -155,7 +154,7 @@ public class SearchFor {
                 }
                 else */
                 if (choices.getSelectedToggle() == player) {
-                    SearchResults.display(findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()));
+                    SearchResults.display(user, con, findPlayer("summonerID " ,connection, attributes.getValue(), order.getValue()));
 
                 } else if (choices.getSelectedToggle() == team) {
                     ArrayList<Team> seachedteam = findTeam(connection, attributes.getValue(), order.getValue());
@@ -169,7 +168,7 @@ public class SearchFor {
 
                     if (seachedteam != null) {
                   //      searchedPlayers = findPlayerFromTeam(connection, seachedteam.returnTeamName());
-                        TeamListView.display(connection, seachedteam);
+                        TeamListView.display(user, connection, seachedteam);
 
                         //for (int i = 0; i < searchedPlayers.size(); i++) {
                          //   System.out.println(searchedPlayers.get(i).returnID());
@@ -183,7 +182,7 @@ public class SearchFor {
                    ArrayList<Region> searchedRegion =  findRegion(connection, attributes.getValue(), order.getValue());
                    //System.out.println(searchedRegion.get(0).getRegionName());
 
-                    RegionListResult.display(connection, searchedRegion);
+                    RegionListResult.display(user, connection, searchedRegion);
 
 
 
