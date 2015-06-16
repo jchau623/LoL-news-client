@@ -2,8 +2,8 @@
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
+        import javafx.geometry.Pos;
+        import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
+        import javafx.stage.Stage;
 
 import java.sql.*;
 import java.sql.Date;
@@ -22,7 +22,7 @@ import java.util.*;
  */
 public class AddBox {
 
-    public static void display(Connection con, String title, String message) {
+    public static void display(Connection con , String title, String message) {
         Stage window = new Stage();
 
         //Block other windows' input events until this window is closed
@@ -48,12 +48,12 @@ public class AddBox {
         });*/
 
         //test
-        Button addRegion = new Button("Add Region");
+        Button addRegion = new Button ("Add Region");
         addRegion.setOnAction(e -> {
             AddRegion.display(con, "Add Region");
         });
 
-        Button deleteRegion = new Button("delete Region");
+        Button deleteRegion = new Button ("delete Region");
         deleteRegion.setOnAction(e -> {
             DropRegion.display(con, "Delete Region", "delete region");
         });
@@ -87,7 +87,9 @@ public class AddBox {
      */
     public static class AddTeam {
 
-        public static void display(Connection con, String title) {
+
+
+        public static void display(Connection con , String title)  {
             Stage window = new Stage();
 
 
@@ -97,20 +99,23 @@ public class AddBox {
             window.setMinWidth(100);
 
 
+
+
+
             Label nameLabel = new Label("Name:");
-            TextField name = new TextField();
+           TextField name = new TextField();
             Label acronymLabel = new Label("Acronym:");
             TextField acronym = new TextField();
             Label averageBaronsLabel = new Label("Average Barons:");
-            TextField averageBarons = new TextField();
-            Label averageDragonsLabel = new Label("Average Dragons:");
-            TextField averageDragons = new TextField();
-            Label winLabel = new Label("Wins:");
-            TextField win = new TextField();
-            Label lossLabel = new Label("Losses:");
-            TextField loss = new TextField();
-            Label sponsorLabel = new Label("Sponsor:");
-            TextField sponsor = new TextField();
+           TextField averageBarons = new TextField();
+            Label averageDragonsLabel = new Label ("Average Dragons:");
+         TextField   averageDragons = new TextField();
+            Label winLabel = new Label ("Wins:");
+           TextField win = new TextField();
+            Label lossLabel = new Label ("Losses:");
+          TextField  loss = new TextField();
+            Label sponsorLabel = new Label ("Sponsor:");
+         TextField   sponsor = new TextField();
 
             ArrayList<String> teamList = null;
             try {
@@ -120,7 +125,7 @@ public class AddBox {
             }
 
             Label regionLabel = new Label("Region:");
-            ChoiceBox<String> region = new ChoiceBox<>();
+            ChoiceBox<String> region= new ChoiceBox<>();
             region.getItems().addAll(teamList);
             region.getItems().add("Other");
 
@@ -143,8 +148,7 @@ public class AddBox {
                         AlertBox.display("Success", "Team is successfully added to the database.");
                         window.close();
                     } catch (SQLException e1) {
-                        if (e1.getErrorCode() == 1)
-                            AlertBox.display("Error", "A team with the same name or acronym already exists");
+                        if (e1.getErrorCode() == 1) AlertBox.display("Error", "A team with the same name or acronym already exists");
                     } catch (NumberFormatException nfe) {
                         AlertBox.display("Error", "Please ensure Average Barons, Average Dragons, Wins, and Losses are numbers");
                     }
@@ -173,7 +177,7 @@ public class AddBox {
             GridPane.setConstraints(regionLabel, 0, 7);
             GridPane.setConstraints(region, 1, 7);
             GridPane.setHalignment(button, HPos.RIGHT);
-            grid.getChildren().addAll(nameLabel, name, acronymLabel, acronym, averageBaronsLabel, averageBarons, averageDragonsLabel, averageDragons, winLabel, win, lossLabel, loss, sponsorLabel, sponsor, region, regionLabel, button);
+            grid.getChildren().addAll(nameLabel,name,acronymLabel,acronym,averageBaronsLabel,averageBarons,averageDragonsLabel,averageDragons,winLabel,win,lossLabel,loss,sponsorLabel,sponsor,region, regionLabel,button);
 
             Scene scene = new Scene(grid);
             window.setScene(scene);
@@ -183,15 +187,15 @@ public class AddBox {
             //return returnTeam();
         }
 
-        public static void addTeam(Connection con, String name, String acronym, Float averageB, Float averageD, Integer wins, Integer losses, String sponsor, String region) throws SQLException {
+        public static void addTeam(Connection con, String name, String acronym, Float averageB, Float averageD, Integer wins, Integer losses, String sponsor, String region) throws SQLException{
             String addR = "INSERT INTO TeamThatPlaysIn VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement update = con.prepareStatement(addR);
             update.setString(1, name);
             update.setString(5, acronym);
             update.setFloat(7, averageB);
-            update.setFloat(6, averageD);
+            update.setFloat(6,averageD);
             update.setInt(2, wins);
-            update.setInt(3, losses);
+            update.setInt(3,losses);
             update.setString(4, sponsor);
             update.setString(8, region);
             update.executeUpdate();
@@ -205,21 +209,21 @@ public class AddBox {
         public static ArrayList<String> getAllRegions(Connection con) throws SQLException {
 
 
+
             ArrayList<String> temp = new ArrayList<String>();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT name FROM Region");
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery("SELECT name FROM Region");
 
-            while (rs.next()) {
+                while (rs.next()) {
 
-                String arr;
-                String n = rs.getString("name");
-                arr = n.replace("\n", ",");
-                temp.add(arr);
+                    String arr ;
+                    String n = rs.getString("name");
+                    arr = n.replace("\n", ",");
+                        temp.add(arr);
 
-            }
+                }
             return temp;
-        }
-
+            }
         private static boolean fieldChecker(List<TextField> textFields, List<ChoiceBox> choiceBoxes) {
             boolean empty = true;
             for (TextField textfield : textFields) {
@@ -265,9 +269,9 @@ public class AddBox {
      * Created by Jason on 5/31/2015.
      */
     public static class AddRegion {
-        static String region;
+        static String region ;
 
-        public static void display(Connection con, String title) {
+        public static void  display(Connection con , String title) {
             Stage window = new Stage();
 
 
@@ -276,6 +280,10 @@ public class AddBox {
             window.setTitle(title);
             window.setMinWidth(100);
             window.setResizable(false);
+
+
+
+
 
 
             //Attribute text fields
@@ -287,17 +295,18 @@ public class AddBox {
             Button button = new Button("Enter");
             button.setOnAction(e -> {
                 if (!acronym.getText().isEmpty() && !name.getText().isEmpty()) {
-                    try {
-                        addRegion(con, name.getText(), acronym.getText());
-                        AlertBox.display("Success", "Region is successfully added to the database.");
-                        window.close();
-                    } catch (SQLException e1) {
-                        if (e1.getErrorCode() == 1) {
-                            AlertBox.display("Error", "A region with that name or acronym already exists");
-                        }
-                        e1.printStackTrace(); //TODO: remove at code completion
-                    }
+                try{
+                    addRegion(con, name.getText(), acronym.getText());
+                    AlertBox.display("Success", "Region is successfully added to the database.");
+                    window.close();
                 }
+                catch (SQLException e1){
+                    if (e1.getErrorCode()==1) {
+                        AlertBox.display("Error", "A region with that name or acronym already exists");
+                    }
+                    e1.printStackTrace(); //TODO: remove at code completion
+                }
+            }
                 if (acronym.getText().isEmpty()) {
                     acronym.setStyle("-fx-background-color: #ff9ca0");
                     if (!name.getText().isEmpty()) {
@@ -329,17 +338,20 @@ public class AddBox {
             window.setScene(scene);
 
             //Shows this stage and waits for it to be hidden (closed) before returning to the caller.
-            window.showAndWait();
-        }
+            window.showAndWait();}
 
 
-        public static void addRegion(Connection con, String name, String acronym) throws SQLException {
+
+
+
+         public static void addRegion (Connection con, String name, String acronym) throws SQLException {
             String addR = "INSERT INTO Region VALUES (?,?)";
             PreparedStatement update = con.prepareStatement(addR);
             update.setString(1, name);
             update.setString(2, acronym);
-            update.executeUpdate();
+             update.executeUpdate();
         }
+
 
 
     }
@@ -350,7 +362,6 @@ public class AddBox {
     public static class AddPlayer {
         static String player = new String();
         private static TextField summonerID;
-
         public static void display(Connection con, String title, String message) {
             Stage window = new Stage();
 
@@ -378,10 +389,12 @@ public class AddBox {
             Button button = new Button("Enter");
 
 
+
+
             //get all countries
             List<String> countryList = new ArrayList<>();
             Locale[] locales = Locale.getAvailableLocales();
-            for (Locale locale : locales) {
+            for (Locale locale : locales){
                 String country = locale.getDisplayCountry();
                 if (!country.equals("")) {
                     countryList.add(country);
@@ -402,7 +415,7 @@ public class AddBox {
 
             Label rollForGameLabel = new Label("Role");
             ChoiceBox<String> role = new ChoiceBox<>();
-            role.getItems().addAll("Top", "Mid", "Jungle", "Support", "Marksman");
+            role.getItems().addAll("Top", "Mid" , "Jungle", "Support" , "Marksman") ;
 
             List<TextField> textFields = new ArrayList<>();
             textFields.add(summonerID);
@@ -416,20 +429,20 @@ public class AddBox {
             choiceBoxes.add(role);
 
             button.setOnAction(e -> {
-                if (fieldChecker(textFields, choiceBoxes) && choiceBoxChecker(choiceBoxes, textFields))
-                    try {
-                        addPlayer(con, summonerID.getText(), Integer.parseInt(age.getText()), name.getText(), Float.parseFloat(KAD.getText()), Float.parseFloat(csPerGame.getText()), Float.parseFloat(goldPerMin.getText()), nationality.getValue(), role.getValue());
-                        AlertBox.display("Success", "Player is successfully added to the database.");
-                        window.close();
+                if (fieldChecker(textFields, choiceBoxes) && choiceBoxChecker(choiceBoxes,textFields))
+                try {
+                    addPlayer(con, summonerID.getText(), Integer.parseInt(age.getText()), name.getText(), Float.parseFloat(KAD.getText()), Float.parseFloat(csPerGame.getText()), Float.parseFloat(goldPerMin.getText()), nationality.getValue(), role.getValue());
+                    AlertBox.display("Success", "Player is successfully added to the database.");
+                    window.close();
 
-                    } catch (SQLException e1) {
-                        if (e1.getErrorCode() == 1) {
-                            AlertBox.display("Error", "This summonerID already exists in the database");
-                            e1.printStackTrace();
-                        }
-                    } catch (NumberFormatException nfe) {
-                        AlertBox.display("Error", "Please ensure Age, KA/D Ratio, csPerGame, and goldPerMin are numbers");
+                } catch (SQLException e1) {
+                    if (e1.getErrorCode() == 1) {
+                        AlertBox.display("Error", "This summonerID already exists in the database");
+                        e1.printStackTrace();
                     }
+                } catch (NumberFormatException nfe) {
+                    AlertBox.display("Error", "Please ensure Age, KA/D Ratio, csPerGame, and goldPerMin are numbers");
+                }
             });
 
             GridPane grid = new GridPane();
@@ -444,18 +457,18 @@ public class AddBox {
             GridPane.setConstraints(name, 1, 2);
             GridPane.setConstraints(natLabel, 0, 6);
             GridPane.setConstraints(nationality, 1, 6);
-            GridPane.setConstraints(csPerGameLabel, 0, 4);
+            GridPane.setConstraints(csPerGameLabel, 0 ,4);
             GridPane.setConstraints(csPerGame, 1, 4);
             GridPane.setConstraints(goldPerMinLabel, 0, 5);
             GridPane.setConstraints(goldPerMin, 1, 5);
             GridPane.setConstraints(KADLabel, 0, 3);
             GridPane.setConstraints(KAD, 1, 3);
-            GridPane.setConstraints(rollForGameLabel, 0, 7);
-            GridPane.setConstraints(role, 1, 7);
+            GridPane.setConstraints(rollForGameLabel, 0,7);
+            GridPane.setConstraints(role, 1,7);
             GridPane.setConstraints(button, 1, 8);
             GridPane.setHalignment(button, HPos.RIGHT);
 
-            grid.getChildren().addAll(summonerLabel, summonerID, ageLabel, age, nameLabel, name, natLabel, nationality, csPerGameLabel, csPerGame, goldPerMinLabel, goldPerMin, KADLabel, KAD, button, role, rollForGameLabel);
+            grid.getChildren().addAll(summonerLabel,summonerID,ageLabel,age,nameLabel,name,natLabel,nationality,csPerGameLabel,csPerGame,goldPerMinLabel,goldPerMin,KADLabel,KAD,button , role , rollForGameLabel);
 
             Scene scene = new Scene(grid);
             window.setScene(scene);
@@ -464,11 +477,11 @@ public class AddBox {
             window.showAndWait();
         }
 
-        private static void addPlayer(Connection con, String summonerID, Integer age, String name, Float kda, Float cs, Float gold, String nationality, String role) throws SQLException {
-
-            String result = "INSERT INTO Player VALUES (?, ?, ?, ?, ?,?,? , ?) ";
-            PreparedStatement update = con.prepareStatement(result);
-            update.setString(1, summonerID);
+        private static void addPlayer(Connection con, String summonerID , Integer age, String name, Float kda, Float cs, Float gold, String nationality , String role) throws SQLException {
+            System.out.println("testing");
+            String result = "INSERT INTO Player VALUES (?, ?, ?, ?, ?,?,? , ?) " ;
+            PreparedStatement update = con.prepareStatement(result) ;
+            update.setString(1,summonerID );
             update.setInt(2, age);
             update.setString(3, name);
             update.setString(4, nationality);
@@ -477,7 +490,7 @@ public class AddBox {
             update.setFloat(7, kda);
             update.setString(8, role);
 
-            update.executeUpdate();
+            update.executeUpdate() ;
             System.out.println("testing");
 
         }
@@ -531,7 +544,6 @@ public class AddBox {
         static String newsItem = new String();
         private static TextField url;
         private static TextField headline;
-
         public static String display(Connection con, String title) {
             Stage window = new Stage();
 
@@ -580,7 +592,7 @@ public class AddBox {
             TextField date = new TextField();
 
             Label headlineLabel = new Label("Headline:");
-            headline = new TextField();
+          headline = new TextField();
 
             GridPane grid = new GridPane();
             grid.setPadding(new Insets(10, 10, 10, 10));
@@ -592,7 +604,7 @@ public class AddBox {
             GridPane.setConstraints(headline, 1, 1);
             GridPane.setConstraints(button, 1, 2);
             GridPane.setHalignment(button, HPos.RIGHT);
-            grid.getChildren().addAll(urlLabel, url, headlineLabel, headline, button);
+            grid.getChildren().addAll(urlLabel,url,headlineLabel,headline,button);
 
             Scene scene = new Scene(grid);
             window.setScene(scene);
@@ -606,54 +618,46 @@ public class AddBox {
             newsItem = url.getText();
             return newsItem;
         }
-
-        public static void addNews(Connection con, String URL, Date date, String headline) throws SQLException {
+        public static void addNews (Connection con , String URL ,   Date date, String headline ) throws SQLException {
 
             System.out.println("testing");
-            String addN = "INSERT INTO News VALUES (?, ?, ?)";
+            String addN = "INSERT INTO News VALUES ( ?, ?, ?)";
             PreparedStatement update = con.prepareStatement(addN);
             update.setString(2, URL);
             update.setString(1, headline);
             update.setDate(3, date);
 
 
-            update.executeUpdate();
+           update.executeUpdate();
 
             AddNewsTags.display(con, headline, URL);
 
 
-        }
-    }
+        }}
 
     /**
      * Created by Justin on 6/10/2015.
      */
     public static class AddMatch {
-        public static void display(Connection con, String title) {
+
+        public static void display(Connection con , String title) {
+
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
             window.setTitle(title);
             window.setMinWidth(100);
             Button button = new Button("Enter");
-            button.setOnAction(e -> {
-                window.close();
-            });
+
 
             Label totalKillsLabel = new Label("Total Kills:");
             Label redNumberofBaronsLabel = new Label("Red Team # of Barons:");
             Label redNumberofDragonsLabel = new Label("Red Team # of Dragons:");
-            Label blueNumberofBaronsLabel = new Label("Red Team # of Barons:");
-            Label blueNumberofDragonsLabel = new Label("Red Team # of Dragons:");
+            Label blueNumberofBaronsLabel = new Label("Blue Team # of Barons:");
+            Label blueNumberofDragonsLabel = new Label("Blue Team # of Dragons:");
             Label timeLabel = new Label("Duration (MM:SS):");
-            Label matchIDLabel = new Label("Match ID:");
             Label totalGoldLabel = new Label("Total Gold:");
-            Label redNameLabel = new Label(" Team:");
-            Text red = new Text("Red");
-            red.setFill(Color.RED);
-            Label blueNameLabel = new Label(" Team:");
-            Text blue = new Text("Blue");
-            blue.setFill(Color.BLUE);
-            Label datePlayedLabel = new Label("Date: (YYYYMMDD"); //format to be determined
+            Label redNameLabel = new Label(" Team:"); Text red = new Text("Red"); red.setFill(Color.RED);
+            Label blueNameLabel = new Label(" Team:"); Text blue = new Text("Blue"); blue.setFill(Color.BLUE);
             Label winnerLabel = new Label("Winner:");
 
             TextField totalKills = new TextField();
@@ -662,16 +666,25 @@ public class AddBox {
             TextField blueNumberofDragons = new TextField();
             TextField redNumberofDragons = new TextField();
             TextField time = new TextField();
-            TextField matchID = new TextField();
             TextField totalGold = new TextField();
             TextField redName = new TextField();
             TextField blueName = new TextField();
-            TextField datePlayed = new TextField();
             TextField winner = new TextField();
+
+            button.setOnAction(e -> {
+                try {
+                    addMatch(con, redName, blueName, winner, totalKills, redNumberofBarons, redNumberofDragons, blueNumberofBarons, blueNumberofDragons, time, totalGold);
+                    AlertBox.display("Success", "Match is successfully added to the database.");
+                    window.close();
+                } catch (SQLException e1) {
+                    System.out.println(e1);
+                }
+            });
+
 
             HBox redHBox = new HBox(0);
             HBox blueHBox = new HBox(0);
-            redHBox.getChildren().addAll(red, redNameLabel);
+            redHBox.getChildren().addAll(red,redNameLabel);
             blueHBox.getChildren().addAll(blue, blueNameLabel);
 
             GridPane grid = new GridPane();
@@ -689,29 +702,64 @@ public class AddBox {
             GridPane.setConstraints(blueNumberofDragonsLabel, 0, 4);
             GridPane.setConstraints(blueNumberofDragons, 1, 4);
             GridPane.setConstraints(winner, 1, 5);
-            GridPane.setConstraints(winnerLabel, 0, 5);
+            GridPane.setConstraints(winnerLabel,0,5);
             GridPane.setConstraints(timeLabel, 0, 6);
             GridPane.setConstraints(time, 1, 6);
-            GridPane.setConstraints(matchIDLabel, 0, 7);
-            GridPane.setConstraints(matchID, 1, 7);
-            GridPane.setConstraints(totalGoldLabel, 0, 8);
-            GridPane.setConstraints(totalGold, 1, 8);
-            GridPane.setConstraints(redHBox, 0, 9);
-            GridPane.setConstraints(redName, 1, 9);
-            GridPane.setConstraints(blueHBox, 0, 10);
-            GridPane.setConstraints(blueName, 1, 10);
-            GridPane.setConstraints(datePlayedLabel, 0, 11);
-            GridPane.setConstraints(datePlayed, 1, 11);
-            GridPane.setConstraints(button, 1, 12);
+            GridPane.setConstraints(totalGoldLabel, 0, 7);
+            GridPane.setConstraints(totalGold, 1, 7);
+            GridPane.setConstraints(redHBox, 0, 8);
+            GridPane.setConstraints(redName, 1, 8);
+            GridPane.setConstraints(blueHBox, 0, 9);
+            GridPane.setConstraints(blueName, 1, 9);
+            GridPane.setConstraints(button, 1, 10);
             GridPane.setHalignment(button, HPos.RIGHT);
-            grid.getChildren().addAll(totalKillsLabel, totalKills, redNumberofBarons, redNumberofBaronsLabel, redNumberofDragons, redNumberofDragonsLabel, timeLabel, time, matchIDLabel, matchID, totalGoldLabel, totalGold, redHBox, redName, blueHBox, blueName, datePlayedLabel, datePlayed, button);
+            grid.getChildren().addAll(totalKillsLabel, totalKills, redNumberofBarons, redNumberofBaronsLabel, redNumberofDragons, redNumberofDragonsLabel,
+                    blueNumberofBaronsLabel, blueNumberofBarons, blueNumberofDragonsLabel, blueNumberofDragons, timeLabel, time, totalGoldLabel, totalGold, redHBox, redName, blueHBox, blueName, winnerLabel, winner, button);
 
             Scene scene = new Scene(grid);
             window.setScene(scene);
             window.showAndWait();
+            System.out.println("got to the end of display");
+        }
+
+
+        private static void addMatch(Connection con, TextField redName, TextField blueName, TextField winner,
+                                     TextField totalKills, TextField redNumberofBarons, TextField redNumberofDragons,
+                                     TextField blueNumberofBarons, TextField blueNumberofDragons, TextField time, TextField totalGold) throws SQLException {
+            java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
+            String addM = "INSERT INTO Match VALUES ( ?, ?, ?,?,?,?,?,?,?,?,?,?)";
+            PreparedStatement update = con.prepareStatement(addM);
+            update.setInt(1, Integer.parseInt(totalKills.getText()));
+
+            update.setInt(2, Integer.parseInt(redNumberofBarons.getText()));
+            update.setInt(3, Integer.parseInt(redNumberofDragons.getText()));
+            update.setInt(4, Integer.parseInt(blueNumberofBarons.getText()));
+            update.setInt(5, Integer.parseInt(blueNumberofDragons.getText()));
+            update.setString(6, time.getText());
+            update.setInt(7, getMatchID(con));
+            update.setInt(8,Integer.parseInt(totalGold.getText()));
+            update.setString(9,redName.getText());
+            update.setString(10,blueName.getText());
+            update.setDate(11, sqlDate);
+            update.setString(12, winner.getText());
+            update.executeUpdate();
+
 
         }
-    }
+        static Statement stmt = null;
+        private static int getMatchID(Connection con) throws SQLException {
+            int count = 0;
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM MATCH");
+
+
+            while (rs.next()) {
+                count = rs.getInt("total");
+            }
+            return count;
+        }}
+
+
 
     /**
      * Created by jch on 09/06/15.
@@ -724,6 +772,7 @@ public class AddBox {
             window.setTitle(title);
             window.setMinHeight(100);
             window.setResizable(false);
+
 
 
             //attributes
@@ -750,8 +799,7 @@ public class AddBox {
                         AlertBox.display("Success", "Champion is successfully added to the database.");
                         window.close();
                     } catch (SQLException e1) {
-                        if (e1.getErrorCode() == 1)
-                            AlertBox.display("Error", "A champion with that name already exists");
+                        if (e1.getErrorCode() == 1) AlertBox.display("Error", "A champion with that name already exists");
                     } catch (NumberFormatException nfe) {
                         AlertBox.display("Error", "Win rate should be a number (e.g. 40.20)");
                     }
@@ -801,7 +849,7 @@ public class AddBox {
             GridPane.setConstraints(type, 1, 4);
             GridPane.setConstraints(button, 1, 5);
             GridPane.setHalignment(button, HPos.RIGHT);
-            grid.getChildren().addAll(nameLabel, name, winRateLabel, winRate, typeLabel, type, button);
+            grid.getChildren().addAll(nameLabel,name,winRateLabel,winRate, typeLabel, type, button);
 
 
             Scene scene = new Scene(grid);
@@ -811,14 +859,16 @@ public class AddBox {
             window.showAndWait();
         }
 
-        public static void addChamp(Connection con, String name, Float winRate, String type) throws SQLException {
-            Champion Champ = new Champion(name, winRate, type);
+        public static void addChamp (Connection con , String name ,   Float winRate, String type ) throws SQLException {
+           Champion Champ = new Champion(name,winRate, type);
             String addC = "INSERT INTO Champion VALUES ( ?, ?, ?)";
             PreparedStatement update = con.prepareStatement(addC);
             update.setString(1, Champ.getName());
             update.setFloat(2, Champ.getWinRate());
             update.setString(3, Champ.getType());
             update.executeUpdate();
+
+
 
 
         }
