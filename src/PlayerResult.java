@@ -23,6 +23,7 @@ public class PlayerResult {
 
         Label options = new Label("Options");
         Button champPoolButton = new Button("Champion Pool");
+        champPoolButton.setOnAction(e->ChampPool.display(con,player.returnID()));
         Button followButton = new Button("(+) Follow");
 
 
