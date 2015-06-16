@@ -46,6 +46,7 @@ public class RegionResults {
 
     private static void createWindow(Connection con , String rName , ArrayList<Team> teamlist) {
         Stage window = new Stage();
+        window.setTitle(rName);
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));
         grid.setVgap(5);
@@ -65,17 +66,19 @@ public class RegionResults {
                         try {
                             ArrayList<Player> searchedPlayers =  SearchFor.findPlayerFromTeam(con, t.returnTeamName()) ;
                             TeamResult.display(t, searchedPlayers);
-
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
-
                     }
             );
-
-
         }
 
+        Button followButton = new Button("(+) Follow") ;
+        GridPane.setConstraints(followButton,1,0);
+        grid.getChildren().add(followButton);
+
+
+        window.setResizable(false);
         Scene scene = new Scene(grid) ;
         window.setScene(scene);
         window.showAndWait();

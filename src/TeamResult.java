@@ -82,6 +82,7 @@ public class TeamResult {
 
         Scene scene = new Scene(grid) ;
         window.setScene(scene);
+        window.setResizable(false);
         window.showAndWait();
     }
 

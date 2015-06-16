@@ -20,6 +20,8 @@ public class PlayerResult {
         grid.setVgap(5);
         grid.setHgap(5);
 
+        window.setResizable(false);
+
         Label options = new Label("Options");
         Button champPoolButton = new Button("Champion Pool");
         Button followButton = new Button("(+) Follow");

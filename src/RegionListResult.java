@@ -41,6 +41,7 @@ public class RegionListResult {
 
         }
 
+        window.setResizable(false);
         Scene scene = new Scene(grid) ;
         window.setScene(scene);
         window.showAndWait();

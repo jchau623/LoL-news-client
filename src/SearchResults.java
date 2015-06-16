@@ -42,6 +42,7 @@ public class SearchResults {
             grid.getChildren().add(playerButton);
         }
 
+        window.setResizable(false);
 
         Scene scene = new Scene(grid) ;
         window.setScene(scene);
