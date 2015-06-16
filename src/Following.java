@@ -25,11 +25,13 @@ public static void followPlayer(Connection con, String uid, String summonerID) t
 }
 
 public static void followTeam(Connection con, String uid, String teamName) throws SQLException{
-        String addN="INSERT INTO FollowListHasTeam VALUES ( ?, ?)";
+    String addN="INSERT INTO FollowListHasTeam VALUES ( ?, ?)";
         PreparedStatement update=con.prepareStatement(addN);
         update.setString(1,uid);
         update.setString(2,teamName);
         update.executeUpdate();
+
+    AlertBox.display("Success",  uid + " successfully followed "+ teamName);
         }
 
 public static void followRegion(Connection con, String uid, String regionName) throws SQLException {

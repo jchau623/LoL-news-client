@@ -12,8 +12,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import java.sql.Connection;
-import java.sql.SQLException;
+
+import java.sql.*;
+import java.util.ArrayList;
 
 public class Main extends Application {
     String user;
@@ -34,8 +35,6 @@ public class Main extends Application {
         login.setMaxHeight(132);
         login.setResizable(false);
         TextField username = new TextField();
-
-        user = username.getText();
 
         username.setPromptText("CS ID (e.g. a2x9)");
         PasswordField password = new PasswordField();
@@ -191,6 +190,8 @@ public class Main extends Application {
         //Post-login: Main menu
         Text message = new Text("Logged in as:");
         Text loggedInAs = new Text(userID);
+        user = userID;
+
         loggedInAs.setFont(Font.font(40));
 
         Button button0 = new Button("Log out");
@@ -265,7 +266,7 @@ public class Main extends Application {
             con = loginConnection.logIn(user, password);
             login.close();
             if (state == "Admin") adminMenu(user, state);
-            else if (state == "User") userMenu(user, state);
+            else if (state == "User") userMenu(con, user, state);
         } catch (SQLException e) {
             if (e.getErrorCode() == 17002) {
                 AlertBox.display("Error", "Could not establish connection to the database");
@@ -275,8 +276,18 @@ public class Main extends Application {
         }
     }
 
-    private void userMenu(String userID, String userState) {
+    private void userMenu(Connection con, String userID, String userState) throws SQLException {
+
         window = new Stage();
+
+        if(!getAllUsers(con).contains(userID)){
+            String addR = "INSERT INTO FollowList VALUES (?)";
+            PreparedStatement update = con.prepareStatement(addR);
+            update.setString(1, userID);
+            update.executeUpdate();
+
+        }
+
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
             try {
@@ -329,5 +340,21 @@ public class Main extends Application {
         window.setTitle("LOLNews (" + userState + ")");
         window.setScene(scene1);
         window.show();
+    }
+
+    public static ArrayList<String> getAllUsers(Connection con) throws SQLException {
+        ArrayList<String> temp = new ArrayList<String>();
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery("SELECT user_ID FROM FollowList");
+
+        while (rs.next()) {
+
+            String arr ;
+            String n = rs.getString("user_ID");
+            arr = n.replace("\n", ",");
+            temp.add(arr);
+
+        }
+        return temp;
     }
 }
