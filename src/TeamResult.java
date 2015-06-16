@@ -6,6 +6,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -36,6 +37,15 @@ public class TeamResult {
         Label pLabel = new Label("Players on the Roster") ;
 
         Button followButton = new Button("(+) Follow") ;
+        
+        //TODO:
+        followButton.setOnAction(e -> {
+            try {
+                Following.followTeam(con, user, team.returnTeamName());
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
 
         GridPane.setConstraints(teamAcrLabel, 0, 0);
         GridPane.setConstraints(teamRegionLabel, 0, 1);
