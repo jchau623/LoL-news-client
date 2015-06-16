@@ -143,11 +143,11 @@ public class NewFeed {
                     news.setHeadline(regionNewsResultSet.getString("headline"));
                     news.setURL(regionNewsResultSet.getString("url"));
                 }
-            }
+}
         } catch (SQLException e) {
-            e.printStackTrace();
+        e.printStackTrace();
         }
 
         return null;
-    }
-}
+        }
+        }

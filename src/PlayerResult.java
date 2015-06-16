@@ -30,6 +30,8 @@ public class PlayerResult {
             try {
                 Following.followPlayer(con, user, player.returnID());
             } catch (SQLException e1) {
+                if(e1.getErrorCode() == 1)
+                    AlertBox.display("Error", "You are already following this player");
                 System.out.println(e1);
             }
         });

@@ -42,6 +42,8 @@ public class TeamResult {
             try {
                 Following.followTeam(con, user, team.returnTeamName());
             } catch (SQLException e1) {
+                if(e1.getErrorCode() == 1)
+                    AlertBox.display("Error", "You are already following this team");
                 System.out.println(e1);
             }
         });
