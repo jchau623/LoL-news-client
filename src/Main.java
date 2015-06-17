@@ -336,11 +336,21 @@ public class Main extends Application {
         Button button5 = new Button("View Matches");
         button5.setOnAction(e -> ViewMatches.display(con, "View Matches", "View Matches By Team"));
 
-        Button button6 = new Button("View Our Top Users!");
-        button6.setOnAction(e ->ViewUsers.display(con, "View Our Top Users", "View Our Top Users"));
+        Button button6 = new Button("Guessing Game");
+        button6.setOnAction(e -> {
+            try {
+                MinMax.display(con, userID);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+
+        Button button7 = new Button("View Our Top Users!");
+        button7.setOnAction(e ->ViewUsers.display(con, "View Our Top Users", "View Our Top Users"));
 
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(message, userAndButton, button1, button4, button5, button6, button3);
+        layout.getChildren().addAll(message, userAndButton, button1, button4, button5, button6, button7, button3);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
