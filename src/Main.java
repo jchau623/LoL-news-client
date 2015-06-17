@@ -176,6 +176,7 @@ public class Main extends Application {
 
     private void adminMenu(String userID, String userState) throws SQLException {
         window = new Stage();
+        window.setResizable(false);
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
             try {
@@ -289,6 +290,7 @@ public class Main extends Application {
     private void userMenu(Connection con, String userID, String userState) throws SQLException {
 
         window = new Stage();
+        window.setResizable(false);
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
             try {

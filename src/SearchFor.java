@@ -389,7 +389,7 @@ public class SearchFor {
         String realAttributeName = (attribute=="Name")?"name":(attribute=="Acronym")?"acronym":
                 (attribute=="Average Barons")?"averageBarons":(attribute=="Average Dragons")?
                         "averageDragons":(attribute=="Wins")?"wins":(attribute=="Losses")?
-                        "losses":(attribute=="Sponsor")?"sponsor":(attribute=="Region")?"region":attribute;
+                        "losses":(attribute=="Sponsor")?"sponsor":(attribute=="Region")?"rname":attribute;
         String order = (value=="Ascending order")?"ASC":"DESC";
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM TeamThatPlaysIn WHERE name LIKE \'%" + tf.getText() + "%\' ORDER BY " + realAttributeName + " " + order);

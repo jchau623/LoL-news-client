@@ -4,10 +4,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -128,8 +126,6 @@ public class NewsFeed {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
 
@@ -226,7 +222,7 @@ public class NewsFeed {
     private static ArrayList<String> findItems(Connection con, String user) throws SQLException {
         Statement playerList = con.createStatement();
         ResultSet playersfollowered = playerList.executeQuery(
-                "SELECT p.summonerID " +
+                "SELECT RTRIM(p.summonerID) " +
                 "FROM FollowListHasPlayer p " +
                         "WHERE p.user_id = "+ " \'" + user + " \'"
         ) ;
@@ -234,6 +230,7 @@ public class NewsFeed {
 
         if(playersfollowered.isBeforeFirst()) {}
         while (playersfollowered.next()) {
+            System.out.println(playersfollowered.getString(1) + "test");
             String playerF = playersfollowered.getString(1);
             allPlayersFollowed.add(playerF);
         }
