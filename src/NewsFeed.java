@@ -103,10 +103,10 @@ public class NewsFeed {
                     listOfP.add(listOfPlayers.get(i));
                 }
                 try {
-                    ArrayList<String> playerNewsHeadlines= displayFollowList(user, con, listOfP);
-                    for (int i = 0  ; i < playerNewsHeadlines.size() ; i++ ) {
-                        headlines.add(playerNewsHeadlines.get(i)) ;
-                    }
+                    TreeSet<String> playerNewsHeadlines= displayFollowList(user, con, listOfP);
+                    //for (int i = 0  ; i < playerNewsHeadlines.size() ; i++ ) {
+                        headlines.addAll(playerNewsHeadlines) ;
+                   // }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -114,27 +114,14 @@ public class NewsFeed {
         });
 
 
+        // ToDo : solve the problem where if I unselect everything how to make it appear back to the original List
+
+        //try using getItemBooleanProperty and if all of them are false, then DO that ???
         if (followList.getCheckModel().getCheckedItems().isEmpty()) {
-            ArrayList<News> oringalNews = new ArrayList<>();
-            ArrayList<News> playerNewsList = getPlayerNews(con, user);
-            ArrayList<News> teamNewsList = getTeamNews(con, user );
-            ArrayList<News> regionNewsList = getRegionNews(con, user);
-
-            if (!(playerNewsList == null)) oringalNews.addAll(playerNewsList);
-            if (!(teamNewsList == null)) oringalNews.addAll(teamNewsList) ;
-            if (!(regionNewsList == null)) oringalNews.addAll(regionNewsList) ;
-
-            Set<String> otherSet = new TreeSet<>() ;
-            for (News n : oringalNews) {
-                otherSet.add(n.getHeadline());
-            }
-
-            for (String s : otherSet) {
-                if (headlines.contains(s)) {
-                    headlines.add(s);
-                }
-            }
+           System.out.println("I am empty");
         }
+
+      //  if (followList.getCheckModel().ge)
 
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -256,7 +243,7 @@ public class NewsFeed {
     private static ArrayList<String> findItems(Connection con, String user) throws SQLException {
         Statement playerList = con.createStatement();
         ResultSet playersfollowered = playerList.executeQuery(
-                "SELECT p.summonerID " +
+                "SELECT RTRIM(p.summonerID) " +
                 "FROM FollowListHasPlayer p " +
                         "WHERE p.user_id = "+ " \'" + user + " \'"
         ) ;
@@ -286,44 +273,73 @@ public class NewsFeed {
         return  allPlayersFollowed ;
     }
 
-    private static ArrayList<String>  displayFollowList(String user, Connection con, ArrayList<String> listOfPlayers) throws SQLException {
+    private static TreeSet<String>  displayFollowList(String user, Connection con, ArrayList<String> listOfPlayers) throws SQLException {
 
         //System.out.println("I am at the start of the function");
 
-        // going to creathe the string to put in the SQL query
 
-        String sqlString = new String();
+        if (listOfPlayers.isEmpty()) {
 
-        for(int i =0 ; i < listOfPlayers.size() ; i++ ) {
-            if (i == 0 ) {
-                sqlString = sqlString.concat( " \'" + listOfPlayers.get(i).trim() + " \'") ;
-          //      System.out.println("I am in the middle of the function ");
+
+            ArrayList<News> news = new ArrayList<>();
+            ArrayList<News> playerNews = getPlayerNews(con, user);
+            ArrayList<News> teamNews = getTeamNews(con, user);
+            ArrayList<News> regionNews = getRegionNews(con, user);
+
+
+            // adding it to the list
+            if (!(playerNews == null)) news.addAll(playerNews);
+            if (!(teamNews == null)) news.addAll(teamNews);
+            if (!(regionNews == null)) news.addAll(regionNews);
+            TreeSet<String> set = new TreeSet<>();
+            for (News news1 : news) {
+                set.add(news1.getHeadline());
             }
-            else {
-                sqlString = sqlString.concat(" OR summonerID = " + " \'" + listOfPlayers.get(i).trim() + " \'");
+
+            return set ;
+
+
+        } else {
+            // going to creathe the string to put in the SQL query
+            String sqlString = new String();
+            for (int i = 0; i < listOfPlayers.size(); i++) {
+                if (i == 0) {
+                    sqlString = sqlString.concat(" WHERE summonerID = " + " \'" + listOfPlayers.get(i).trim() + " \'");
+                    //      System.out.println("I am in the middle of the function ");
+                } else {
+                    sqlString = sqlString.concat(" OR summonerID = " + " \'" + listOfPlayers.get(i).trim() + " \'");
+                    //    System.out.println(sqlString);
+                }
+            }
+
             //    System.out.println(sqlString);
+
+            // todo the bug is within the WHERE CLAUSE move to the for loop
+
+            TreeSet<String> playerNewsHeadLines = new TreeSet<>();
+            Statement viewBaby = con.createStatement();
+            ResultSet rs = viewBaby.executeQuery("  " +
+                    "SELECT headline" +
+                    " FROM PlayerNews" +
+                    sqlString +
+                    " AND url IN " +
+                    " (select p.url" +
+                    " from playernews p, followlisthasplayer f" +
+                    " where f.user_id = " + " \'" + user + " \'" +
+                    " and f.summonerid = p.summonerid)");
+
+            if (rs.isBeforeFirst()) {
             }
+            while (rs.next()) {
+                playerNewsHeadLines.add(rs.getString(1));
+            }
+
+
+            return playerNewsHeadLines;
         }
 
-    //    System.out.println(sqlString);
-
-        ArrayList<String> playerNewsHeadLines = new ArrayList<>();
-        Statement viewBaby = con.createStatement();
-        ResultSet rs = viewBaby.executeQuery("  " +
-                "SELECT headline" +
-                " FROM PlayerNews" +
-                " WHERE summonerID = " + sqlString +
-                " AND url IN " +
-                " (select p.url" +
-                " from playernews p, followlisthasplayer f" +
-                " where f.user_id = " + " \'" + user + " \'" +
-                " and f.summonerid = p.summonerid)");
-
-        if (rs.isBeforeFirst()) {}
-        while (rs.next()) {
-            playerNewsHeadLines.add(rs.getString(1));
-        }
-
-        return playerNewsHeadLines;
+        //return null ;
     }
+
+
 }
