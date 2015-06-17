@@ -333,8 +333,11 @@ public class Main extends Application {
         Button button4 = new Button("Search");
         button4.setOnAction(e -> SearchFor.display(con, userID));
 
+        Button button5 = new Button("View Matches");
+        button5.setOnAction(e -> ViewMatches.display(con, "View Matches", "View Matches By Team"));
+
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(message, userAndButton, button1, button4, button3);
+        layout.getChildren().addAll(message, userAndButton, button1, button4, button5, button3);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 

@@ -441,6 +441,7 @@ public class SearchFor {
             p.setCsPerMin(rs.getFloat(5));
             p.setGPM(rs.getFloat(6));
             p.setKDA(rs.getFloat(7));
+
             p.setRole(rs.getString(8));
             listOfPlayers.add(p) ;
         }
