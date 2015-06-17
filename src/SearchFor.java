@@ -221,10 +221,10 @@ public class SearchFor {
 
             else if (choices.getSelectedToggle() == team) {
 
-                GridPane.setConstraints(selectLabel, 2, 7);
-                GridPane.setConstraints(select, 3, 7);
-                GridPane.setConstraints(select2, 4, 7);
-                GridPane.setConstraints(select3, 5, 7);
+                GridPane.setConstraints(selectLabel, 1, 7);
+                GridPane.setConstraints(select, 2, 7);
+                GridPane.setConstraints(select2, 3, 7);
+                GridPane.setConstraints(select3, 4, 7);
                 GridPane.setConstraints(whereLabel, 1, 8);
                 GridPane.setConstraints(whereAttributes, 2, 8);
                 GridPane.setConstraints(condition, 3, 8);
@@ -261,10 +261,10 @@ public class SearchFor {
             }//"Acronym", "Name"
             else if (choices.getSelectedToggle() == region) {
 
-                GridPane.setConstraints(selectLabel, 2, 7);
-                GridPane.setConstraints(select, 3, 7);
-                GridPane.setConstraints(select2, 4, 7);
-                GridPane.setConstraints(select3, 5, 7);
+                GridPane.setConstraints(selectLabel, 1, 7);
+                GridPane.setConstraints(select, 2, 7);
+                GridPane.setConstraints(select2, 3, 7);
+                GridPane.setConstraints(select3, 4, 7);
                 GridPane.setConstraints(whereLabel, 1, 8);
                 GridPane.setConstraints(whereAttributes, 2, 8);
                 GridPane.setConstraints(condition, 3, 8);
