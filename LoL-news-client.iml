@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="classes12" level="project" />
+    <orderEntry type="library" name="cfx" level="project" />
   </component>
 </module>
