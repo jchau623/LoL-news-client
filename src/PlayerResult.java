@@ -41,10 +41,10 @@ public class PlayerResult {
 
         Label pIDLabel = new Label("SummonerID: " + player.returnID()) ;
         Label pNameLabel = new Label( "Name: " + player.returnName());
-        Label pCSLabel = new Label("CsPerGame: " + Float.toString(player.returnCsPerGame()));
+        Label pCSLabel = new Label("CsPerGame: " + Double.toString(player.returnCsPerGame()));
         Label pAgeLabel = new Label( "Age: " + Integer.toString(player.returnAge())) ;
-        Label pGoldLabel = new Label( "GoldPerMin: " + Float.toString(player.returnGPM())) ;
-        Label pKDALabel  = new Label( "KDA: "+ Float.toString(player.returnKDA())) ;
+        Label pGoldLabel = new Label( "GoldPerMin: " + Double.toString(player.returnGPM())) ;
+        Label pKDALabel  = new Label( "KDA: "+ Double.toString(player.returnKDA())) ;
         Label pNationLabel = new Label("Nationality: " + player.returnNationality()) ;
         Label pRoleLabel = new Label("Role: " + player.getRole());
 

@@ -6,9 +6,9 @@ public class Player {
     public int age ;
     public String name ;
     public String nationality ;
-    public float csPerMin ;
-    public float goldPerMin ;
-    public float kDA;
+    public double csPerMin ;
+    public double goldPerMin ;
+    public double kDA;
     public String role;
 
     public String getRole() {
@@ -43,18 +43,18 @@ public class Player {
     public String returnNationality() {
         return nationality ;
     }
-    public void setCsPerMin(float cpg) {
+    public void setCsPerMin(double cpg) {
         csPerMin = cpg;
     }
-    public float returnCsPerGame() {
+    public double returnCsPerGame() {
         return csPerMin ;
     }
-    public void setGPM(float gpm) {goldPerMin = gpm;}
-    public float returnGPM() {
+    public void setGPM(double gpm) {goldPerMin = gpm;}
+    public double returnGPM() {
         return goldPerMin ;
     }
-    public void setKDA(float kda) {kDA = kda;}
-    public float returnKDA() {
+    public void setKDA(double kda) {kDA = kda;}
+    public double returnKDA() {
         return kDA ;
     }
 
