@@ -9,10 +9,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +20,19 @@ public class SearchFor {
     private static TextField tf = new TextField();
     private static Label askReturn;
 
-//TODO FIX ADVANCED SEARCH SPACING, PLS JUSTIN SENPAI, I DON'T KNOW HOW TO DO IT QQ 
+   static  Label whereLabel = new Label("Where");
+    static ChoiceBox<String> select = new ChoiceBox<>();
+     static ChoiceBox<String> select2 = new ChoiceBox<>();
+  static  ChoiceBox<String> select3 = new ChoiceBox<>();
+    static ChoiceBox<String> whereAttributes = new ChoiceBox<String>();
+    static ChoiceBox<String> condition = new ChoiceBox<>();
+    static Label selectLabel = new Label("select:");
+    static TextField condition2 = new TextField();
+    static Label whereLabel2 = new Label("Where");
+    static ChoiceBox<String> whereAttributes2 = new ChoiceBox<>();
+    static ChoiceBox<String> condition3 = new ChoiceBox<>();
+    static TextField condition4 = new TextField();
+//TODO FIX ADVANCED SEARCH SPACING, PLS JUSTIN SENPAI, I DON'T KNOW HOW TO DO IT QQ
     public static void display(Connection con, String user) {
         System.out.println(user);
         Connection connection = con;
@@ -62,25 +71,61 @@ public class SearchFor {
         layout.setAlignment(Pos.TOP_CENTER);
 
         Label askReturn = new Label("Return playerName sorted by:");
-        ChoiceBox<String> attributes = new ChoiceBox<>();
+        ChoiceBox<String> attributes = new ChoiceBox<String>();
         attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
         player.setOnAction(e -> {
 
             askReturn.setText("Return Player sorted by:");
             attributes.getItems().clear();
                  attributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality", "Role");
-
+            select.getItems().clear(); select2.getItems().clear(); select3.getItems().clear();
+            whereAttributes.getItems().clear(); whereAttributes2.getItems().clear(); condition.getItems().clear(); condition3.getItems().clear();
+            select.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+            select2.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+            select3.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+            whereAttributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+            condition.getItems().addAll("=", "<", ">", "<>");
+            whereAttributes2.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
+            condition3.getItems().addAll("=", "<", ">", "<>");
+            condition4.setMinWidth(100);
 
         });
+
+
         team.setOnAction(e-> {
             askReturn.setText("Return Team sorted by:");
             attributes.getItems().clear();
             attributes.getItems().addAll("Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+            select.getItems().clear(); select2.getItems().clear(); select3.getItems().clear();
+            whereAttributes.getItems().clear(); whereAttributes2.getItems().clear(); condition.getItems().clear(); condition3.getItems().clear();
+            select.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+            select2.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+            select3.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+            whereAttributes.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+            condition.getItems().addAll("=", "<", ">", "<>");
+
+            whereAttributes2.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
+            condition3.getItems().addAll("=", "<", ">", "<>");
+            condition4.setMinWidth(100);
+
         });
         region.setOnAction(e -> {
             askReturn.setText("Return Region sorted by:");
             attributes.getItems().clear();
             attributes.getItems().addAll("Acronym", "Name");
+            select.getItems().clear(); select2.getItems().clear(); select3.getItems().clear();
+            whereAttributes.getItems().clear(); whereAttributes2.getItems().clear(); condition.getItems().clear(); condition3.getItems().clear();
+            select.getItems().addAll( "Acronym", "Name");
+            select2.getItems().addAll( "Acronym", "Name");
+            select3.getItems().addAll( "Acronym", "Name");
+            whereAttributes.getItems().addAll( "Acronym", "Name");
+            condition.getItems().addAll("=", "<", ">", "<>");
+
+
+            whereAttributes2.getItems().addAll( "Acronym", "Name");
+            condition3.getItems().addAll("=", "<", ">", "<>");
+            condition4.setMinWidth(100);
+
         });
         GridPane.setConstraints(askReturn, 0, 3);
         GridPane.setConstraints(attributes, 0, 4);
@@ -98,28 +143,9 @@ public class SearchFor {
 
                                advanced.setOnAction(e -> {
                                    if(choices.getSelectedToggle() == player){
-                                       Label selectLabel = new Label("select:");
-                                       ChoiceBox<String> select = new ChoiceBox<>();
-                                       select.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
-                                       ChoiceBox<String> select2 = new ChoiceBox<>();
-                                       select2.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
-                                       ChoiceBox<String> select3 = new ChoiceBox<>();
-                                       select3.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
-                                       Label whereLabel = new Label("Where");
-                                       ChoiceBox<String> whereAttributes = new ChoiceBox<>();
-                                       whereAttributes.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
-                                       ChoiceBox<String> condition = new ChoiceBox<>();
-                                       condition.getItems().addAll("=", "<", ">", "<>");
-                                       TextField condition2 = new TextField();
 
-                                       Label whereLabel2 = new Label("Where");
-                                       ChoiceBox<String> whereAttributes2 = new ChoiceBox<>();
-                                       whereAttributes2.getItems().addAll("summonerID", "Age", "Name", "KA/D Ratio", "csPerMin", "goldPerMin", "Nationality");
-                                       ChoiceBox<String> condition3 = new ChoiceBox<>();
-                                       condition3.getItems().addAll("=", "<", ">", "<>");
-                                       TextField condition4 = new TextField();
-                                       condition4.setMinWidth(100);
-                                       GridPane.setConstraints(selectLabel, 2, 7);
+
+                                                               GridPane.setConstraints(selectLabel, 2, 7);
                                        GridPane.setConstraints(select, 3, 7);
                                        GridPane.setConstraints(select2, 4, 7);
                                        GridPane.setConstraints(select3, 5,7);
@@ -161,28 +187,7 @@ public class SearchFor {
 
                                    else if (choices.getSelectedToggle() == team){
 
-                                       Label selectLabel = new Label("select:");
-                                       ChoiceBox<String> select = new ChoiceBox<>();
-                                       select.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
-                                       ChoiceBox<String> select2 = new ChoiceBox<>();
-                                       select2.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
-                                       ChoiceBox<String> select3 = new ChoiceBox<>();
-                                       select3.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
-                                       Label whereLabel = new Label("Where");
-                                       ChoiceBox<String> whereAttributes = new ChoiceBox<>();
-                                       whereAttributes.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
-                                       ChoiceBox<String> condition = new ChoiceBox<>();
-                                       condition.getItems().addAll("=", "<", ">", "<>");
-                                       TextField condition2 = new TextField();
-
-                                       Label whereLabel2 = new Label("Where");
-                                       ChoiceBox<String> whereAttributes2 = new ChoiceBox<>();
-                                       whereAttributes2.getItems().addAll( "Name", "Acronym", "Average Barons", "Average Dragons", "Wins", "Losses", "Sponsor", "Region");
-                                       ChoiceBox<String> condition3 = new ChoiceBox<>();
-                                       condition3.getItems().addAll("=", "<", ">", "<>");
-                                       TextField condition4 = new TextField();
-                                       condition4.setMinWidth(100);
-                                       GridPane.setConstraints(selectLabel, 2, 7);
+                                            GridPane.setConstraints(selectLabel, 2, 7);
                                        GridPane.setConstraints(select, 3, 7);
                                        GridPane.setConstraints(select2, 4, 7);
                                        GridPane.setConstraints(select3, 5,7);
@@ -221,28 +226,7 @@ public class SearchFor {
                                        }}//"Acronym", "Name"
                                    else if (choices.getSelectedToggle() == region){
 
-                                       Label selectLabel = new Label("select:");
-                                       ChoiceBox<String> select = new ChoiceBox<>();
-                                       select.getItems().addAll( "Acronym", "Name");
-                                       ChoiceBox<String> select2 = new ChoiceBox<>();
-                                       select2.getItems().addAll( "Acronym", "Name");
-                                       ChoiceBox<String> select3 = new ChoiceBox<>();
-                                       select3.getItems().addAll( "Acronym", "Name");
-                                       Label whereLabel = new Label("Where");
-                                       ChoiceBox<String> whereAttributes = new ChoiceBox<>();
-                                       whereAttributes.getItems().addAll( "Acronym", "Name");
-                                       ChoiceBox<String> condition = new ChoiceBox<>();
-                                       condition.getItems().addAll("=", "<", ">", "<>");
-                                       TextField condition2 = new TextField();
-
-                                       Label whereLabel2 = new Label("Where");
-                                       ChoiceBox<String> whereAttributes2 = new ChoiceBox<>();
-                                       whereAttributes2.getItems().addAll( "Acronym", "Name");
-                                       ChoiceBox<String> condition3 = new ChoiceBox<>();
-                                       condition3.getItems().addAll("=", "<", ">", "<>");
-                                       TextField condition4 = new TextField();
-                                       condition4.setMinWidth(100);
-                                       GridPane.setConstraints(selectLabel, 2, 7);
+                                           GridPane.setConstraints(selectLabel, 2, 7);
                                        GridPane.setConstraints(select, 3, 7);
                                        GridPane.setConstraints(select2, 4, 7);
                                        GridPane.setConstraints(select3, 5,7);
@@ -286,24 +270,55 @@ public class SearchFor {
 
                                    });
 
-
-
+        String oneSelectOneWhere = "SELECT ? FROM ? WHERE ? ? ?";
+        String twoSelectOneWhere = "SELECT ?,? FROM ? WHERE ? ? ?";
+        String threeSelectOneWhere = "SELECT ?,?,? FROM ? WHERE ? ? ?";
+        String oneSelectTwoWhere = "SELECT ? FROM ? WHERE ? ? ?";
+        String twoSelectTwoWhere = "SELECT ?,? FROM ? WHERE ? ? ? AND ? ? ?";
+        String threeSelectTwoWhere = "SELECT ?,?,? FROM ? WHERE ? ? ? AND ? ? ?";
         //Todo must finish linking results and search  !!!
         searchButton.setOnAction(e->{
-            try {/* if (advanced.isSelected()){
-                    if (choices.getSelectedToggle() == player) {
-                        advancedFindPlayer(connection, attributes.getValue(), order.getValue()) ;
-                        System.out.println(findPlayer(connection, attributes.getValue(), order.getValue()));
-                        SearchResults.display(findPlayer(connection, attributes.getValue(), order.getValue()));
+            try { if (advanced.isSelected()) {
+ Toggle choice = choices.getSelectedToggle();
+                String searchFor = null;
+                if(choice == player) searchFor = "Player";
+                if(choice == team) searchFor = "TeamThatPlaysIn";
+                if(choice == region) searchFor = "Region";
 
-                    } else if (choices.getSelectedToggle() == team) {
-                        advancedFindTeam(connection, attributes.getValue(), order.getValue());
-                    } else if (choices.getSelectedToggle() == region) {
-                        advancedFindRegion(connection, attributes.getValue(), order.getValue());
+                    if (select.getValue() != null && select2.getValue() == null && select3.getValue() == null && whereAttributes.getValue() != null && condition.getValue() != null && condition2.getText() != null && whereAttributes2.getValue() == null && condition3.getValue() == null && condition4.getText().equals("")) {
+                    if(choice == player){
+                  String a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 1, searchFor);
+                        AlertBox.display("Results:" ,  a);}
+
+
+
+                } else    if (select.getValue() != null && select2.getValue() != null && select3.getValue() == null && whereAttributes.getValue() != null && condition.getValue() != null && condition2.getText() != null && whereAttributes2.getValue() == null && condition3.getValue() == null && condition4.getText().equals("")) {
+                        if(choice == player){
+                            String a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 2, searchFor);
+                            AlertBox.display("Players:" ,  a);}
+                      } else if (select.getValue() != null && select2.getValue() != null && select3.getValue() != null && whereAttributes.getValue() != null && condition.getValue() != null && condition2.getText() != null && whereAttributes2.getValue() == null && condition3.getValue() == null && condition4.getText().equals("")) {
+                        if(choice == player){
+                            String a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 3, searchFor);
+                            AlertBox.display("Players:" ,  a);}
+                       } else if(select.getValue() != null && select2.getValue() == null && select3.getValue() == null && whereAttributes.getValue() != null && condition.getValue() != null && condition2.getText() != null && whereAttributes2.getValue() != null && condition3.getValue() != null && !condition4.getText().equals("")) {
+                        if(choice == player){
+                            String a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 4, searchFor);
+                            AlertBox.display("Players:" ,  a);}
+                       } else if(select.getValue() != null && select2.getValue() != null && select3.getValue() == null && whereAttributes.getValue() != null && condition.getValue() != null && condition2.getText() != null && whereAttributes2.getValue() != null && condition3.getValue() != null && !condition4.getText().equals("")) {
+                        if(choice == player){
+                            String a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 5, searchFor);
+                            AlertBox.display("Players:" ,  a);}
+                    } else if(select.getValue() != null && select2.getValue() != null && select3.getValue() != null && whereAttributes.getValue() != null && condition.getValue() != null && condition2.getText() != null && whereAttributes2.getValue() != null && condition3.getValue() != null && !condition4.getText().equals("")) {
+                        if(choice == player){
+                            String a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 6, searchFor);
+                            AlertBox.display("Players:" ,  a);}
+
                     }
+
                 }
-                else */
-                if (choices.getSelectedToggle() == player) {
+
+
+               else  if (choices.getSelectedToggle() == player) {
                     SearchResults.display(user, con, findPlayer("summonerID ", connection, attributes.getValue(), order.getValue()));
 
                 } else if (choices.getSelectedToggle() == team) {
@@ -332,7 +347,7 @@ public class SearchFor {
 
                 }
             } catch (SQLException e1) {
-                e1.printStackTrace();
+                System.out.println(e1 + "e1");
             }
         });
 
@@ -341,6 +356,98 @@ public class SearchFor {
 
 
     }
+
+
+    private static String advancedFindPlayer(Connection con, String attribute, String value,  int i, String searchFor) throws SQLException{
+        String realAttributeName = (attribute=="Age") ? "age" : (attribute=="Name") ? "name" :
+                (attribute=="KA/D Ratio") ? "KDA" : (attribute=="Nationality") ? "nationality" : attribute;
+        String order = (value=="Ascending order")?"ASC":"DESC";
+
+
+
+        Statement s = null;
+        ResultSet rs = null;
+
+        if ( i == 1){
+            String query = "SELECT " + select.getValue() + " FROM " +searchFor+ " WHERE " + whereAttributes.getValue()+ " " + condition.getValue() + " "+ condition2.getText();
+            System.out.println(query);
+            try{
+                s = con.createStatement();
+
+        rs =        s.executeQuery(query);
+            } catch (SQLException e1){ System.out.println(e1);}
+
+        }
+        else if ( i == 2){
+
+            String query = "SELECT " + select.getValue() + ", "+ select2.getValue() + " FROM " +searchFor+ " WHERE " + whereAttributes.getValue()+ " " + condition.getValue() + " "+ condition2.getText();
+            System.out.println(query);
+            try{
+                s = con.createStatement();
+
+                rs =        s.executeQuery(query);
+            } catch (SQLException e1){ System.out.println(e1);}
+
+        } else if ( i == 3){
+            String query = "SELECT " + select.getValue() + ", "+ select2.getValue() + ", " + select3.getValue() + " FROM " +searchFor+ " WHERE " + whereAttributes.getValue()+ " " + condition.getValue() + " "+ condition2.getText();
+            System.out.println(query);
+            try{
+                s = con.createStatement();
+
+                rs =        s.executeQuery(query);
+            } catch (SQLException e1){ System.out.println(e1);}
+
+        } else if (i ==4)
+        {  String query = "SELECT " + select.getValue() + " FROM " +searchFor+ " WHERE " + whereAttributes.getValue()+ " " + condition.getValue() + " "+ condition2.getText() + "AND "+ whereAttributes2.getValue()+ " " + condition3.getValue() + " "+ condition4.getText();
+            System.out.println(query);
+            try{
+                s = con.createStatement();
+
+                rs =        s.executeQuery(query);
+            } catch (SQLException e1){ System.out.println(e1);}
+              } else if (i== 5){
+              String query = "SELECT " + select.getValue() + ", " + select2.getValue() + " FROM " +searchFor+ " WHERE " + whereAttributes.getValue()+ " " + condition.getValue() + " "+ condition2.getText() + "AND "+ whereAttributes2.getValue()+ " " + condition3.getValue() + " "+ condition4.getText();
+                System.out.println(query);
+                try{
+                    s = con.createStatement();
+
+                    rs =        s.executeQuery(query);
+                } catch (SQLException e1){ System.out.println(e1);}
+
+            } else {
+            String query = "SELECT " + select.getValue() + ", " + select2.getValue() + ", " + select3.getValue() + " FROM " +searchFor+ " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + condition2.getText() + "AND " + whereAttributes2.getValue() + " " + condition3.getValue() + " " + condition4.getText();
+            System.out.println(query);
+            try {
+                s = con.createStatement();
+
+                rs = s.executeQuery(query);
+            } catch (SQLException e1) {
+                System.out.println(e1);
+            }
+        }
+
+
+        System.out.println("finished the first part");
+
+
+        String p = null;
+        if (!rs.isBeforeFirst()) {
+            AlertBox.display("Error", "No results found");
+        }
+
+        else {
+            while (rs.next()) {
+
+
+                p = p +  rs.getString(1);
+
+            }
+        }
+        System.out.println("all players in result set");
+        return  p;
+
+    }
+
     // going to execute the SQL query to find the player
     public static ArrayList<Player> findPlayer(String filter , Connection con, String attribute, String value) throws SQLException {
 
