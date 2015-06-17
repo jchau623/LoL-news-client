@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -178,10 +179,10 @@ public class SearchFor {
                 condition3.getItems().addAll("=", "<", ">", "<>");
                 condition4.setMinWidth(100);
 
-                GridPane.setConstraints(selectLabel, 2, 7);
-                GridPane.setConstraints(select, 3, 7);
-                GridPane.setConstraints(select2, 4, 7);
-                GridPane.setConstraints(select3, 5, 7);
+                GridPane.setConstraints(selectLabel, 1, 7);
+                GridPane.setConstraints(select, 2, 7);
+                GridPane.setConstraints(select2, 3, 7);
+                GridPane.setConstraints(select3, 4, 7);
                 GridPane.setConstraints(whereLabel, 1, 8);
                 GridPane.setConstraints(whereAttributes, 2, 8);
                 GridPane.setConstraints(condition, 3, 8);
@@ -220,10 +221,10 @@ public class SearchFor {
 
             else if (choices.getSelectedToggle() == team) {
 
-                GridPane.setConstraints(selectLabel, 2, 7);
-                GridPane.setConstraints(select, 3, 7);
-                GridPane.setConstraints(select2, 4, 7);
-                GridPane.setConstraints(select3, 5, 7);
+                GridPane.setConstraints(selectLabel, 1, 7);
+                GridPane.setConstraints(select, 2, 7);
+                GridPane.setConstraints(select2, 3, 7);
+                GridPane.setConstraints(select3, 4, 7);
                 GridPane.setConstraints(whereLabel, 1, 8);
                 GridPane.setConstraints(whereAttributes, 2, 8);
                 GridPane.setConstraints(condition, 3, 8);
@@ -260,10 +261,10 @@ public class SearchFor {
             }//"Acronym", "Name"
             else if (choices.getSelectedToggle() == region) {
 
-                GridPane.setConstraints(selectLabel, 2, 7);
-                GridPane.setConstraints(select, 3, 7);
-                GridPane.setConstraints(select2, 4, 7);
-                GridPane.setConstraints(select3, 5, 7);
+                GridPane.setConstraints(selectLabel, 1, 7);
+                GridPane.setConstraints(select, 2, 7);
+                GridPane.setConstraints(select2, 3, 7);
+                GridPane.setConstraints(select3, 4, 7);
                 GridPane.setConstraints(whereLabel, 1, 8);
                 GridPane.setConstraints(whereAttributes, 2, 8);
                 GridPane.setConstraints(condition, 3, 8);
@@ -418,7 +419,7 @@ public class SearchFor {
 
     }
 
-
+// TODO if we have time we should also add in another choice box, choosing between AND and OR. 
     private static String advancedFindPlayer(Connection con, String attribute, String value, int i, String searchFor) throws SQLException {
         String realAttributeName = (attribute == "Age") ? "age" : (attribute == "Name") ? "name" :
                 (attribute == "KDA Ratio") ? "KDA" : (attribute == "Nationality") ? "nationality" : attribute;
@@ -426,10 +427,18 @@ public class SearchFor {
 
 
         Statement s = con.createStatement();
+        List<String> list = Arrays.asList("Nationality", "Name", "rname", "summonerID", "Acronym", "Sponsor");
+
+        String cond2 = condition2.getText();
+        if (list.contains(whereAttributes.getValue())) {System.out.println("got here");
+        cond2 ="'"+ condition2.getText() + "'";}
 
 
+        String cond4 = condition4.getText();
+        if (list.contains(whereAttributes2.getValue())) {System.out.println("got here");
+            cond4 ="'"+ condition4.getText() + "'";}
         if (i == 1) {
-            String query = "SELECT " + select.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + condition2.getText();
+            String query = "SELECT " + select.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + cond2;
             System.out.println(query);
             try {
 
@@ -443,7 +452,7 @@ public class SearchFor {
 
         } else if (i == 2) {
 
-            String query = "SELECT " + select.getValue() + ", " + select2.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + condition2.getText();
+            String query = "SELECT " + select.getValue() + ", " + select2.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + cond2;
             System.out.println(query);
             try {
                 ResultSet rs;
@@ -454,7 +463,7 @@ public class SearchFor {
             }
 
         } else if (i == 3) {
-            String query = "SELECT " + select.getValue() + ", " + select2.getValue() + ", " + select3.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + condition2.getText();
+            String query = "SELECT " + select.getValue() + ", " + select2.getValue() + ", " + select3.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + cond2;
             System.out.println(query);
             try {
                 ResultSet rs;
@@ -465,16 +474,16 @@ public class SearchFor {
             }
 
         } else if (i == 4) {
-            String query = "SELECT " + select.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + condition2.getText() + "AND " + whereAttributes2.getValue() + " " + condition3.getValue() + " " + condition4.getText();
+            String query = "SELECT " + select.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + cond2 + "AND " + whereAttributes2.getValue() + " " + condition3.getValue() + " " + cond4;
             System.out.println(query);
             try {   ResultSet rs;
                 rs = s.executeQuery(query);
-                return runQuery(rs, query, 2);
+                return runQuery(rs, query, 1);
             } catch (SQLException e1) {
                 System.out.println(e1);
             }
         } else if (i == 5) {
-            String query = "SELECT " + select.getValue() + ", " + select2.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + condition2.getText() + "AND " + whereAttributes2.getValue() + " " + condition3.getValue() + " " + condition4.getText();
+            String query = "SELECT " + select.getValue() + ", " + select2.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + cond2 + "AND " + whereAttributes2.getValue() + " " + condition3.getValue() + " " + cond4;
             System.out.println(query);
             try {
                 ResultSet rs;
@@ -485,7 +494,7 @@ public class SearchFor {
             }
 
         } else {
-            String query = "SELECT " + select.getValue() + ", " + select2.getValue() + ", " + select3.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + condition2.getText() + "AND " + whereAttributes2.getValue() + " " + condition3.getValue() + " " + condition4.getText();
+            String query = "SELECT " + select.getValue() + ", " + select2.getValue() + ", " + select3.getValue() + " FROM " + searchFor + " WHERE " + whereAttributes.getValue() + " " + condition.getValue() + " " + cond2 + "AND " + whereAttributes2.getValue() + " " + condition3.getValue() + " " + cond4;
             System.out.println(query);
             try {
                 ResultSet rs;
@@ -501,23 +510,26 @@ public class SearchFor {
 
     private static String runQuery(ResultSet rs, String query, int i) throws SQLException {
  System.out.println("got to runQuery");
-        String p = "Results:";
+        String p = "Results:" +
+                "";
         if (!rs.isBeforeFirst()) {
             AlertBox.display("Error", "No results found");
         }
         if (i==1){
             while (rs.next()) {
-                p = p + " " + rs.getString(1);
+                p = p +
+                        select.getValue() +": " + rs.getString(1);
             }
         }
         else if (i==2){
             while (rs.next()) {
-                p = p + " " + rs.getString(1) + " " + rs.getString(2);
+                p = p + " " +
+                      select.getValue() +  ": " + rs.getString(1) +" "+ select2.getValue() +": " + rs.getString(2);
             }
         }
         if (i == 3) {
             while (rs.next()) {
-                p = p + " " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3);
+                p = p + " " +select.getValue() +  ": "+ rs.getString(1) + select2.getValue() +": " + rs.getString(2) + " "+ select3.getValue() +": "  + rs.getString(3);
             }
         }
         return p;
