@@ -1,6 +1,7 @@
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -14,15 +15,16 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  * Created by Justin on 6/17/2015.
  */
 public class MinMax {
-    public static void display(Connection con) throws SQLException {
+    public static void display(Connection con, String user) throws SQLException {
         Stage window = new Stage();
         window.setResizable(false);
-
+        window.setTitle("Guessing Game");
         Text title = new Text("Which team had the Min or Max average of Barons per game?");
         ChoiceBox guess = new ChoiceBox();
         VBox top = new VBox(10);
@@ -45,8 +47,7 @@ public class MinMax {
 
         minButton.setOnAction(e -> {
             try {
-                double team = getTeamAvgBaron(con, guess.getValue());
-                double min = getMinAvgBaron(con);
+                getMinAvgBaron(con, guess.getValue(), user);
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
@@ -65,7 +66,55 @@ public class MinMax {
         window.showAndWait();
     }
 
-    private static double getMinAvgBaron(Connection con) {
+    private static void getMinAvgBaron(Connection con, Object value, String user) throws SQLException {
+        try {
+            System.out.println("getMinAvg");
+            Statement createView = con.createStatement();
+            System.out.println("createView");
+            createView.executeUpdate("CREATE VIEW barons(team, numberOfBarons) AS " +
+                    "SELECT t.name AS team, m.redNumOfBarons AS numberOfBarons " +
+                    "FROM TeamThatPlaysIn t, Match m " +
+                    "WHERE t.name = m.redName " +
+                    "UNION ALL " +
+                    "SELECT t.name, m.blueNumOfBarons" +
+                    "FROM TeamThatPlaysIn t, Match m " +
+                    "WHERE t.name = m.blueName");
+            con.commit();
+            System.out.println("Finished create view");
+            Statement calculateMinAverageBaron = con.createStatement();
+            calculateMinAverageBaron.executeUpdate("CREATE VIEW minBarons(baron) AS " +
+                    "SELECT MIN(AVG(b.numberOfBarons)) as baron " +
+                    "FROM barons b " +
+                    "GROUP BY team");
+            con.commit();
+            System.out.println("Finished minaverbaron");
+            Statement getMinTeam = con.createStatement();
+            ResultSet minRS = getMinTeam.executeQuery("SELECT team" +
+                    "from barons b, minBarons m " +
+                    "group by b.team" +
+                    "having avg(b.numberOfBarons) = (select * from minBarons)");
+            System.out.println("Finished minRS");
+            ArrayList<String> teams = new ArrayList<>();
+            System.out.println("Finish getMinAvg");
+            while(minRS.next()) {
+                System.out.println("while loop");
+                teams.add(minRS.getString("team"));
+            }
+            if (teams.contains(value)) {
+                System.out.println("win");
+                GuessBox.win("Congratulations", "You guessed correctly!",value, con, user);
+            } else {
+                System.out.println("lose");
+                GuessBox.lose("Fail", "You guessed incorrectly.");
+            }
+
+        } catch (SQLException e) {
+            Statement getMinTeam = con.createStatement();
+            ResultSet minRS = getMinTeam.executeQuery("SELECT team " +
+                    "from barons b, minBarons m " +
+                    "group by b.team " +
+                    "having avg(b.numberOfBarons) = (select * from minBarons)");
+        }
 
     }
 
