@@ -385,6 +385,7 @@ public class SearchFor {
                     ArrayList<Team> seachedteam = findTeam(connection, attributes.getValue(), order.getValue());
                     // TeamListView.display(seachedteam);
                     ArrayList<Player> searchedPlayers = null;
+
                     if (seachedteam != null) {
                         //      searchedPlayers = findPlayerFromTeam(connection, seachedteam.returnTeamName());
                         TeamListView.display(user, connection, seachedteam);
@@ -407,7 +408,7 @@ public class SearchFor {
 
                 }
             } catch (SQLException e1) {
-                System.out.println(e1 + "e1");
+                e1.printStackTrace();
             }
         });
 
@@ -578,6 +579,7 @@ public class SearchFor {
             AlertBox.display("Error", "No results found");
         }
         while (rs.next()) {
+            System.out.println("got here");
             Team team = new Team();
             team.setTeamName(rs.getString(1));
             team.setWins(rs.getInt(2));
@@ -616,7 +618,6 @@ public class SearchFor {
             team.setAverageDragons(averageDragon);
 
                     team.setRegion(rs.getString(6));
-            team.setRegion(rs.getString(8));
             searchedTeams.add(team);
         }
         return searchedTeams;
