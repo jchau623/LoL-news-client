@@ -259,7 +259,27 @@ public class NewFeed {
     private static ArrayList<String>  displayFollowList(String user, Connection con, ArrayList<String> listOfPlayers) throws SQLException {
 
         Statement viewBaby = con.createStatement();
-         viewBaby.execute("");
+        // going to creathe the string to put in the SQL query
+
+        String sqlString = new String() ;
+
+        for(int i =0 ; i < listOfPlayers.size() ; i++ ) {
+            if (i == 0 ) {
+                sqlString.concat( " \'" + listOfPlayers.get(i) + " \'") ;
+            }
+            else
+                sqlString.concat(" AND summonerID = "+ " \'" + listOfPlayers.get(i) + " \'" ) ;
+        }
+
+
+        viewBaby.execute("  SELECT headline" +
+                 "FROM PlayerNews" +
+                 " WHERE summonerID = " + sqlString +
+                "AND url IN " +
+                 " (select p.url" +
+                 " from playernews p, followlisthasplayer f\n" +
+                 " where f.user_id = " + " \'"+ user + " \'" +
+                 "and f.summonerid = p.summonerid)");
 
 
 
