@@ -176,7 +176,6 @@ public class Main extends Application {
 
     private void adminMenu(String userID, String userState) throws SQLException {
         window = new Stage();
-        window.setResizable(false);
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
             try {
@@ -290,7 +289,6 @@ public class Main extends Application {
     private void userMenu(Connection con, String userID, String userState) throws SQLException {
 
         window = new Stage();
-        window.setResizable(false);
         window.setOnCloseRequest(e -> {
             e.consume(); //consumed event, it won't close the program automatically
             try {
@@ -338,17 +336,8 @@ public class Main extends Application {
         Button button5 = new Button("View Matches");
         button5.setOnAction(e -> ViewMatches.display(con, "View Matches", "View Matches By Team"));
 
-        Button button6 = new Button("Guessing game");
-        button6.setOnAction(e -> {
-            try {
-                MinMax.display(con);
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        });
-
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(message, userAndButton, button1, button4, button5, button6, button3);
+        layout.getChildren().addAll(message, userAndButton, button1, button4, button5, button3);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
