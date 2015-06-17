@@ -216,7 +216,7 @@ public class Main extends Application {
         userAndButton.getChildren().addAll(loggedInAs, button0);
 
         Button button1 = new Button("Check your feed");
-        button1.setOnAction(e -> NewFeed.display(con, userID) ) ;
+        button1.setOnAction(e -> NewsFeed.display(con, userID) ) ;
 
 
         Button button2 = new Button("Add Something");
@@ -321,7 +321,7 @@ public class Main extends Application {
         userAndButton.setAlignment(Pos.CENTER);
         userAndButton.getChildren().addAll(loggedInAs, button0);
         Button button1 = new Button("Check your feed");
-        button1.setOnAction(e -> NewFeed.display(con, userID));
+        button1.setOnAction(e -> NewsFeed.display(con, userID));
         Button button3 = new Button("Return to desktop");
         button3.setOnAction(e -> {
             try {
@@ -333,8 +333,11 @@ public class Main extends Application {
         Button button4 = new Button("Search");
         button4.setOnAction(e -> SearchFor.display(con, userID));
 
+        Button button5 = new Button("View Matches");
+        button5.setOnAction(e -> ViewMatches.display(con, "View Matches", "View Matches By Team"));
+
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(message, userAndButton, button1, button4, button3);
+        layout.getChildren().addAll(message, userAndButton, button1, button4, button5, button3);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
