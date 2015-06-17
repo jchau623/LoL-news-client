@@ -1,19 +1,23 @@
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.controlsfx.control.CheckComboBox;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 
 /**
@@ -28,6 +32,13 @@ public class NewsFeed {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("News Feed");
+
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10));
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+
         headlines = FXCollections.observableArrayList();
 
         /*
@@ -44,6 +55,8 @@ public class NewsFeed {
         for (News news1 : news) {
             set.add(news1.getHeadline());
         }
+
+
         for (String headline : set) {
             headlines.add(headline);
         }
@@ -80,7 +93,59 @@ public class NewsFeed {
             }
         });
 
-        Scene scene = new Scene(listView);
+        final ObservableList<String> followedItemsList = FXCollections.observableArrayList();
+
+        try {
+            ArrayList<String> items = findItems(con, user );
+
+            for (int i =0 ; i < items.size() ; i++ ) {
+                System.out.print(items.get(i));
+            }
+
+            for (int i =0 ; i < items.size() ; i++ ) {
+                followedItemsList.add(items.get(i));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        final CheckComboBox<String> followList = new CheckComboBox<String>(followedItemsList) ;
+
+        followList.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(Change<? extends String> c) {
+                ObservableList<String> listOfPlayers = followList.getCheckModel().getCheckedItems() ;
+
+                // make all your get checked model  ;
+                ArrayList<String> listOfP = new ArrayList<String>() ;
+                for(int i = 0 ; i < listOfPlayers.size() ; i++){
+                    listOfP.add(listOfPlayers.get(i));
+                }
+
+                try {
+                    ArrayList<String> playerNewsHeadlines= displayFollowList(user, con, listOfP);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+
+        // populated the followedItems
+
+
+        Label followed = new Label("Filter Your Player View:") ;
+        GridPane.setConstraints(followed,0,0);
+        GridPane.setConstraints(followList,0,1);
+        GridPane.setConstraints(listView,0,2);
+
+        grid.getChildren().addAll( followed, followList, listView) ;
+
+
+        Scene scene = new Scene(grid);
         window.setScene(scene);
         window.showAndWait();
     }
@@ -156,5 +221,49 @@ public class NewsFeed {
         }
 
         return null;
+    }
+
+    private static ArrayList<String> findItems(Connection con, String user) throws SQLException {
+        Statement playerList = con.createStatement();
+        ResultSet playersfollowered = playerList.executeQuery(
+                "SELECT p.summonerID " +
+                "FROM FollowListHasPlayer p " +
+                        "WHERE p.user_id = "+ " \'" + user + " \'"
+        ) ;
+        ArrayList<String> allPlayersFollowed = new ArrayList<String>() ;
+
+        if(playersfollowered.isBeforeFirst()) {}
+        while (playersfollowered.next()) {
+            String playerF = playersfollowered.getString(1);
+            allPlayersFollowed.add(playerF);
+        }
+
+////////////////////////////CURRENTLY WORKING /////////////////////
+
+
+        /*Statement teamList = con.createStatement();
+        ResultSet teamsFollowed = teamList.executeQuery(
+                "SELECT t.name " +
+                        "FROM FollowListHasTeam t " +
+                        "WHERE "
+
+        ) ; */
+
+
+
+
+
+        return  allPlayersFollowed ;
+    }
+
+    private static ArrayList<String>  displayFollowList(String user, Connection con, ArrayList<String> listOfPlayers) throws SQLException {
+
+        Statement viewBaby = con.createStatement();
+         viewBaby.execute("");
+
+
+
+        return null;
+
     }
 }
