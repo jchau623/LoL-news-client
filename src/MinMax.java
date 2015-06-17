@@ -75,7 +75,7 @@ public class MinMax {
 
     private static void getMaxAvgBaron(Connection con, Object value, String user) throws SQLException {
         try {
-            System.out.println("getMinAvg");
+            System.out.println("getMaxAvg");
             Statement createView = con.createStatement();
             System.out.println("createView");
             try {
@@ -104,17 +104,17 @@ public class MinMax {
                         "GROUP BY team");
                 con.commit();
                 System.out.println("Finished maxaverbaron");
-                Statement getMinTeam = con.createStatement();
-                ResultSet minRS = getMinTeam.executeQuery("SELECT team" +
+                Statement getMaxTeam = con.createStatement();
+                ResultSet maxRS = getMaxTeam.executeQuery("SELECT team " +
                         "from barons b, maxBarons m " +
-                        "group by b.team" +
-                        "having avg(b.numberOfBarons) = (select * from minBarons)");
-                System.out.println("Finished minRS");
+                        "group by b.team " +
+                        "having avg(b.numberOfBarons) = (select * from maxBarons)");
+                System.out.println("Finished maxRS");
                 ArrayList<String> teams = new ArrayList<>();
-                System.out.println("Finish getMinAvg");
-                while (minRS.next()) {
+                System.out.println("Finish getMaxAvg");
+                while (maxRS.next()) {
                     System.out.println("while loop");
-                    teams.add(minRS.getString("team"));
+                    teams.add(maxRS.getString("team"));
                 }
                 if (teams.contains(value)) {
                     System.out.println("win");
@@ -125,6 +125,7 @@ public class MinMax {
                 }
 
             } catch (SQLException p){
+                p.printStackTrace();
                 try {
                     createView.executeUpdate("CREATE VIEW barons(team, numberOfBarons) AS " +
                             "SELECT t.name AS team, m.redNumOfBarons AS numberOfBarons " +
@@ -139,24 +140,24 @@ public class MinMax {
                 }
                 con.commit();
                 System.out.println("Finished create view");
-                Statement calculateMinAverageBaron = con.createStatement();
-                calculateMinAverageBaron.executeUpdate("CREATE VIEW minBarons(baron) AS " +
+                Statement calculateMaxAverageBaron = con.createStatement();
+                calculateMaxAverageBaron.executeUpdate("CREATE VIEW maxBarons(baron) AS " +
                         "SELECT MAX(AVG(b.numberOfBarons)) as baron " +
                         "FROM barons b " +
                         "GROUP BY team");
                 con.commit();
-                System.out.println("Finished minaverbaron");
-                Statement getMinTeam = con.createStatement();
-                ResultSet minRS = getMinTeam.executeQuery("SELECT team" +
-                        "from barons b, minBarons m " +
+                System.out.println("Finished maxaverbaron");
+                Statement getMaxTeam = con.createStatement();
+                ResultSet maxRS = getMaxTeam.executeQuery("SELECT team" +
+                        "from barons b, maxBarons m " +
                         "group by b.team" +
-                        "having avg(b.numberOfBarons) = (select * from minBarons)");
+                        "having avg(b.numberOfBarons) = (select * from maxBarons)");
                 System.out.println("Finished minRS");
                 ArrayList<String> teams = new ArrayList<>();
                 System.out.println("Finish getMinAvg");
-                while (minRS.next()) {
+                while (maxRS.next()) {
                     System.out.println("while loop");
-                    teams.add(minRS.getString("team"));
+                    teams.add(maxRS.getString("team"));
                 }
                 if (teams.contains(value)) {
                     System.out.println("win");
@@ -168,17 +169,17 @@ public class MinMax {
 
             }
         } catch (SQLException e) {
-            Statement getMinTeam = con.createStatement();
-            ResultSet minRS = getMinTeam.executeQuery("SELECT team " +
-                    "from barons b, minBarons m " +
+            Statement getMaxTeam = con.createStatement();
+            ResultSet maxRS = getMaxTeam.executeQuery("SELECT team " +
+                    "from barons b, maxBarons m " +
                     "group by b.team " +
-                    "having avg(b.numberOfBarons) = (select * from minBarons)");
+                    "having avg(b.numberOfBarons) = (select * from maxBarons)");
             System.out.println("Finished minRS");
             ArrayList<String> teams = new ArrayList<>();
             System.out.println("Finish getMinAvg");
-            while(minRS.next()) {
+            while(maxRS.next()) {
                 System.out.println("while loop");
-                teams.add(minRS.getString("team"));
+                teams.add(maxRS.getString("team"));
             }
             if (teams.contains(value)) {
                 System.out.println("win");
@@ -223,9 +224,9 @@ public class MinMax {
                 con.commit();
                 System.out.println("Finished minaverbaron");
                 Statement getMinTeam = con.createStatement();
-                ResultSet minRS = getMinTeam.executeQuery("SELECT team" +
+                ResultSet minRS = getMinTeam.executeQuery("SELECT team " +
                         "from barons b, minBarons m " +
-                        "group by b.team" +
+                        "group by b.team " +
                         "having avg(b.numberOfBarons) = (select * from minBarons)");
                 System.out.println("Finished minRS");
                 ArrayList<String> teams = new ArrayList<>();
@@ -243,6 +244,7 @@ public class MinMax {
                 }
 
             } catch (SQLException p){
+                p.printStackTrace();
                 try {
                     createView.executeUpdate("CREATE VIEW barons(team, numberOfBarons) AS " +
                             "SELECT t.name AS team, m.redNumOfBarons AS numberOfBarons " +
@@ -265,9 +267,9 @@ public class MinMax {
                 con.commit();
                 System.out.println("Finished minaverbaron");
                 Statement getMinTeam = con.createStatement();
-                ResultSet minRS = getMinTeam.executeQuery("SELECT team" +
+                ResultSet minRS = getMinTeam.executeQuery("SELECT team " +
                         "from barons b, minBarons m " +
-                        "group by b.team" +
+                        "group by b.team " +
                         "having avg(b.numberOfBarons) = (select * from minBarons)");
                 System.out.println("Finished minRS");
                 ArrayList<String> teams = new ArrayList<>();
