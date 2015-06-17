@@ -9,7 +9,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -180,10 +179,10 @@ public class SearchFor {
                 condition3.getItems().addAll("=", "<", ">", "<>");
                 condition4.setMinWidth(100);
 
-                GridPane.setConstraints(selectLabel, 2, 7);
-                GridPane.setConstraints(select, 3, 7);
-                GridPane.setConstraints(select2, 4, 7);
-                GridPane.setConstraints(select3, 5, 7);
+                GridPane.setConstraints(selectLabel, 1, 7);
+                GridPane.setConstraints(select, 2, 7);
+                GridPane.setConstraints(select2, 3, 7);
+                GridPane.setConstraints(select3, 4, 7);
                 GridPane.setConstraints(whereLabel, 1, 8);
                 GridPane.setConstraints(whereAttributes, 2, 8);
                 GridPane.setConstraints(condition, 3, 8);
