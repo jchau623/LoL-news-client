@@ -393,7 +393,6 @@ class DropRegion {
         Statement stmt = con.createStatement() ;
         rowsUpdated = stmt.executeUpdate("DELETE  FROM Region WHERE name = \'" + returnRName() + "\'");
         stmt.execute("DELETE  FROM Region WHERE name = \'" + returnRName() + "\'");}
-
 }
 
 
