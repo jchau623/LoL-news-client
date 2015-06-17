@@ -344,8 +344,13 @@ public class Main extends Application {
                 e1.printStackTrace();
             }
         });
+
+
+        Button button7 = new Button("View Our Top Users!");
+        button7.setOnAction(e ->ViewUsers.display(con, "View Our Top Users", "View Our Top Users"));
+
         VBox layout = new VBox(20);
-        layout.getChildren().addAll(message, userAndButton, button1, button4, button5, button6, button3);
+        layout.getChildren().addAll(message, userAndButton, button1, button4, button5, button6, button7, button3);
         layout.setAlignment(Pos.CENTER);
         scene1 = new Scene(layout, 300, 500);
 
