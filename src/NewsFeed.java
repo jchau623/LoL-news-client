@@ -48,6 +48,9 @@ public class NewsFeed {
         ArrayList<News> playerNews = getPlayerNews(con, user);
         ArrayList<News> teamNews = getTeamNews(con, user);
         ArrayList<News> regionNews = getRegionNews(con, user);
+
+
+        // adding it to the list
         if (!(playerNews == null)) news.addAll(playerNews);
         if (!(teamNews == null)) news.addAll(teamNews);
         if (!(regionNews == null)) news.addAll(regionNews);
@@ -55,7 +58,6 @@ public class NewsFeed {
         for (News news1 : news) {
             set.add(news1.getHeadline());
         }
-
 
         for (String headline : set) {
             headlines.add(headline);
@@ -68,6 +70,72 @@ public class NewsFeed {
         listView.setItems(headlines);
         listView.setPrefHeight(600);
         listView.setPrefWidth(350);
+
+
+        // filter box code
+
+        // just making the GUI
+        final ObservableList<String> followedItemsList = FXCollections.observableArrayList();
+        try {
+            ArrayList<String> items = findItems(con, user );
+            for (int i =0 ; i < items.size() ; i++ ) {
+                System.out.print(items.get(i));
+            }
+            for (int i =0 ; i < items.size() ; i++ ) {
+                followedItemsList.add(items.get(i));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        //for what happens and functionality
+        final CheckComboBox<String> followList = new CheckComboBox<String>(followedItemsList) ;
+        followList.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(Change<? extends String> c) {
+                ObservableList<String> listOfPlayers = followList.getCheckModel().getCheckedItems() ;
+                // first clear the list
+                headlines.clear();
+                // make all your get checked model  ;
+                ArrayList<String> listOfP = new ArrayList<String>() ;
+                for(int i = 0 ; i < listOfPlayers.size() ; i++){
+                    listOfP.add(listOfPlayers.get(i));
+                }
+                try {
+                    ArrayList<String> playerNewsHeadlines= displayFollowList(user, con, listOfP);
+                    for (int i = 0  ; i < playerNewsHeadlines.size() ; i++ ) {
+                        headlines.add(playerNewsHeadlines.get(i)) ;
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        if (followList.getCheckModel().getCheckedItems().isEmpty()) {
+            ArrayList<News> oringalNews = new ArrayList<>();
+            ArrayList<News> playerNewsList = getPlayerNews(con, user);
+            ArrayList<News> teamNewsList = getTeamNews(con, user );
+            ArrayList<News> regionNewsList = getRegionNews(con, user);
+
+            if (!(playerNewsList == null)) oringalNews.addAll(playerNewsList);
+            if (!(teamNewsList == null)) oringalNews.addAll(teamNewsList) ;
+            if (!(regionNewsList == null)) oringalNews.addAll(regionNewsList) ;
+
+            Set<String> otherSet = new TreeSet<>() ;
+            for (News n : oringalNews) {
+                otherSet.add(n.getHeadline());
+            }
+
+            for (String s : otherSet) {
+                if (headlines.contains(s)) {
+                    headlines.add(s);
+                }
+            }
+        }
+
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             try {
@@ -93,45 +161,7 @@ public class NewsFeed {
             }
         });
 
-        final ObservableList<String> followedItemsList = FXCollections.observableArrayList();
 
-        try {
-            ArrayList<String> items = findItems(con, user );
-
-            for (int i =0 ; i < items.size() ; i++ ) {
-                System.out.print(items.get(i));
-            }
-
-            for (int i =0 ; i < items.size() ; i++ ) {
-                followedItemsList.add(items.get(i));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-        final CheckComboBox<String> followList = new CheckComboBox<String>(followedItemsList) ;
-
-        followList.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
-            @Override
-            public void onChanged(Change<? extends String> c) {
-                ObservableList<String> listOfPlayers = followList.getCheckModel().getCheckedItems() ;
-
-                // make all your get checked model  ;
-                ArrayList<String> listOfP = new ArrayList<String>() ;
-                for(int i = 0 ; i < listOfPlayers.size() ; i++){
-                    listOfP.add(listOfPlayers.get(i));
-                }
-
-                try {
-                    ArrayList<String> playerNewsHeadlines= displayFollowList(user, con, listOfP);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
 
 
         // populated the followedItems
@@ -258,32 +288,42 @@ public class NewsFeed {
 
     private static ArrayList<String>  displayFollowList(String user, Connection con, ArrayList<String> listOfPlayers) throws SQLException {
 
-        Statement viewBaby = con.createStatement();
+        //System.out.println("I am at the start of the function");
+
         // going to creathe the string to put in the SQL query
 
-        String sqlString = new String() ;
+        String sqlString = new String();
 
         for(int i =0 ; i < listOfPlayers.size() ; i++ ) {
             if (i == 0 ) {
-                sqlString.concat( " \'" + listOfPlayers.get(i) + " \'") ;
+                sqlString = sqlString.concat( " \'" + listOfPlayers.get(i).trim() + " \'") ;
+          //      System.out.println("I am in the middle of the function ");
             }
-            else
-                sqlString.concat(" AND summonerID = "+ " \'" + listOfPlayers.get(i) + " \'" ) ;
+            else {
+                sqlString = sqlString.concat(" OR summonerID = " + " \'" + listOfPlayers.get(i).trim() + " \'");
+            //    System.out.println(sqlString);
+            }
         }
 
+    //    System.out.println(sqlString);
 
-        viewBaby.execute("  SELECT headline" +
-                 "FROM PlayerNews" +
-                 " WHERE summonerID = " + sqlString +
-                "AND url IN " +
-                 " (select p.url" +
-                 " from playernews p, followlisthasplayer f\n" +
-                 " where f.user_id = " + " \'"+ user + " \'" +
-                 "and f.summonerid = p.summonerid)");
+        ArrayList<String> playerNewsHeadLines = new ArrayList<>();
+        Statement viewBaby = con.createStatement();
+        ResultSet rs = viewBaby.executeQuery("  " +
+                "SELECT headline" +
+                " FROM PlayerNews" +
+                " WHERE summonerID = " + sqlString +
+                " AND url IN " +
+                " (select p.url" +
+                " from playernews p, followlisthasplayer f" +
+                " where f.user_id = " + " \'" + user + " \'" +
+                " and f.summonerid = p.summonerid)");
 
+        if (rs.isBeforeFirst()) {}
+        while (rs.next()) {
+            playerNewsHeadLines.add(rs.getString(1));
+        }
 
-
-        return null;
-
+        return playerNewsHeadLines;
     }
 }
