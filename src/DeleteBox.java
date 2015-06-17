@@ -165,7 +165,7 @@ class DropPlayer {
             try{
                 deletePlayer(con);
                 if (rowsUpdated == 0) {
-                    AlertBox.display("Error", "No rows were updated");
+                    AlertBox.display("Error", "No such player exists");
                 } else {
                     AlertBox.display("Success", "Player deleted");
                 }
@@ -229,7 +229,7 @@ class DropTeam {
             try{
                 deleteTeam(con);
                 if (rowsUpdated == 0) {
-                    AlertBox.display("Error", "No rows were updated");
+                    AlertBox.display("Error", "No such team exists");
                 } else {
                     AlertBox.display("Success", "Team deleted");
                 }
@@ -351,20 +351,21 @@ class DropRegion {
             try{
                 deleteRegion(con);
                 if (rowsUpdated == 0) {
-                    AlertBox.display("Error", "No rows were updated");
+                    AlertBox.display("Error", "No such region exists");
                 } else {
                     AlertBox.display("Success", "Region deleted");
                 }
             }
             catch (SQLException e1){
-                e1.printStackTrace();
+                if (e1.getErrorCode()==2292) {
+                    AlertBox.display("Error", "Can't delete: integrity constraint violated");
+                }
             }
             window.close();
         });
         tf = new javafx.scene.control.TextField();
 
         HBox layout = new HBox(10);
-        VBox layout2 = new VBox(10);
         layout.getChildren().addAll(label, tf, button);
         layout.setAlignment(Pos.CENTER);
 
@@ -431,7 +432,6 @@ class DropMatch {
             catch (NumberFormatException nfe){
                 AlertBox.display("Error", "Please ensure MatchID is a number");
             }
-            System.out.println(rowsUpdated);
             window.close();
         });
 
@@ -451,7 +451,11 @@ class DropMatch {
     }
 
     private static int returnMatchID() {
-        matchID = Integer.parseInt(tf.getText());
+        try {
+            matchID = Integer.parseInt(tf.getText());
+        } catch (NumberFormatException nfe) {
+
+        }
         return matchID;
     }
 

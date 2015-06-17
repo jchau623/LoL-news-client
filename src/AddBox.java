@@ -106,10 +106,6 @@ public class AddBox {
            TextField name = new TextField();
             Label acronymLabel = new Label("Acronym:");
             TextField acronym = new TextField();
-            Label averageBaronsLabel = new Label("Average Barons:");
-           TextField averageBarons = new TextField();
-            Label averageDragonsLabel = new Label ("Average Dragons:");
-         TextField   averageDragons = new TextField();
             Label winLabel = new Label ("Wins:");
            TextField win = new TextField();
             Label lossLabel = new Label ("Losses:");
@@ -132,8 +128,6 @@ public class AddBox {
             List<TextField> textFields = new ArrayList<>();
             textFields.add(name);
             textFields.add(acronym);
-            textFields.add(averageBarons);
-            textFields.add(averageDragons);
             textFields.add(win);
             textFields.add(loss);
             textFields.add(sponsor);
@@ -144,7 +138,7 @@ public class AddBox {
             button.setOnAction(e -> {
                 if (choiceBoxChecker(choiceBoxes, textFields) && fieldChecker(textFields, choiceBoxes)) {
                     try {
-                        addTeam(con, name.getText(), acronym.getText(), Float.parseFloat(averageBarons.getText()), Float.parseFloat(averageDragons.getText()), Integer.parseInt(win.getText()), Integer.parseInt(loss.getText()), sponsor.getText(), region.getValue());
+                        addTeam(con, name.getText(), acronym.getText(), Integer.parseInt(win.getText()), Integer.parseInt(loss.getText()), sponsor.getText(), region.getValue());
                         AlertBox.display("Success", "Team is successfully added to the database.");
                         window.close();
                     } catch (SQLException e1) {
@@ -163,21 +157,17 @@ public class AddBox {
             GridPane.setConstraints(name, 1, 0);
             GridPane.setConstraints(acronymLabel, 0, 1);
             GridPane.setConstraints(acronym, 1, 1);
-            GridPane.setConstraints(averageBaronsLabel, 0, 2);
-            GridPane.setConstraints(averageBarons, 1, 2);
-            GridPane.setConstraints(averageDragonsLabel, 0, 3);
-            GridPane.setConstraints(averageDragons, 1, 3);
-            GridPane.setConstraints(winLabel, 0, 4);
-            GridPane.setConstraints(win, 1, 4);
-            GridPane.setConstraints(lossLabel, 0, 5);
-            GridPane.setConstraints(loss, 1, 5);
-            GridPane.setConstraints(sponsorLabel, 0, 6);
-            GridPane.setConstraints(sponsor, 1, 6);
-            GridPane.setConstraints(button, 1, 8);
-            GridPane.setConstraints(regionLabel, 0, 7);
-            GridPane.setConstraints(region, 1, 7);
+            GridPane.setConstraints(winLabel, 0, 2);
+            GridPane.setConstraints(win, 1, 2);
+            GridPane.setConstraints(lossLabel, 0, 3);
+            GridPane.setConstraints(loss, 1, 3);
+            GridPane.setConstraints(sponsorLabel, 0, 4);
+            GridPane.setConstraints(sponsor, 1, 4);
+            GridPane.setConstraints(button, 1, 6);
+            GridPane.setConstraints(regionLabel, 0, 5);
+            GridPane.setConstraints(region, 1, 5);
             GridPane.setHalignment(button, HPos.RIGHT);
-            grid.getChildren().addAll(nameLabel,name,acronymLabel,acronym,averageBaronsLabel,averageBarons,averageDragonsLabel,averageDragons,winLabel,win,lossLabel,loss,sponsorLabel,sponsor,region, regionLabel,button);
+            grid.getChildren().addAll(nameLabel,name,acronymLabel,acronym,winLabel,win,lossLabel,loss,sponsorLabel,sponsor,region, regionLabel,button);
 
             Scene scene = new Scene(grid);
             window.setScene(scene);
@@ -187,13 +177,11 @@ public class AddBox {
             //return returnTeam();
         }
 
-        public static void addTeam(Connection con, String name, String acronym, Float averageB, Float averageD, Integer wins, Integer losses, String sponsor, String region) throws SQLException{
+        public static void addTeam(Connection con, String name, String acronym, Integer wins, Integer losses, String sponsor, String region) throws SQLException{
             String addR = "INSERT INTO TeamThatPlaysIn VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement update = con.prepareStatement(addR);
             update.setString(1, name);
             update.setString(5, acronym);
-            update.setFloat(7, averageB);
-            update.setFloat(6,averageD);
             update.setInt(2, wins);
             update.setInt(3,losses);
             update.setString(4, sponsor);

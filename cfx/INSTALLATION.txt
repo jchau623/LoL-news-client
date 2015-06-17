@@ -1,0 +1,6 @@
+IN INTELLIJ:
+1. Open Project Structure (CTRL + ALT + SHIFT + S)
+2. Click Libraries
+3. Click Plus (+)
+4. Select folder 'cfx'
+5. Add the class, click OKs until you exit the menus
