@@ -322,9 +322,8 @@ class DropUser {static String uid = new String();
     public static void deleteUser(Connection con) throws SQLException {
 
 
+//TODO: deletion for marking (See above for dropPlayer)
 
-        System.out.println("testing");
-// trying a different method here
         Statement stmt = con.createStatement() ;
         // find player is the result
         stmt.executeUpdate("DELETE  FROM FollowList WHERE user_id = \'" + returnUID() + "\'");}}

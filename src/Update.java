@@ -94,7 +94,7 @@ public class Update {
         //Shows this stage and waits for it to be hidden (closed) before returning to the caller.
         window.showAndWait();
     }
-
+//TODO: update for marking
     public static void updateSomething(Connection con, String name, String set, String to, String where) throws SQLException {
         Statement stmt = con.createStatement();
         rowsUpdated = stmt.executeUpdate("UPDATE " + name + " SET  " + set + " = " + to + " WHERE " + where);

@@ -4,10 +4,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -17,7 +15,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -314,8 +314,8 @@ public class NewsFeed {
 
             //    System.out.println(sqlString);
 
-            // todo the bug is within the WHERE CLAUSE move to the for loop
 
+// TODO JOIN FOR MARKING
             TreeSet<String> playerNewsHeadLines = new TreeSet<>();
             Statement viewBaby = con.createStatement();
             ResultSet rs = viewBaby.executeQuery("  " +
