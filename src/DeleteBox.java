@@ -327,7 +327,7 @@ class DropUser {static String uid = new String();
 // trying a different method here
         Statement stmt = con.createStatement() ;
         // find player is the result
-        stmt.execute("DELETE  FROM FollowList WHERE uid = \'" + returnUID() + "\'");}}
+        stmt.executeUpdate("DELETE  FROM FollowList WHERE user_id = \'" + returnUID() + "\'");}}
 
 class DropRegion {
     static String rname = new String();

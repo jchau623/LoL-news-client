@@ -63,7 +63,11 @@ public class Update {
                 if (e1.getErrorCode() == 2290){
                     AlertBox.display("Error", "Check constraint violated");
                 }
-                //System.out.println(e1);
+
+                if (e1.getErrorCode() == 904){
+                    AlertBox.display("Error", "Invalid, attribute cannot be updated");
+                }
+                System.out.println(e1);
             }
             window.close();
         });
