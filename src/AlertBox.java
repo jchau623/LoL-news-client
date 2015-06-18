@@ -24,7 +24,8 @@ public class AlertBox {
         Label label = new Label(message);
         label.setWrapText(true);
         label.setTextAlignment(TextAlignment.JUSTIFY);
-        label.setPrefWidth(700);
+        label.setAlignment(Pos.CENTER);
+        label.setPrefWidth(250);
         Button button = new Button("Close");
         button.setOnAction(e -> window.close());
 
