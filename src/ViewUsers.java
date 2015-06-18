@@ -78,7 +78,7 @@ public class ViewUsers {
         //Shows this stage and waits for it to be hidden (closed) before returning to the caller.
         window.showAndWait();
     }
-
+//TODO Division for Marking
     public static ArrayList<String> seeUserByPlayer(Connection con) throws SQLException {
         ArrayList<String> listOfUsers = new ArrayList<>();
         Statement stmt = con.createStatement();

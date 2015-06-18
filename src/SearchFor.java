@@ -160,7 +160,7 @@ public class SearchFor {
         borderPane.setTop(searchBar);
         borderPane.setPadding(new Insets(10));
         Scene scene = new Scene(borderPane);
-
+// TODO SELECTION PROJECTION FOR MARKING
         advanced.setOnAction(e -> {
             if (choices.getSelectedToggle() == player) {
                 select.getItems().clear();
@@ -319,7 +319,7 @@ public class SearchFor {
 
                         String a = null;
                         try {
-                            a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 1, searchFor);
+                            a = advancedFind(connection, attributes.getValue(), order.getValue(), 1, searchFor);
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }
@@ -330,54 +330,55 @@ public class SearchFor {
 
                         String a = null;
                         try {
-                            a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 2, searchFor);
+                            a = advancedFind(connection, attributes.getValue(), order.getValue(), 2, searchFor);
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }
-                        AlertBox.display("Players:", a);
+                        AlertBox.display("Results:", a);
 
                     } else if (select.getValue() != null && select2.getValue() != null && select3.getValue() != null && whereAttributes.getValue() != null && condition.getValue() != null && condition2.getText() != null && whereAttributes2.getValue() == null && condition3.getValue() == null && condition4.getText().equals("")) {
 
                         String a = null;
                         try {
-                            a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 3, searchFor);
+                            a = advancedFind(connection, attributes.getValue(), order.getValue(), 3, searchFor);
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }
-                        AlertBox.display("Players:", a);
+                        AlertBox.display("Results:", a);
 
                     } else if (select.getValue() != null && select2.getValue() == null && select3.getValue() == null && whereAttributes.getValue() != null && condition.getValue() != null && condition2.getText() != null && whereAttributes2.getValue() != null && condition3.getValue() != null && !condition4.getText().equals("")) {
 
                         String a = null;
                         try {
-                            a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 4, searchFor);
+                            a = advancedFind(connection, attributes.getValue(), order.getValue(), 4, searchFor);
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }
-                        AlertBox.display("Players:", a);
+                        AlertBox.display("Results:", a);
 
                     } else if (select.getValue() != null && select2.getValue() != null && select3.getValue() == null && whereAttributes.getValue() != null && condition.getValue() != null && condition2.getText() != null && whereAttributes2.getValue() != null && condition3.getValue() != null && !condition4.getText().equals("")) {
 
                         String a = null;
                         try {
-                            a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 5, searchFor);
+                            a = advancedFind(connection, attributes.getValue(), order.getValue(), 5, searchFor);
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }
-                        AlertBox.display("Players:", a);
+                        AlertBox.display("Results:", a);
 
                     } else if (select.getValue() != null && select2.getValue() != null && select3.getValue() != null && whereAttributes.getValue() != null && condition.getValue() != null && condition2.getText() != null && whereAttributes2.getValue() != null && condition3.getValue() != null && !condition4.getText().equals("")) {
 
                         String a = null;
                         try {
-                            a = advancedFindPlayer(connection, attributes.getValue(), order.getValue(), 6, searchFor);
+                            a = advancedFind(connection, attributes.getValue(), order.getValue(), 6, searchFor);
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }
-                        AlertBox.display("Players:", a);
+                        AlertBox.display("Results:", a);
 
 
                     }
+                    else AlertBox.display("Error", "Error in fields.");
 
                 } else if (choices.getSelectedToggle() == player) {
                     SearchResults.display(user, con, findPlayer("summonerID ", connection, attributes.getValue(), order.getValue()));
@@ -420,10 +421,7 @@ public class SearchFor {
     }
 
 // TODO if we have time we should also add in another choice box, choosing between AND and OR. 
-    private static String advancedFindPlayer(Connection con, String attribute, String value, int i, String searchFor) throws SQLException {
-        String realAttributeName = (attribute == "Age") ? "age" : (attribute == "Name") ? "name" :
-                (attribute == "KDA Ratio") ? "KDA" : (attribute == "Nationality") ? "nationality" : attribute;
-        String order = (value == "Ascending order") ? "ASC" : "DESC";
+    private static String advancedFind(Connection con, String attribute, String value, int i, String searchFor) throws SQLException {
 
 
         Statement s = con.createStatement();
@@ -598,7 +596,7 @@ public class SearchFor {
             team.setLosses(rs.getInt(3));
             team.setSponsor(rs.getString(4));
             team.setAcronym(rs.getString(5));
-
+//TODO: aggregation for marking
             Statement sumRedBaron = con.createStatement();
             ResultSet sumRBRS = sumRedBaron.executeQuery("SELECT SUM(redNumOfBarons) AS redBaronSum FROM Match m " +
                     "WHERE m.redName = '" + team.returnTeamName() + "'");

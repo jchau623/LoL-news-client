@@ -16,16 +16,16 @@ import java.util.ArrayList;
  */
 public class RegionResults {
 
-    public static void display(String user, String regionName ,Connection con) throws SQLException {
+            public static void display(String user, String regionName ,Connection con) throws SQLException {
 
-        Statement stmt = con.createStatement();
-        ArrayList<Team> listOfTeams = new ArrayList<Team>() ;
-        ResultSet rs = stmt.executeQuery
-                ("SELECT * " +
-                        "FROM TeamThatPlaysIn " +
-                        "WHERE rname = \'" + regionName + "\'");
+                Statement stmt = con.createStatement();
+                ArrayList<Team> listOfTeams = new ArrayList<Team>() ;
+                ResultSet rs = stmt.executeQuery
+                        ("SELECT * " +
+                                "FROM TeamThatPlaysIn " +
+                                "WHERE rname = \'" + regionName + "\'");
 
-        if(!rs.isBeforeFirst()){AlertBox.display("Error", "No teams in selected region");} ;
+                if(!rs.isBeforeFirst()){AlertBox.display("Error", "No teams in selected region");} ;
         while (rs.next()) {
             Team team = new Team();
 
@@ -34,9 +34,7 @@ public class RegionResults {
             team.setLosses(rs.getInt(3));
             team.setSponsor(rs.getString(4));
             team.setAcronym(rs.getString(5));
-            team.setAverageDragons(rs.getFloat(6));
-            team.setAverageBarons(rs.getFloat(7));
-            team.setRegion(rs.getString(8));
+            team.setRegion(rs.getString(6));
 
             listOfTeams.add(team);
         }
